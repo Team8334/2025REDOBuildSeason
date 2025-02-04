@@ -7,7 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Teleop;
+
+import frc.robot.Subsystem.Mecanum;
+import frc.robot.Subsystem.SubsystemManager;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -32,6 +34,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     teleop = new Teleop();
+
+    Mecanum.getInstance();
+
+    SubsystemManager.initializeSubsystems();
   }
 
   /**
@@ -42,7 +48,10 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+
+    SubsystemManager.updateSubsystems();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
