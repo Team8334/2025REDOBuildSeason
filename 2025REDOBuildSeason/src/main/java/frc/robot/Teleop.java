@@ -35,19 +35,19 @@ public class Teleop {
            double strafe;
            double rotation;
            if(Math.abs(controllerLeftY) >= 0.5){
-            forward = controllerLeftY;
+            forward = (controllerLeftY*0.5);
            }
            else{
             forward = 0;
            }
            if(Math.abs(controllerLeftX) >= 0.5){
-            strafe = controllerLeftX;
+            strafe = (controllerLeftX*0.5);
            }
            else{
             strafe = 0;
            }
-           if(Math.abs(controllerRightX) >= 0.5){
-            rotation = controllerRightX;
+           if(Math.abs(controllerRightX) >= 0.2){
+            rotation = (controllerRightX*0.35);
            }
            else{
             rotation = 0;
