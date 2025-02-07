@@ -83,5 +83,11 @@ public class Mecanum implements Subsystem {
     public String getName() {
         return "mecanum";
     }
+    public boolean moving() {
+        if(frontRight >= PortMap.MOVING_THRESHOLD || frontLeft >= PortMap.MOVING_THRESHOLD || rearLeft >= PortMap.MOVING_THRESHOLD || rearRight >= PortMap.MOVING_THRESHOLD) {
+            return true;
+        }
+        return false;
+    }
 
 }
