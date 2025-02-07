@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
+import frc.robot.Subsystem.Elevator;
 
 public class Mecanum implements Subsystem {
 
@@ -58,6 +59,12 @@ public class Mecanum implements Subsystem {
 
     @Override
     public void update() {
+        if(Elevator.instance.height() > PortMap.MAX_HEIGHT_FOR_DRIVING) {
+            frontLeftMotor.set(0.0);
+            frontRightMotor.set(0.0);
+            rearLeftMotor.set(0.0);
+            rearRightMotor.set(0.0);
+        }
         frontLeftMotor.set(frontLeft);
         frontRightMotor.set(frontRight);
         rearLeftMotor.set(rearLeft);

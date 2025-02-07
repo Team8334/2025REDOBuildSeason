@@ -19,7 +19,7 @@ import frc.robot.Devices.NEOSparkMaxMotor;
 public class Elevator implements Subsystem {
     //note the sim stuff is only to test. To do for real robot take out the constants
 
-    private static Elevator instance = null;
+    public static Elevator instance = null;
 
     private final DCMotor m_elevatorGearbox = DCMotor.getNEO(4);
 
@@ -85,8 +85,8 @@ public class Elevator implements Subsystem {
 
     @Override
     public void initialize() {
-       m_elevatorSim.setInput(m_motorSim.getSpeed()* RobotController.getBatteryVoltage());
-       m_encoderSim.setDistance(m_elevatorSim.getPositionMeters());
+       //m_elevatorSim.setInput(m_motorSim.getSpeed()* RobotController.getBatteryVoltage());
+       //m_encoderSim.setDistance(m_elevatorSim.getPositionMeters());
     }
 
     @Override
@@ -102,5 +102,8 @@ public class Elevator implements Subsystem {
     @Override
     public String getName() {
         return "example subsystem";
+    }
+    public float height() {
+        return (float)(0.0 / 0.0);
     }
 }
