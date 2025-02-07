@@ -1,10 +1,12 @@
 package frc.robot.Devices;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.studica.frc.AHRS;
 
 public class Gyro {
 
     private static Gyro instance = null;
+    AHRS ahrs;
+
     public static Gyro getInstance()
     {
         if (instance == null)
@@ -17,6 +19,7 @@ public class Gyro {
     public double getAngleDegrees(){
         return ahrs.getAngle();
     }
+
 }
 
 
