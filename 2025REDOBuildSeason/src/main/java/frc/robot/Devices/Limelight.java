@@ -24,7 +24,6 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     NetworkTableEntry ty;
     NetworkTableEntry ta;
     NetworkTableEntry tl;
-    NetworkTableEntry td;
 
     double x;
     double y;
@@ -53,7 +52,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         ty = table.getEntry("ty");
         ta = table.getEntry("ta");
         tl = table.getEntry("tl");
-        td = table.getEntry("td");
+        
         table.getEntry("ledMode").setNumber(1); //0=default; 1=off; 2=blinking; 3 = on
     }
     
@@ -140,11 +139,11 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     }
 
     public void logtoSmartDashboard() {
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Target X", LimelightHelpers.getTX(limelightName));
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Target Y", LimelightHelpers.getTY(limelightName));
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Target Area", LimelightHelpers.getTA(limelightName));
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Latency", LimelightHelpers.getLatency_Capture(limelightName));
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Target Distance", getDistanceFromTarget());
+        SmartDashboard.putNumber("Limelight" + limelightID +"/Target X", x);
+        SmartDashboard.putNumber("Limelight" + limelightID +"/Target Y", y);
+        SmartDashboard.putNumber("Limelight" + limelightID +"/Target Area", area);
+        SmartDashboard.putNumber("Limelight" + limelightID +"/Latency", l);
+        SmartDashboard.putNumber("Limelight" + limelightID +"/Target Distance", d);
     }
 
     public void update() {
@@ -152,6 +151,6 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         y = ty.getDouble(0.0);
         area = ta.getDouble(0.0);
         l = tl.getDouble(0.0);
-        d = td.getDouble(0.0);
+        d = getDistanceFromTarget();
     }
 }
