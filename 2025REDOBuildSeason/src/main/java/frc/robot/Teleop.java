@@ -3,13 +3,16 @@ package frc.robot;
 import frc.robot.Devices.Controller;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
+import frc.robot.Subsystem.ScoringControl;
 
 
 public class Teleop {
     
     Controller driverController;
+    Controller operatorController;
     
         Mecanum mecanum;
+        ScoringControl scoringControl;
         private double controllerLeftX;
         private double controllerLeftY;
         private double controllerRightX;
@@ -19,8 +22,14 @@ public class Teleop {
             if(!driverController.isOperational()) {
                 System.out.println("404 Controller not found :(");
             }
+
+            operatorController = new Controller(PortMap.OPERATOR_CONTROLLER);
+            if(!operatorController.isOperational()) {
+                System.out.println("404 Controller not found :(");
+            }
     
             mecanum = Mecanum.getInstance();
+            scoringControl = ScoringControl.getInstance();
         }
     
         public void teleopPeriodic() {
@@ -56,7 +65,9 @@ public class Teleop {
         }
     
         public void manipulatorControl() {
-    
+            if (operatorController.getAButton()){
+                scoringControl.RampHasCoral();
+            }
         }
     
     }
