@@ -13,7 +13,7 @@ import frc.robot.Teleop;
 import frc.robot.Auto.AutoMissionChooser;
 import frc.robot.Auto.AutoMissionExecutor;
 import frc.robot.Auto.Missions.MissionBase;
-import frc.robot.Devices.Gyro;
+
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -22,6 +22,8 @@ import frc.robot.Devices.Gyro;
  */
 public class Robot extends TimedRobot {
   Teleop teleop;
+
+  
 
   private AutoMissionExecutor autoMissionExecutor = new AutoMissionExecutor();
   private AutoMissionChooser autoMissionChooser = new AutoMissionChooser();
@@ -42,6 +44,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     teleop = new Teleop();
+
+    
   }
 
   /**

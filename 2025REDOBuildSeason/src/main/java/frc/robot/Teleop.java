@@ -53,9 +53,7 @@ public class Teleop {
             rotation = 0;
            }
            mecanum.drive(forward, strafe, rotation);
-           System.out.println("Controller x: " + driverController.getLeftX());
-           System.out.println("Controller y: " + driverController.getLeftY());
-           System.out.println("Controller right x: " + driverController.getRightX());
+          
         }
     
         public void manipulatorControl() {
