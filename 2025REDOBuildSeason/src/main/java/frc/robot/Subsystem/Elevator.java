@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.RobotController;
 public class Elevator implements Subsystem {
     //note the sim stuff is only to test. To do for real robot take out the constants
 
-    private static Elevator instance = null;
+    public static Elevator instance = null;
 
     public static final int kMotorPort = 0; //this is for the simulation, needs to be replaced for actual
     public static final int kEncoderAChannel = 0; // these two are also for the simulation. needs to be replaced
@@ -110,7 +110,12 @@ public class Elevator implements Subsystem {
 
     @Override
     public void initialize() {
+<<<<<<< HEAD
         
+=======
+       //m_elevatorSim.setInput(m_motorSim.getSpeed()* RobotController.getBatteryVoltage());
+       //m_encoderSim.setDistance(m_elevatorSim.getPositionMeters());
+>>>>>>> eeed85cc4b0e2445a1bc889af7073571afc78739
     }
 
     @Override
@@ -126,5 +131,8 @@ public class Elevator implements Subsystem {
     @Override
     public String getName() {
         return "Elevator";
+    }
+    public float height() {
+        return (float)(0.0 / 0.0);
     }
 }
