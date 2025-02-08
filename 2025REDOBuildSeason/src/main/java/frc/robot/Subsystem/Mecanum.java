@@ -70,10 +70,7 @@ public class Mecanum implements Subsystem {
 
     @Override
     public void update() {
-       /*  frontLeftMotor.set(frontLeft);
-        frontRightMotor.set(frontRight);
-        rearLeftMotor.set(rearLeft);
-        rearRightMotor.set(rearRight); */
+    
     }
 
     @Override
