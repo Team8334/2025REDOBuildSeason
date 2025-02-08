@@ -15,23 +15,25 @@ public class DriveForTimeAction implements Actions {
 
     private double seconds;
     private double speed;
-    private Mecanum mDrive = null;
+    private Mecanum drive = null;
     Timer timer;
 
     public DriveForTimeAction(double seconds , double strafe , double speed) {
         this.seconds = seconds;
         this.speed = speed;
+        drive = Mecanum.getInstance();
     }
 
     @Override
     public void start() {
         timer = new Timer();
         timer.start();
+        System.out.println("Current Action DriveForTimeAction Started");
     }
 
     @Override
     public void update() {
-        mDrive.drive(this.speed, 0, 0);
+        drive.drive(this.speed, 0, 0);
     }
 
     @Override

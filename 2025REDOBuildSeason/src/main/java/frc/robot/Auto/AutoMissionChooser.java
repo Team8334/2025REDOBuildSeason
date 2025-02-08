@@ -1,4 +1,3 @@
-
 package frc.robot.Auto;
 
 import frc.robot.Auto.Missions.*;
@@ -15,13 +14,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutoMissionChooser {
     enum DesiredMission {
         doNothing,
+
         MoveAcrossLineMission,
-        exampleMission,
+        //exampleMission,
         ScoringMission,
         RedScoreL1,
         RedScoreL4,
         BlueScoreL1,
         BlueScoreL4,
+        Testing,
 
     }
 
@@ -38,10 +39,10 @@ public class AutoMissionChooser {
     public AutoMissionChooser() {
         missionChooser = new SendableChooser<>();
 
-        missionChooser.setDefaultOption("Do Nothing", DesiredMission.doNothing);
+        missionChooser.addOption("Do Nothing", DesiredMission.doNothing);
         missionChooser.addOption("Leave Community", DesiredMission.MoveAcrossLineMission);
         missionChooser.addOption("Scoring 1 note", DesiredMission.ScoringMission);
-        //missionChooser.addOption("Example Mission", DesiredMission.exampleMission);
+        missionChooser.addOption("Testing", DesiredMission.Testing);
 
         SmartDashboard.putNumber("Auto Delay (seconds)", 0);
 
@@ -88,8 +89,8 @@ public class AutoMissionChooser {
                 return Optional.of(new DoNothingMission());
             case MoveAcrossLineMission:
                 return Optional.of(new MoveAcrossLineMission());
-            case exampleMission:
-                return Optional.of(new ExampleMission());
+            case Testing:
+                return Optional.of(new Testing());
             case ScoringMission:
                 if (alliance == "Red") {
                     //return Optional.of(new RedScoringMission());

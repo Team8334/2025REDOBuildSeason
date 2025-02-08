@@ -2,8 +2,6 @@ package frc.robot.Devices;
 
 import com.studica.frc.AHRS;
 
-import edu.wpi.first.wpilibj.SPI;
-
 public class Gyro {
 
     private static Gyro instance = null;
@@ -20,6 +18,7 @@ public class Gyro {
 
     public Gyro(){
         ahrs = new AHRS(AHRS.NavXComType.kMXP_SPI);
+        ahrs.reset();
     }
 
     public double getAngleDegrees(){
@@ -30,9 +29,3 @@ public class Gyro {
 }
 
 
-/*
- * Gyro want:
- * current degrees = 0
- * turn until hit 90 degrees 
- * then stop
- */

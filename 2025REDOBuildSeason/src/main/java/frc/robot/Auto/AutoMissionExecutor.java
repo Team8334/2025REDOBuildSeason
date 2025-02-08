@@ -13,6 +13,7 @@ public class AutoMissionExecutor {
     public void setAutoMission(MissionBase new_auto_Mission) {
         mAutoMission = new_auto_Mission;
         mThread = new Thread(new Runnable() {
+            
             @Override
             public void run() {
                 if (mAutoMission != null) {
