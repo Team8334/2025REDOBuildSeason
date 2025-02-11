@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.Teleop;
+import frc.robot.Subsystem.Elevator;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -16,6 +19,8 @@ import frc.robot.Teleop;
  */
 public class Robot extends TimedRobot {
   Teleop teleop;
+  Elevator elevator;
+  Joystick joystick;
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -32,6 +37,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     teleop = new Teleop();
+    elevator = new Elevator();
+    joystick = new Joystick(elevator.kJoystickPort);
   }
 
   /**
@@ -42,7 +49,9 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    elevator.updateTelemetry();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -83,11 +92,18 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     teleop.teleopPeriodic();
+    if (joystick.getTrigger()) {
+      elevator.reachGoal(elevator.kSetpointMeters);
+    } else {
+      elevator.reachGoal(0.0);
+    }
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    elevator.stop();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -107,5 +123,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    elevator.update();
+  }
 }
