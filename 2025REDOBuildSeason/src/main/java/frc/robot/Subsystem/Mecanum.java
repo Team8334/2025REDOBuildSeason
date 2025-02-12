@@ -65,7 +65,6 @@ public class Mecanum implements Subsystem {
         rearLeftMotor.set(rearLeft*-1);
         rearRightMotor.set(rearRight);
 
-        System.out.println("Taylor Hit here 1");
     }
 
     @Override

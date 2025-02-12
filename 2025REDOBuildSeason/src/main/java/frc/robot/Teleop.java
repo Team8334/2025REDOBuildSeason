@@ -66,7 +66,10 @@ public class Teleop {
     
         public void manipulatorControl() {
             if (operatorController.getAButton()){
-                scoringControl.RampHasCoral();
+                scoringControl.OperatorWantsCoral();
+            }
+            if (operatorController.getBButton()){
+                scoringControl.eject();
             }
         }
     

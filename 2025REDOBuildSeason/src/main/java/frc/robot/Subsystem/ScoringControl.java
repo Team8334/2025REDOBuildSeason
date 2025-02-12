@@ -24,9 +24,7 @@ public class ScoringControl implements Subsystem {
     private double effectorUno;
     private double effectorDos;
 
-
     public String state = "passive";
-
 
     public static ScoringControl getInstance() {
         if (instance == null) {
@@ -64,12 +62,8 @@ public class ScoringControl implements Subsystem {
         state = "passive";
     }
 
-    public void RampHasCoral(){
+    public void OperatorWantsCoral(){
         state = "operator wants coral";
-    }
-
-    public void RampToEffector(){
-        state = "transfering coral to effector";
     }
 
     public void CoralTripsSensor(){
@@ -99,13 +93,6 @@ public class ScoringControl implements Subsystem {
                 
                 break;
 
-            case "transfering coral to effector":
-                    effectorUno = 0.5;
-                    effectorDos = 0.5;
-                    System.out.println("transfering coral to effector");
-
-                break;
-
             case "coral tripped sensor":
                     effectorUno = 0.0;
                     effectorDos = 0.0;
@@ -116,7 +103,8 @@ public class ScoringControl implements Subsystem {
             case "ejecting coral":
                     effectorUno = -0.5;
                     effectorDos = -0.5;
-                    if (laserDetectedDistance > coralDetectThreshold){
+                    //when testing, you might need to add a slight time delay to ensure the coral is successfully ejected.
+                    if (laserDetectedDistance > coralDetectThreshold){ 
                         state = "passive";
                     }
                     System.out.println("ejecting coral");
@@ -138,7 +126,6 @@ public class ScoringControl implements Subsystem {
 
     @Override
     public void log() {
-   
     }
 
     @Override
