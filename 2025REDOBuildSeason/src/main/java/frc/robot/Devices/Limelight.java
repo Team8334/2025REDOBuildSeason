@@ -150,6 +150,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Area", area);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Latency", l);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Distance", d);
+        SmartDashboard.putString("Limelight" +limelightID +"/Target Name", findTagName());
     }
 
     public void update() {
