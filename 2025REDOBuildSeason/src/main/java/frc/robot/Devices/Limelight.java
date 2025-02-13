@@ -61,6 +61,12 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         return "Limelight" + limelightID;
     }
 
+    public void setPipeline(int pipeline)
+    {
+        this.pipeline = pipeline;
+        table.getEntry("pipeline").setNumber(pipeline);
+    }
+
     public int getPipeline()
     {
         return pipeline;

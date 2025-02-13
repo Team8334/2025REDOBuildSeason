@@ -22,6 +22,10 @@ public class FrontLimelight extends Limelight implements Subsystem{
         this.limelightLensHeightMeters = 20.0;
     }
 
+    public String getFrontTargetName(){
+        return findTagName();
+    }
+
     public void update(){
 
     };
