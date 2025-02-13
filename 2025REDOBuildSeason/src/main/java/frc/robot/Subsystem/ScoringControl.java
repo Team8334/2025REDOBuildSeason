@@ -72,6 +72,22 @@ public class ScoringControl implements Subsystem {
         }
     }
 
+    public void ScoreL1(){
+        state = "Score L1";
+    }
+
+    public void ScoreL2(){
+        state = "score L2";
+    }
+
+    public void ScoreL3(){
+        state = "score L3";
+    }
+
+    public void ScoreL4(){
+        state = "score L4";
+    }
+
     public void eject(){
         state = "ejecting coral";
     }
@@ -80,8 +96,6 @@ public class ScoringControl implements Subsystem {
         switch (state)
         {
             case "passive":
-                    effectorUno = 0.0;
-                    effectorDos = 0.0;
                     System.out.println("passive");
 
                 break;
@@ -97,6 +111,29 @@ public class ScoringControl implements Subsystem {
                     effectorUno = 0.0;
                     effectorDos = 0.0;
                     System.out.println("coral tripped sensor");
+
+                break;
+
+            case "Score L1":
+                    effectorUno = 0.0;
+                    effectorDos = 0.0;
+                    System.out.println("scoring in L1");
+                
+                break;
+            
+            case "Score L2":
+                    effectorUno = 0.0;
+                    System.out.println("scoring in L2");
+
+                break;
+
+            case "Score L3":
+                    System.out.println("scoring in L3");
+                    
+                break;
+
+            case "Score L4":
+                    System.out.println("scoring in L4");
 
                 break;
             
