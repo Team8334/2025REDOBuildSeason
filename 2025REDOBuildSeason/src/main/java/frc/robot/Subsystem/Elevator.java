@@ -1,5 +1,9 @@
 package frc.robot.Subsystem;
 
+import frc.robot.Data.EncoderValues;
+import frc.robot.Data.PortMap;
+import frc.robot.Devices.Controller;
+import frc.robot.Devices.NEOSparkMaxMotor;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
@@ -26,19 +30,19 @@ public class Elevator implements Subsystem {
 
     public static Elevator instance = null;
 
-    public static final int kMotorPort = 0; //this is for the simulation, needs to be replaced for actual
+    private Controller controller = new Controller(0);
+
     public static final int kEncoderAChannel = 0; // these two are also for the simulation. needs to be replaced
     public static final int kEncoderBChannel = 1;
-    public static final int kJoystickPort = 0; // for simulation. needs to be replaced for actual
 
-    public static final double kElevatorKp = 5;
-    public static final double kElevatorKi = 0;
+    public static final double kElevatorKp = 10;
+    public static final double kElevatorKi = 2.5;
     public static final double kElevatorKd = 0;
 
-    public static final double kElevatorkS = 0.0; //volts  (take this out for real)
-    public static final double kElevatorkG = 0.762; // volts (take this out for real)
-    public static final double kElevatorkV = 0.762; //volt per velocity (take this out for real)
-    public static final double kElevatorkA = 0.0; // bolt per acceleration (take this out for real)
+    public static final double kElevatorkS = 0.0; //volts 
+    public static final double kElevatorkG = 2.28; // volts 
+    public static final double kElevatorkV = 3.07; //volt per velocity 
+    public static final double kElevatorkA = 0.41; // bolt per acceleration 
 
     public static final double kElevatorGearing = 10.0; 
     public static final double kElevatorDrumRadius = Units.inchesToMeters(2.0); // change this to actual
@@ -46,12 +50,11 @@ public class Elevator implements Subsystem {
 
     public static final double kSetpointMeters = 0.75; // constant setpoint
     public static final double kMinElevatorHeightMeters = 0.0; //safe guard could replace this with encoder
-    public static final double kMaxElevatorHeightMeters = 1.25; // safe guard could replace this with encoder. change to actual height
+    public static final double kMaxElevatorHeightMeters = 10; // safe guard could replace this with encoder. change to actual height
     public static final double kElevatorEncoderDistPerPulse = 2.0 * Math.PI * kElevatorDrumRadius / 4096; // place holder for encoder. this is for the sim
     
 
-
-    private final DCMotor m_elevatorGearbox = DCMotor.getNEO(2); //sets the motor for the simulation
+    private final DCMotor m_elevatorGearbox = DCMotor.getNEO(2); //sets the motor gearbox
 
     private final ProfiledPIDController m_controller = 
         new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(2.45, 2.45)); // need to find values for these
@@ -62,7 +65,8 @@ public class Elevator implements Subsystem {
     private final Encoder m_encoder = 
         new Encoder(kEncoderAChannel, kEncoderBChannel);
 
-    private  PWMSparkMax m_motor = new PWMSparkMax(kMotorPort); // sets up motor
+    //private NEOSparkMaxMotor elevatorMotor = new NEOSparkMaxMotor(5);
+    private  PWMSparkMax m_motor = new PWMSparkMax(PortMap.ELEVATOR_MOTOR); // sets up motor
 
     private final ElevatorSim m_elevatorSim = 
         new ElevatorSim(m_elevatorGearbox, kElevatorGearing, kCarriageMass, kElevatorDrumRadius, kMinElevatorHeightMeters, kMaxElevatorHeightMeters, true, 0, 0.01, 0.0);
@@ -94,6 +98,9 @@ public class Elevator implements Subsystem {
         m_elevatorSim.update(.020);
         m_encoderSim.setDistance(m_elevatorSim.getPositionMeters());
         RoboRioSim.setVInVoltage(BatterySim.calculateDefaultBatteryLoadedVoltage(m_elevatorSim.getCurrentDrawAmps()));
+
+       
+        
     }
 
     public void reachGoal(double goal) {
@@ -110,12 +117,8 @@ public class Elevator implements Subsystem {
 
     @Override
     public void initialize() {
-<<<<<<< HEAD
-        
-=======
-       //m_elevatorSim.setInput(m_motorSim.getSpeed()* RobotController.getBatteryVoltage());
-       //m_encoderSim.setDistance(m_elevatorSim.getPositionMeters());
->>>>>>> eeed85cc4b0e2445a1bc889af7073571afc78739
+       m_elevatorSim.setInput(m_motorSim.getSpeed()* RobotController.getBatteryVoltage());
+       m_encoderSim.setDistance(m_elevatorSim.getPositionMeters());
     }
 
     @Override
@@ -135,4 +138,6 @@ public class Elevator implements Subsystem {
     public float height() {
         return (float)(0.0 / 0.0);
     }
+
+    
 }

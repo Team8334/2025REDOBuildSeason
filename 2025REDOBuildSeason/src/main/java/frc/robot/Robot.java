@@ -4,13 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Teleop;
+import frc.robot.Data.EncoderValues;
 import frc.robot.Subsystem.Elevator;
+import frc.robot.Devices.Controller;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -20,7 +21,8 @@ import frc.robot.Subsystem.Elevator;
 public class Robot extends TimedRobot {
   Teleop teleop;
   Elevator elevator;
-  Joystick joystick;
+  Controller controller;
+  
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -38,7 +40,7 @@ public class Robot extends TimedRobot {
 
     teleop = new Teleop();
     elevator = new Elevator();
-    joystick = new Joystick(elevator.kJoystickPort);
+    controller = new Controller(0);
   }
 
   /**
@@ -92,11 +94,17 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     teleop.teleopPeriodic();
-    if (joystick.getTrigger()) {
-      elevator.reachGoal(elevator.kSetpointMeters);
-    } else {
-      elevator.reachGoal(0.0);
-    }
+     if (controller.getAButton()) {
+            elevator.reachGoal(EncoderValues.ELEVATOR_L2);
+          } else if (controller.getBButton()){
+            elevator.reachGoal(EncoderValues.ELEVATOR_L2);
+          } else if (controller.getXButton()){
+            elevator.reachGoal(EncoderValues.ELEVATOR_L3);
+          } else if (controller.getYButton()){
+            elevator.reachGoal(EncoderValues.ELEVATOR_L4);
+          } else {
+            elevator.reachGoal(0.0);
+          }
   }
 
   /** This function is called once when the robot is disabled. */
