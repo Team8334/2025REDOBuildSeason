@@ -11,10 +11,10 @@ public class Mecanum implements Subsystem {
 
     private static Mecanum instance = null;
 
-    private NEOSparkMaxMotor rearLeftMotor;
-    private NEOSparkMaxMotor frontRightMotor;
-    private NEOSparkMaxMotor rearRightMotor;
-    private NEOSparkMaxMotor frontLeftMotor;
+    private NEOSparkMaxMotor rearLeftMotor = new NEOSparkMaxMotor(2);
+    private NEOSparkMaxMotor frontRightMotor = new NEOSparkMaxMotor(3);
+    private NEOSparkMaxMotor rearRightMotor = new NEOSparkMaxMotor(4);
+    private NEOSparkMaxMotor frontLeftMotor = new NEOSparkMaxMotor(1);
 
     private double frontLeft;
     private double frontRight;
@@ -54,14 +54,26 @@ public class Mecanum implements Subsystem {
         frontRight = wheelSpeeds.frontRightMetersPerSecond;
         rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
         rearRight = wheelSpeeds.rearRightMetersPerSecond;
+
+        System.out.println("Front left:" + frontLeft);
+        System.out.println("Front right:" + frontRight);
+        System.out.println("Rear left:" + rearLeft);
+        System.out.println("Rear right:" + rearRight);
+
+        frontLeftMotor.set(frontLeft*-1);
+        frontRightMotor.set(frontRight);
+        rearLeftMotor.set(rearLeft*-1);
+        rearRightMotor.set(rearRight);
+
+        System.out.println("Taylor Hit here 1");
     }
 
     @Override
     public void update() {
-        frontLeftMotor.set(frontLeft);
+       /*  frontLeftMotor.set(frontLeft);
         frontRightMotor.set(frontRight);
         rearLeftMotor.set(rearLeft);
-        rearRightMotor.set(rearRight);
+        rearRightMotor.set(rearRight); */
     }
 
     @Override

@@ -25,6 +25,7 @@ public class AutoMissionExecutor {
 
     public void start() {
         if (mThread != null) {
+            //System.out.println("mThread is not null");
             mThread.start();
         }
     }

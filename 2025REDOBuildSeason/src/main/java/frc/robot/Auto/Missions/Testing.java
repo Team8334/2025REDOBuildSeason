@@ -15,9 +15,7 @@ public class Testing extends MissionBase{
     @Override
     protected void routine() throws AutoMissionEndedException {
        
-        //put the actions you want to do here in order of execution
-        //runAction(new WaitAction(AutoMissionChooser.delay));
-        //runAction(new TurnDegreesAction(90, 5)); //plus is left
-        runAction(new DriveForTimeAction(5,0, 0.2));
+        //runAction(new DriveForTimeAction (0.2, 5));;
+        runAction(new TurnDegreesAction(90, 3));
     }
 }

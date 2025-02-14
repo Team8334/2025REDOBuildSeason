@@ -12,16 +12,16 @@ import frc.robot.Subsystem.Mecanum;
  */
 
 public class DriveForTimeAction implements Actions {
-
+    
+    Timer timer;
     private double seconds;
     private double speed;
-    private Mecanum drive = null;
-    Timer timer;
+    private Mecanum mDrive = null;
 
-    public DriveForTimeAction(double seconds , double strafe , double speed) {
+    public DriveForTimeAction(double speed, double seconds) {
         this.seconds = seconds;
         this.speed = speed;
-        drive = Mecanum.getInstance();
+        mDrive = Mecanum.getInstance();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class DriveForTimeAction implements Actions {
 
     @Override
     public void update() {
-        drive.drive(this.speed, 0, 0);
+        mDrive.drive(this.speed, 0, 0);
     }
 
     @Override
@@ -44,6 +44,7 @@ public class DriveForTimeAction implements Actions {
     @Override
     public void done() {
         timer.stop();
+        mDrive.drive(0, 0,0);
     }
 }
 

@@ -39,14 +39,14 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  public Robot() {
+  public void robotInit() {
     // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     // m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
     teleop = new Teleop();
-
     Mecanum.getInstance();
+
   }
 
   /**
@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
   
    @Override
   public void autonomousInit() {
-    
+
     if (autoMissionChooser.getAutoMission().isPresent()){
     {
       autoMissionChooser.getAutoMission().get().setStartPose();
