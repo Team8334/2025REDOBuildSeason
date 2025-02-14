@@ -144,6 +144,14 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         return (goalHeightMeters - limelightLensHeightMeters) / Math.tan(angleToGoalRadians);
     }
 
+    public void limelightUpdate() {
+        x = tx.getDouble(0.0);
+        y = ty.getDouble(0.0);
+        area = ta.getDouble(0.0);
+        l = tl.getDouble(0.0);
+        d = getDistanceFromTarget();
+    }
+
     public void logtoSmartDashboard() {
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target X", x);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Y", y);
@@ -153,11 +161,5 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         SmartDashboard.putString("Limelight" +limelightID +"/Target Name", findTagName());
     }
 
-    public void update() {
-        x = tx.getDouble(0.0);
-        y = ty.getDouble(0.0);
-        area = ta.getDouble(0.0);
-        l = tl.getDouble(0.0);
-        d = getDistanceFromTarget();
-    }
+    
 }

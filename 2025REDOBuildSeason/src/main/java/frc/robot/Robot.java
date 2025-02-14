@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.SubsystemManager;
+import frc.robot.Subsystem.FrontLimelight;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -18,6 +19,7 @@ import frc.robot.Subsystem.SubsystemManager;
  */
 public class Robot extends TimedRobot {
   Teleop teleop;
+  FrontLimelight frontLimelight;
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -34,6 +36,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     teleop = new Teleop();
+    frontLimelight = frontLimelight.getInstance();
 
     Mecanum.getInstance();
 
@@ -51,6 +54,8 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     SubsystemManager.updateSubsystems();
+    frontLimelight.log();
+    
   }
 
   /**

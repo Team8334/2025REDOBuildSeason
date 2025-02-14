@@ -17,9 +17,11 @@ public class FrontLimelight extends Limelight implements Subsystem{
 
     private FrontLimelight()
     {
-        super("Front Limelight", 0, "Front Limelight", 1); //figure out actual port
-        this.limelightMountAngleDegrees = 25.0;
-        this.limelightLensHeightMeters = 20.0;
+        
+        super("limelight-front", 0, "limelight-front", 1); //figure out actual port
+        this.limelightMountAngleDegrees = 0;
+        this.limelightLensHeightMeters = 0;
+        SubsystemManager.registerSubsystem(this);
     }
 
     public String getFrontTargetName(){
@@ -27,7 +29,7 @@ public class FrontLimelight extends Limelight implements Subsystem{
     }
 
     public void update(){
-
+        limelightUpdate();
     };
 
     public void initialize(){
@@ -35,7 +37,7 @@ public class FrontLimelight extends Limelight implements Subsystem{
     };
 
     public void log(){
-
+        logtoSmartDashboard();
     };
 
     public boolean isEnabled(){
