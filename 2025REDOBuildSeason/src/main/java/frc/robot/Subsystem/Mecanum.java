@@ -1,6 +1,7 @@
 package frc.robot.Subsystem;
 
 import frc.robot.Data.PortMap;
+import edu.wpi.first.units.Units;
 import frc.robot.Devices.NEOSparkMaxMotor;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -11,15 +12,21 @@ public class Mecanum implements Subsystem {
 
     private static Mecanum instance = null;
 
-    private NEOSparkMaxMotor rearLeftMotor;
-    private NEOSparkMaxMotor frontRightMotor;
-    private NEOSparkMaxMotor rearRightMotor;
-    private NEOSparkMaxMotor frontLeftMotor;
+    private NEOSparkMaxMotor rearLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_LEFT);
+    private NEOSparkMaxMotor frontRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_RIGHT);
+    private NEOSparkMaxMotor rearRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_LEFT);
+    private NEOSparkMaxMotor frontLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_RIGHT);
 
     private double frontLeft;
     private double frontRight;
     private double rearLeft;
     private double rearRight;
+
+    private double rotationScalar = ((2 * Math.PI) / 60.0 / 10.71);
+
+    private double MAX_SPEED_CONSTANT_FORWARD = 15; //TO DO: calculate this (meters per sec)
+    private double MAX_SPEED_CONSTANT_STRAFE = 10; //Meters per sec. Should calculate this too.
+    private double MAX_SPEED_CONSTANT_ROTATION = 70; //Degrees per sec.
 
     // distance of wheels from center in meters
     Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381); // these are not actually measured
@@ -40,6 +47,8 @@ public class Mecanum implements Subsystem {
 
     public Mecanum() {
             SubsystemManager.registerSubsystem(this);
+            frontLeftMotor.setInverted(true);
+            frontRightMotor.setInverted(true);
     }
 
     public void drive(double forward, double strafe, double rotation) {
@@ -54,14 +63,33 @@ public class Mecanum implements Subsystem {
         frontRight = wheelSpeeds.frontRightMetersPerSecond;
         rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
         rearRight = wheelSpeeds.rearRightMetersPerSecond;
-    }
 
-    @Override
-    public void update() {
         frontLeftMotor.set(frontLeft);
         frontRightMotor.set(frontRight);
         rearLeftMotor.set(rearLeft);
         rearRightMotor.set(rearRight);
+        System.out.println("DRIVE IS BEING CALLED");
+    }
+
+    public void driveWithSpeed(double forward, double strafe, double rotation){
+        
+        ChassisSpeeds speeds = new ChassisSpeeds(forward*MAX_SPEED_CONSTANT_FORWARD, strafe*MAX_SPEED_CONSTANT_STRAFE, rotation*MAX_SPEED_CONSTANT_ROTATION);
+        MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(speeds);
+
+        frontLeft = wheelSpeeds.frontLeftMetersPerSecond;
+        frontRight = wheelSpeeds.frontRightMetersPerSecond;
+        rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
+        rearRight = wheelSpeeds.rearRightMetersPerSecond;
+
+        frontLeftMotor.setWheelRotationSpeed(frontLeft);
+        frontRightMotor.setWheelRotationSpeed(frontRight);
+        rearLeftMotor.setWheelRotationSpeed(rearLeft);
+        rearRightMotor.setWheelRotationSpeed(rearRight);
+    }
+
+    @Override
+    public void update() {
+        
     }
 
     @Override

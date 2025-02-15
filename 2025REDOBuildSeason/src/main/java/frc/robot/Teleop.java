@@ -35,27 +35,24 @@ public class Teleop {
            double strafe;
            double rotation;
            if(Math.abs(controllerLeftY) >= 0.5){
-            forward = controllerLeftY;
+            forward = (controllerLeftY);
            }
            else{
             forward = 0;
            }
            if(Math.abs(controllerLeftX) >= 0.5){
-            strafe = controllerLeftX;
+            strafe = (controllerLeftX);
            }
            else{
             strafe = 0;
            }
-           if(Math.abs(controllerRightX) >= 0.5){
-            rotation = controllerRightX;
+           if(Math.abs(controllerRightX) >= 0.2){
+            rotation = (controllerRightX);
            }
            else{
             rotation = 0;
            }
-           mecanum.drive(forward, strafe, rotation);
-           System.out.println("Controller x: " + driverController.getLeftX());
-           System.out.println("Controller y: " + driverController.getLeftY());
-           System.out.println("Controller right x: " + driverController.getRightX());
+           mecanum.driveWithSpeed(forward, strafe, rotation);
         }
     
         public void manipulatorControl() {
