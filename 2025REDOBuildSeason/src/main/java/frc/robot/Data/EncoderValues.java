@@ -8,5 +8,6 @@ public final class EncoderValues {
     public static final double ELEVATOR_L2 = 0;
     public static final double ELEVATOR_L3 = 0;
     public static final double ELEVATOR_L4 = 0;
+    public static final double ELEVATOR_RAMP = 0;
     
 }

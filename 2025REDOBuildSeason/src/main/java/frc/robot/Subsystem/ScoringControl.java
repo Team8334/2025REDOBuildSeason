@@ -88,7 +88,7 @@ public class ScoringControl implements Subsystem {
         state = "score L4";
     }
 
-    public void eject(){
+    public void eject(){ //in the emergency case you need to get rid of the coral. 
         state = "ejecting coral";
     }
 
@@ -96,13 +96,16 @@ public class ScoringControl implements Subsystem {
         switch (state)
         {
             case "passive":
+                    effectorUno = 0.0;
+                    effectorDos = 0.0;
                     System.out.println("passive");
 
                 break;
 
             case "operator wants coral":
-                    effectorUno = 0.0;
-                    effectorDos = 0.0;
+                    effectorUno = 0.5;
+                    effectorDos = 0.5;
+                    //code for elevator here. preset: Ramp
                     System.out.println("operator wants coral");
                 
                 break;
@@ -117,22 +120,31 @@ public class ScoringControl implements Subsystem {
             case "Score L1":
                     effectorUno = 0.0;
                     effectorDos = 0.0;
+                    //code for elevator here. preset: L1
                     System.out.println("scoring in L1");
                 
                 break;
             
             case "Score L2":
-                    effectorUno = 0.0;
+                    effectorUno = -0.5;
+                    effectorDos = -0.5;
+                    //code for elevator here. preset: L2
                     System.out.println("scoring in L2");
 
                 break;
 
             case "Score L3":
+                    effectorUno = -0.5;
+                    effectorDos = -0.5;
+                    //code for elevator here. preset: L3
                     System.out.println("scoring in L3");
                     
                 break;
 
             case "Score L4":
+                    effectorUno = -0.5;
+                    effectorDos = -0.5;
+                    //code for elevator here. preset: L4
                     System.out.println("scoring in L4");
 
                 break;
@@ -140,6 +152,7 @@ public class ScoringControl implements Subsystem {
             case "ejecting coral":
                     effectorUno = -0.5;
                     effectorDos = -0.5;
+                    //we might need to manipulate the elevator to ensure the piece is successfully ditched. 
                     //when testing, you might need to add a slight time delay to ensure the coral is successfully ejected.
                     if (laserDetectedDistance > coralDetectThreshold){ 
                         state = "passive";

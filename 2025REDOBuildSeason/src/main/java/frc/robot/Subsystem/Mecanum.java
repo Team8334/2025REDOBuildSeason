@@ -11,10 +11,10 @@ public class Mecanum implements Subsystem {
 
     private static Mecanum instance = null;
 
-    private NEOSparkMaxMotor rearLeftMotor = new NEOSparkMaxMotor(2);
-    private NEOSparkMaxMotor frontRightMotor = new NEOSparkMaxMotor(3);
-    private NEOSparkMaxMotor rearRightMotor = new NEOSparkMaxMotor(4);
-    private NEOSparkMaxMotor frontLeftMotor = new NEOSparkMaxMotor(1);
+    private NEOSparkMaxMotor rearLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_LEFT);
+    private NEOSparkMaxMotor frontRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_RIGHT);
+    private NEOSparkMaxMotor rearRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_RIGHT);
+    private NEOSparkMaxMotor frontLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_LEFT);
 
     private double frontLeft;
     private double frontRight;
