@@ -12,10 +12,10 @@ public class Mecanum implements Subsystem {
 
     private static Mecanum instance = null;
 
-    private NEOSparkMaxMotor rearLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_LEFT);
+    private NEOSparkMaxMotor rearLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_LEFT);
     private NEOSparkMaxMotor frontRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_RIGHT);
-    private NEOSparkMaxMotor rearRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_LEFT);
-    private NEOSparkMaxMotor frontLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_RIGHT);
+    private NEOSparkMaxMotor rearRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_RIGHT);
+    private NEOSparkMaxMotor frontLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_LEFT);
 
     private double frontLeft;
     private double frontRight;
@@ -24,9 +24,9 @@ public class Mecanum implements Subsystem {
 
     private double rotationScalar = ((2 * Math.PI) / 60.0 / 10.71);
 
-    private double MAX_SPEED_CONSTANT_FORWARD = 15; //TO DO: calculate this (meters per sec)
-    private double MAX_SPEED_CONSTANT_STRAFE = 10; //Meters per sec. Should calculate this too.
-    private double MAX_SPEED_CONSTANT_ROTATION = 70; //Degrees per sec.
+    private double MAX_SPEED_CONSTANT_FORWARD = 20; //TO DO: calculate this (meters per sec)
+    private double MAX_SPEED_CONSTANT_STRAFE = 20; //Meters per sec. Should calculate this too.
+    private double MAX_SPEED_CONSTANT_ROTATION = 40; //Radians per sec.
 
     // distance of wheels from center in meters
     Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381); // these are not actually measured
@@ -48,7 +48,7 @@ public class Mecanum implements Subsystem {
     public Mecanum() {
             SubsystemManager.registerSubsystem(this);
             frontLeftMotor.setInverted(true);
-            frontRightMotor.setInverted(true);
+            rearLeftMotor.setInverted(true);
     }
 
     public void drive(double forward, double strafe, double rotation) {
