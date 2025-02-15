@@ -11,51 +11,54 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /* 
  * This action turns the robot a certain number of degrees
  * for a certain number of seconds
- *  STILL MIGHT NEED ANOTHER WAY TO TURN FOR SCRIMMAGE
+ * May immplement pid at some point
  */
 
 public class TurnDegreesAction implements Actions{
     
     //variables
     Timer timer;
-    private double currentDegrees = 0;
+    private double currentDegrees;
     private double desiredDegrees;
     private double turn;
     private double seconds;
+    private double targetDegrees;
 
     private Mecanum mDrive = null;
     private Gyro gyro;
-    
-     //plus is left 
      
     public TurnDegreesAction(double degrees, double seconds) 
     {   
         this.seconds = seconds;
         mDrive = Mecanum.getInstance();
         gyro = Gyro.getInstance();
-        desiredDegrees = degrees;
+        desiredDegrees = degrees; // this is how much we want to turn
     }
-
+    
     @Override
     public void start()
     {
-        //currentDegrees = gyro.getAngleDegrees();
+        targetDegrees = (currentDegrees + desiredDegrees); // this is how much in total degrees we need to turn
+        //gyro.reset(); //resets gyro to zero?
+        currentDegrees = gyro.getAngleDegrees();
         timer = new Timer();
         timer.start();
-        //targetDegrees = (currentDegrees + desiredDegrees);
     }
-
+    
     @Override
     public void update()
     {
-        System.out.println(mDrive);
-        //System.out.println("desiredDegrees: " + desiredDegrees);
-        currentDegrees = gyro.getAngleDegrees();;
-        //System.out.println("currentDegrees: " + currentDegrees);
-        turn = (currentDegrees + desiredDegrees);
-        //System.out.println("turn is: " + turn);
-        //mDrive.drive(0, 0, turn);
+        //robot turning right is positive degrees
+        SmartDashboard.putNumber("targetDegrees ", targetDegrees);
+        SmartDashboard.putNumber("desiredDegrees ", desiredDegrees);
+        currentDegrees = gyro.getAngleDegrees(); // gets the current degrees
+        SmartDashboard.putNumber("currentDegreese ", currentDegrees);
+        turn = (targetDegrees - currentDegrees)/ 180; //the power of the turn, divided to make power less
+        
+        mDrive.drive(0, 0, turn); // no forward, no strafe, only rotation
         //System.out.println("gyro yaw:" + gyro.getAngleDegrees());
+        SmartDashboard.putNumber("turnDegreesAction/speed " , turn);
+
         
     }
 
@@ -65,11 +68,13 @@ public class TurnDegreesAction implements Actions{
         return (timer.get() >= seconds);
     }
     
-
+    
     @Override
     public void done()
     {
         SmartDashboard.putString( "Current Action", "TurnDegreesAction Ended");
+        SmartDashboard.putNumber("turnDegreesAction/speed" , turn);
         mDrive.drive(0, 0, 0);
+        currentDegrees = targetDegrees;
     }
 }
