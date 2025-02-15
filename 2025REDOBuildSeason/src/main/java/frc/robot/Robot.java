@@ -9,10 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Teleop;
-import frc.robot.Data.EncoderValues;
 import frc.robot.Subsystem.Elevator;
-import frc.robot.Devices.Controller;
-
+import frc.robot.Subsystem.SubsystemManager;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -20,8 +18,6 @@ import frc.robot.Devices.Controller;
  */
 public class Robot extends TimedRobot {
   Teleop teleop;
-  Elevator elevator;
-  Controller controller;
   
 
   private static final String kDefaultAuto = "Default";
@@ -39,8 +35,16 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     teleop = new Teleop();
-    elevator = new Elevator();
-    controller = new Controller(0);
+
+    Elevator.getInstance();
+
+    SubsystemManager.initializeSubsystems();
+  }
+
+  @Override
+  public void robotInit() {
+    Elevator.getInstance();
+
   }
 
   /**
@@ -52,7 +56,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    elevator.updateTelemetry();
+    SubsystemManager.updateSubsystems();
   }
 
   /**
@@ -94,23 +98,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     teleop.teleopPeriodic();
-     if (controller.getAButton()) {
-            elevator.reachGoal(EncoderValues.ELEVATOR_L2);
-          } else if (controller.getBButton()){
-            elevator.reachGoal(EncoderValues.ELEVATOR_L2);
-          } else if (controller.getXButton()){
-            elevator.reachGoal(EncoderValues.ELEVATOR_L3);
-          } else if (controller.getYButton()){
-            elevator.reachGoal(EncoderValues.ELEVATOR_L4);
-          } else {
-            elevator.reachGoal(0.0);
-          }
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    elevator.stop();
   }
 
   /** This function is called periodically when disabled. */
@@ -132,6 +124,5 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
-    elevator.update();
   }
 }

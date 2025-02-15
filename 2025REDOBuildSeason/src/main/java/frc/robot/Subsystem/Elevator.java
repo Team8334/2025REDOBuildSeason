@@ -3,12 +3,8 @@ package frc.robot.Subsystem;
 import frc.robot.Data.EncoderValues;
 import frc.robot.Data.PortMap;
 import frc.robot.Devices.Controller;
-import frc.robot.Devices.NEOSparkMaxMotor;
+//import frc.robot.Devices.NEOSparkMaxMotor;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
-import edu.wpi.first.wpilibj.simulation.BatterySim;
-import edu.wpi.first.wpilibj.simulation.EncoderSim;
-import edu.wpi.first.wpilibj.simulation.PWMSim;
-import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -21,8 +17,9 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.math.system.plant.DCMotor;
+//import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.RobotController;
 
 public class Elevator implements Subsystem {
@@ -30,9 +27,9 @@ public class Elevator implements Subsystem {
 
     public static Elevator instance = null;
 
-    private Controller controller = new Controller(0);
+    //private Controller controller = new Controller(0);
 
-    public static final int kEncoderAChannel = 0; // these two are also for the simulation. needs to be replaced
+    public static final int kEncoderAChannel = 0;
     public static final int kEncoderBChannel = 1;
 
     public static final double kElevatorKp = 10;
@@ -45,16 +42,16 @@ public class Elevator implements Subsystem {
     public static final double kElevatorkA = 0.41; // bolt per acceleration 
 
     public static final double kElevatorGearing = 10.0; 
-    public static final double kElevatorDrumRadius = Units.inchesToMeters(2.0); // change this to actual
-    public static final double kCarriageMass = 4.0; // it's in kg. situate to cargo
+    public static final double kElevatorDrumRadius = Units.inchesToMeters(1.0); // change this to actual
+    public static final double kCarriageMass = 2; 
 
     public static final double kSetpointMeters = 0.75; // constant setpoint
     public static final double kMinElevatorHeightMeters = 0.0; //safe guard could replace this with encoder
-    public static final double kMaxElevatorHeightMeters = 10; // safe guard could replace this with encoder. change to actual height
+    public static final double kMfaxElevatorHeightMeters = 10; // safe guard could replace this with encoder. change to actual height
     public static final double kElevatorEncoderDistPerPulse = 2.0 * Math.PI * kElevatorDrumRadius / 4096; // place holder for encoder. this is for the sim
     
-
-    private final DCMotor m_elevatorGearbox = DCMotor.getNEO(2); //sets the motor gearbox
+    //private NEOSparkMaxMotor elevatorMotor = new NEOSparkMaxMotor(2);
+    //private final DCMotor m_elevatorGearbox = DCMotor.getNEO(2); //sets the motor gearbox
 
     private final ProfiledPIDController m_controller = 
         new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(2.45, 2.45)); // need to find values for these
@@ -65,60 +62,79 @@ public class Elevator implements Subsystem {
     private final Encoder m_encoder = 
         new Encoder(kEncoderAChannel, kEncoderBChannel);
 
-    //private NEOSparkMaxMotor elevatorMotor = new NEOSparkMaxMotor(5);
-    private  PWMSparkMax m_motor = new PWMSparkMax(PortMap.ELEVATOR_MOTOR); // sets up motor
+    //private final ElevatorSim m_elevatorSim = 
+       // new ElevatorSim(m_elevatorGearbox, kElevatorGearing, kCarriageMass, kElevatorDrumRadius, kMinElevatorHeightMeters, kMaxElevatorHeightMeters, true, 0, 0.01, 0.0);
+    
 
-    private final ElevatorSim m_elevatorSim = 
-        new ElevatorSim(m_elevatorGearbox, kElevatorGearing, kCarriageMass, kElevatorDrumRadius, kMinElevatorHeightMeters, kMaxElevatorHeightMeters, true, 0, 0.01, 0.0);
-
-
-    private final EncoderSim m_encoderSim = new EncoderSim(m_encoder);
-    private final PWMSim m_motorSim = new PWMSim(m_motor);
+    //private final Encoder encoder = new Encoder(8);
+    private final PWM m_motor = new PWM(0);
 
     private final Mechanism2d m_mech2d = new Mechanism2d(20, 50);
     private final MechanismRoot2d m_mech2dRoot = m_mech2d.getRoot("Elevator Root", 10, 0);
-    private final MechanismLigament2d m_elevatorMech2d = m_mech2dRoot.append(
-        new MechanismLigament2d("Elevator", m_elevatorSim.getPositionMeters(), 90));
+    //private final MechanismLigament2d m_elevatorMech2d = m_mech2dRoot.append(
+       // new MechanismLigament2d("Elevator", m_elevatorSim.getPositionMeters(), 90));
 
+    public static Elevator getInstance() {
+        if(instance == null) {
+            instance = new Elevator();
+        }
+        return instance;
+    }
+    
     public Elevator() //sets up encoder tursn to distance
     {
-        m_encoder.setDistancePerPulse(kElevatorEncoderDistPerPulse);
+        SubsystemManager.registerSubsystem(this);
+        m_encoder.setDistancePerPulse(4.0/256.0);
         SmartDashboard.putData("Elevator Sim", m_mech2d);
     }
 
     public void updateTelemetry() //puts distance for sim
     {
-        m_elevatorMech2d.setLength(m_encoder.getDistance());
+        //m_elevatorMech2d.setLength(m_encoder.getDistance());
     }
 
     @Override
     public void update() 
     {
-        m_elevatorSim.setInput(m_motorSim.getSpeed()* RobotController.getBatteryVoltage());
-        m_elevatorSim.update(.020);
-        m_encoderSim.setDistance(m_elevatorSim.getPositionMeters());
-        RoboRioSim.setVInVoltage(BatterySim.calculateDefaultBatteryLoadedVoltage(m_elevatorSim.getCurrentDrawAmps()));
+        //m_elevatorSim.setInput(m_motor.getSpeed()* RobotController.getBatteryVoltage());
+        //m_elevatorSim.update(.020);
+        m_encoder.getDistance();
+        m_encoder.get();
+        System.out.println(m_encoder.getDistance());
+        System.out.println(m_encoder.getRate());
+        System.out.println(m_encoder.get());
+        System.out.println("elise was here");
+        /*if (controller.getAButtonPressed()) {
+            reachGoal(EncoderValues.ELEVATOR_L2);
+        } else if (controller.getBButtonPressed()){
+            reachGoal(EncoderValues.ELEVATOR_L2);
+        } else if (controller.getXButtonPressed()){
+            reachGoal(EncoderValues.ELEVATOR_L3);
+        } else if (controller.getYButtonPressed()){
+            reachGoal(EncoderValues.ELEVATOR_L4);
+        } else {
+            reachGoal(0);
+        }*/
 
-       
-        
+        // set the case for use of autonoumous. Like set state for bottom.
     }
 
     public void reachGoal(double goal) {
         m_controller.setGoal(goal);
         double pidOutput = m_controller.calculate(m_encoder.getDistance());
         double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
-        m_motor.setVoltage(pidOutput + feedforwardOutput);
     }
+
 
     public void stop() {
         m_controller.setGoal(0.0);
-        m_motor.set(0.0);
+        //elevatorMotor.set(0.0);
     }
 
     @Override
     public void initialize() {
-       m_elevatorSim.setInput(m_motorSim.getSpeed()* RobotController.getBatteryVoltage());
-       m_encoderSim.setDistance(m_elevatorSim.getPositionMeters());
+       //m_elevatorSim.setInput(m_motor.getSpeed()* RobotController.getBatteryVoltage());
+       m_encoder.getDistance();
     }
 
     @Override
@@ -138,6 +154,4 @@ public class Elevator implements Subsystem {
     public float height() {
         return (float)(0.0 / 0.0);
     }
-
-    
 }

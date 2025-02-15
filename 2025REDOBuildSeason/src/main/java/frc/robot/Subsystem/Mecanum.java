@@ -14,7 +14,7 @@ public class Mecanum implements Subsystem {
 
     private NEOSparkMaxMotor rearLeftMotor = new NEOSparkMaxMotor(2);
     private NEOSparkMaxMotor frontRightMotor = new NEOSparkMaxMotor(3);
-    private NEOSparkMaxMotor rearRightMotor = new NEOSparkMaxMotor(3);
+    private NEOSparkMaxMotor rearRightMotor = new NEOSparkMaxMotor(4);
     private NEOSparkMaxMotor frontLeftMotor = new NEOSparkMaxMotor(1);
 
     private double frontLeft;
