@@ -16,8 +16,8 @@ public class MoveAcrossLineMission extends MissionBase{
     @Override
     protected void routine() throws AutoMissionEndedException {
        
-        runAction(new WaitAction(AutoMissionChooser.delay)); // MAY NOT BE NEEDED
-        runAction(new DriveForTimeAction(0.5, 3));
+        //runAction(new WaitAction(AutoMissionChooser.delay)); // MAY NOT BE NEEDED
+        runAction(new DriveForTimeAction(0.25, 5));
 
     }
 }

@@ -13,16 +13,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoMissionChooser {
     enum DesiredMission {
-        doNothing,
-
-        MoveAcrossLineMission,
         //exampleMission,
-        ScoringMission,
+        doNothing,
+        MoveAcrossLineMission,
+        // general missions
+        ScoringL1Mission,
+        ScoringL4Mission,
+        Testing,
+        // actual missions
         RedScoreL1,
         RedScoreL4,
         BlueScoreL1,
         BlueScoreL4,
-        Testing,
 
     }
 
@@ -39,14 +41,15 @@ public class AutoMissionChooser {
     public AutoMissionChooser() {
         missionChooser = new SendableChooser<>();
 
+        // add more here as needed, is what is seen when choosing a mission
         missionChooser.addOption("Do Nothing", DesiredMission.doNothing);
         missionChooser.addOption("Leave Community", DesiredMission.MoveAcrossLineMission);
-        missionChooser.addOption("Scoring 1 note", DesiredMission.ScoringMission);
+        missionChooser.addOption("Scoring L1", DesiredMission.ScoringL1Mission);
+        missionChooser.addOption("Scoring L4", DesiredMission.ScoringL4Mission);
         missionChooser.addOption("Testing", DesiredMission.Testing);
 
         SmartDashboard.putNumber("Auto Delay (seconds)", 0);
 
-        // add more here as needed
 
         SmartDashboard.putData("Auto Mission", missionChooser);
         SmartDashboard.putString("Current Action System", "None");
@@ -85,23 +88,38 @@ public class AutoMissionChooser {
 
     private Optional<MissionBase> getAutoMissionForParams(DesiredMission mission) {
         switch (mission) {
+            // do nothing mission
             case doNothing:
                 return Optional.of(new DoNothingMission());
+            // leave community mission
             case MoveAcrossLineMission:
                 return Optional.of(new MoveAcrossLineMission());
+            // testing mission
             case Testing:
                 return Optional.of(new Testing());
-            case ScoringMission:
+            // if scoring in L1, and automatically does appropriate alliance mission
+            case ScoringL1Mission:
                 if (alliance == "Red") {
-                    //return Optional.of(new RedScoringMission());
+                    return Optional.of(new RedScoreL1());
                 }
                 else if (alliance == "Blue") {
-                    //return Optional.of(new BlueScoringMission());
+                    return Optional.of(new BlueScoreL1());
                 }
                 else {
                     return Optional.of(new DoNothingMission());
                 }
-
+            // if scoring in L4, and automatically does appropriate alliance mission
+            case ScoringL4Mission:
+                if (alliance == "Red") {
+                    return Optional.of(new RedScoreL4());
+                }
+                else if (alliance == "Blue") {
+                    return Optional.of(new BlueScoreL4());
+                }
+                else {
+                    return Optional.of(new DoNothingMission());
+                }
+            // if no auto mission is found
             default:
                 System.err.println("No valid autonomous mission found for" + mission);
                 return Optional.empty();

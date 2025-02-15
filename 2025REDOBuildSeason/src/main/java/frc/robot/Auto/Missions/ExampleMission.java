@@ -23,8 +23,8 @@ public class ExampleMission extends MissionBase {
        
         //put the actions you want to do here in order of execution
         runAction(new WaitAction(AutoMissionChooser.delay));
-        //runAction(new TurnDegreesAction(90, 3.0)); //plus is left
-        runAction(new DriveForTimeAction (0, 0));;
-       //runAction(new ParallelAction(new DriveForTimeAction( 0, 0) , new TurnDegreesAction(20, 1)));
+        runAction(new TurnDegreesAction(90, 3.0)); 
+        runAction(new DriveForTimeAction (.5, 0));;
+        runAction(new ParallelAction(new DriveForTimeAction( 0, 0) , new TurnDegreesAction(20, 1)));
     }
 }

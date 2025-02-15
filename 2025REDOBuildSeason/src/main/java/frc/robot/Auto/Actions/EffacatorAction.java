@@ -3,22 +3,20 @@ package frc.robot.Auto.Actions;
 //imports a timer
 import edu.wpi.first.wpilibj.Timer;
 
-//import frc.robot.Subsystem.Elevators;//CHANGE ACCORDING TO REAL NAME
-
-/* This action should move the elevator up or down
- * 
- */
-public class MoveElevatorAction implements Actions{
+/* This action should activate the end effacator for a certain
+ * number of seconds to score
+*/
+public class EffacatorAction implements Actions{
     
-    private double seconds;
     private double speed;
+    private double seconds;
     Timer timer;
 
-    public MoveElevatorAction (double seconds, double speed){
-        this.seconds = seconds;
+    public EffacatorAction(double speed, double seconds){
         this.speed = speed;
+        this.seconds = seconds;
     }
-    
+
     @Override
     public void start(){
         timer = new Timer();
@@ -29,11 +27,10 @@ public class MoveElevatorAction implements Actions{
     public void update(){
 
     }
-    
 
     @Override
-    public boolean isFinished() {
-        return timer.get() >= seconds;
+    public boolean isFinished(){
+        return timer.get() >= seconds; 
     }
 
     @Override
