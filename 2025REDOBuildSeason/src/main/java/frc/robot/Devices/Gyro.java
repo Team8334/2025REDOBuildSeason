@@ -31,6 +31,10 @@ public class Gyro {
         return ahrs.getAngle();
     }
 
+    public double getAngleVelocityDegrees(){
+        return ahrs.getRate();
+    }
+
     // resets the gyro to 0
     public void reset(){}
 
