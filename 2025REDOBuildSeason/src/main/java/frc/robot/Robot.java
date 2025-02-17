@@ -14,6 +14,7 @@ import frc.robot.Auto.AutoMissionChooser;
 import frc.robot.Auto.AutoMissionExecutor;
 import frc.robot.Auto.Missions.MissionBase;
 import frc.robot.Subsystem.Mecanum;
+import frc.robot.Devices.Gyro;
 
 
 /**
@@ -43,7 +44,7 @@ public class Robot extends TimedRobot {
     // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     // m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
+    Gyro.getInstance();
     teleop = new Teleop();
     Mecanum.getInstance();
 

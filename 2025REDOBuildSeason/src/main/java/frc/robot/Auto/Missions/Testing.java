@@ -15,7 +15,9 @@ public class Testing extends MissionBase{
     @Override
     protected void routine() throws AutoMissionEndedException {
        
-        //runAction(new DriveForTimeAction (0.2, 1));;
-        runAction(new TurnDegreesAction(90, 3));
+        runAction(new TurnDegreesAction(-110, 3));
+        runAction(new DriveForTimeAction (0.2, 2));;
+        runAction(new WaitAction(1));
+        //runAction(new TurnDegreesAction(180, 3));
     }
 }
