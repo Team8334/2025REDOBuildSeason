@@ -5,7 +5,9 @@ import frc.robot.Auto.AutoMissionChooser;
 import frc.robot.Auto.AutoMissionEndedException;
 
 import frc.robot.Auto.Actions.DriveForTimeAction;
+import frc.robot.Auto.Actions.EffacatorAction;
 import frc.robot.Auto.Actions.MoveElevatorAction;
+import frc.robot.Auto.Actions.TurnDegreesAction;
 import frc.robot.Auto.Actions.WaitAction;
 
 /*
@@ -19,7 +21,9 @@ public class RedScoreL4 extends MissionBase{
        
         runAction(new WaitAction(AutoMissionChooser.delay)); // MAY NOT BE NEEDED
         runAction(new DriveForTimeAction(0.5,  5));
-        //runAction(new MoveElevatorAction());
+        runAction(new MoveElevatorAction(0.27, 2));
+        runAction(new TurnDegreesAction(30, 1));
+        runAction(new EffacatorAction(0.5, 1));
 
     }
 }

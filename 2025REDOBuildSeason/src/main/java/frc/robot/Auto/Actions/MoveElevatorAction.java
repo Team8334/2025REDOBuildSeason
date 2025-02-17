@@ -14,7 +14,7 @@ public class MoveElevatorAction implements Actions{
     private double speed;
     Timer timer;
 
-    public MoveElevatorAction (double seconds, double speed){
+    public MoveElevatorAction (double seconds, double speed){// add another one for stage?
         this.seconds = seconds;
         this.speed = speed;
     }

@@ -38,9 +38,9 @@ public class TurnDegreesAction implements Actions{
     @Override
     public void start()
     {
-        targetDegrees = (currentDegrees + desiredDegrees); // this is how much in total degrees we need to turn
-        //gyro.reset(); //resets gyro to zero?
+        gyro.reset();
         currentDegrees = gyro.getAngleDegrees();
+        targetDegrees = (currentDegrees + desiredDegrees); // this is how much in total degrees we need to turn
         timer = new Timer();
         timer.start();
     }
@@ -48,15 +48,17 @@ public class TurnDegreesAction implements Actions{
     @Override
     public void update()
     {
-        //robot turning right is positive degrees
+        //System.out.println("desiredDegrees: " + desiredDegrees);
         SmartDashboard.putNumber("targetDegrees ", targetDegrees);
         SmartDashboard.putNumber("desiredDegrees ", desiredDegrees);
         currentDegrees = gyro.getAngleDegrees(); // gets the current degrees
+        //System.out.println("currentDegrees: " + currentDegrees);
+        targetDegrees = (currentDegrees + desiredDegrees);
+        //System.out.println("targetDegrees: " + targetDegrees);
         SmartDashboard.putNumber("currentDegreese ", currentDegrees);
         turn = (targetDegrees - currentDegrees)/ 180; //the power of the turn, divided to make power less
-        
-        mDrive.drive(0, 0, turn); // no forward, no strafe, only rotation
-        //System.out.println("gyro yaw:" + gyro.getAngleDegrees());
+        //mDrive.drive(0, 0, turn); // no forward, no strafe, only rotation
+        System.out.println("gyro yaw:" + gyro.getAngleDegrees());
         SmartDashboard.putNumber("turnDegreesAction/speed " , turn);
 
         
