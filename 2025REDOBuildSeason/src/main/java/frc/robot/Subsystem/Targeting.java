@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import frc.robot.Devices.Limelight;
 import frc.robot.Subsystem.FrontLimelight;
-import frc.robot.Subsystem.Mecanum;
 
 public class Targeting implements Subsystem // This class contains functions for finding and
                                             // locking onto elements of the field using
@@ -23,16 +22,15 @@ public class Targeting implements Subsystem // This class contains functions for
         return instance;
     }
 
-    private PIDController aprilTagXPID = new PIDController(1, 0, 0);
-    private PIDController aPID = new PIDController(1, 0, 0);
-    private PIDController noteXPID = new PIDController(1, 0, 0);
+    private PIDController xPID = new PIDController(1, 0, 0);
+    private PIDController areaPID = new PIDController(1, 0, 0);
 
     Limelight limelight;
     FrontLimelight frontLimelight;
-    Mecanum mecanum;
 
     String alliance;
-    String target = "ALL";
+    String frontLockOnState = "Not locking on to target";
+    String frontFollowState = "Not following target";
     String frontTags;
 
     public Targeting()
@@ -50,37 +48,45 @@ public class Targeting implements Subsystem // This class contains functions for
         frontLimelight.setAlliance(alliance);
     }
 
-    /*public double aprilTagLockOn()
+    public double frontLockOn(String target)
     {
         frontLimelight.setPipeline(0);
         frontTags = frontLimelight.findTagName();
-    }
-
-    public double frontAprilTagLockOn(String target)
-    {
-       
-        limelightFront.setPipeline(0);
-        frontTags = limelightFront.findTagName();
         if (frontTags == target)
         {
-            return (aprilTagXPID.calculate(limelightFront.x, 0) / 150.0);
+            frontLockOnState = "Locking on to target";
+            return (xPID.calculate(frontLimelight.getX(), 0) / 150.0);//150 is an arbitrary speed divisor. Increase/decrease as needed.
         }
         else
         {
+            frontLockOnState = "Cannot see target";
             return 0.0;
         }
     }
 
-    public double follow() // Setting "forward" in DriveBase.drive in control as this function will cause the robot to follow the target. 
+    public double frontFollow(String target) // Setting "forward" in Mecanum.drive or Mecanum.driveWithSpeed as this function will cause the robot to follow the target. 
                            // USE AT OWN RISK. Feel free to increase the speed divisor value to make it even slower.
     {
-        return (aPID.calculate(limelight.area, 25) / 50);
-    }*/
+        frontLimelight.setPipeline(0);
+        frontTags = frontLimelight.findTagName();
+        if (frontTags == target)
+        {
+            frontFollowState = "Following target";
+            return (areaPID.calculate(frontLimelight.getArea(), 25) / 50);//50 is an arbitrary speed divisor. Increase/decrease as needed.
+        }
+        else
+        {
+            frontFollowState = "Cannot see target";
+            return 0.0;
+        }
+    }
 
     public void log()
     {
-        SmartDashboard.putString("AprilTag Target (Front)", frontLimelight.findTagName());
-        SmartDashboard.putString("AprilTag Target (Alliance)", alliance);
+        SmartDashboard.putString("AprilTag in sight (Front)", frontLimelight.findTagName());
+        SmartDashboard.putString("Front Limelight Lock On", frontLockOnState);
+        SmartDashboard.putString("Front Limelight Follow", frontFollowState);
+        SmartDashboard.putString("Current alliance", alliance);
     }
 
     public void update()

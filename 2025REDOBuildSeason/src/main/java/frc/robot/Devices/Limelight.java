@@ -28,7 +28,6 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     double x;
     double y;
     double area;
-    double d;
     double l;
 
     private NetworkTable table;
@@ -72,13 +71,17 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         return pipeline;
     }
 
-    public int getId() //finds April Tag ID. This is a variable, not a function.
+    public int getId() //finds April Tag ID.
     {
         return (int)LimelightHelpers.getFiducialID(tableName);
     }
 
     public double getX(){
         return x;
+    }
+
+    public double getArea(){
+        return area;
     }
 
     public void setAlliance(String alliance)
@@ -137,23 +140,11 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         }
     }
 
-    public double getDistanceFromTarget()
-    {
-        double targetOffsetAngleVertical = ty.getDouble(0.0);
-    
-        double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngleVertical;
-        double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
-    
-        //calculate distance
-        return (goalHeightMeters - limelightLensHeightMeters) / Math.tan(angleToGoalRadians);
-    }
-
     public void limelightUpdate() {
         x = tx.getDouble(0.0);
         y = ty.getDouble(0.0);
         area = ta.getDouble(0.0);
         l = tl.getDouble(0.0);
-        d = getDistanceFromTarget();
     }
 
     public void logtoSmartDashboard() {
@@ -161,7 +152,6 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Y", y);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Area", area);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Latency", l);
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Target Distance", d);
         SmartDashboard.putString("Limelight" +limelightID +"/Target Name", findTagName());
     }
 
