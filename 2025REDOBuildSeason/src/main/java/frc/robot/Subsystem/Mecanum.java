@@ -55,10 +55,10 @@ public class Mecanum implements Subsystem {
         rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
         rearRight = wheelSpeeds.rearRightMetersPerSecond;
 
-        System.out.println("Front left:" + frontLeft);
-        System.out.println("Front right:" + frontRight);
-        System.out.println("Rear left:" + rearLeft);
-        System.out.println("Rear right:" + rearRight);
+       // System.out.println("Front left:" + frontLeft);
+       // System.out.println("Front right:" + frontRight);
+       // System.out.println("Rear left:" + rearLeft);
+       // System.out.println("Rear right:" + rearRight);
 
         frontLeftMotor.set(frontLeft*-1);
         frontRightMotor.set(frontRight);

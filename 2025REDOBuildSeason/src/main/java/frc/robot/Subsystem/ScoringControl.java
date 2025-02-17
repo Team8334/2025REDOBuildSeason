@@ -77,15 +77,15 @@ public class ScoringControl implements Subsystem {
     }
 
     public void ScoreL2(){
-        state = "score L2";
+        state = "Score L2";
     }
 
     public void ScoreL3(){
-        state = "score L3";
+        state = "Score L3";
     }
 
     public void ScoreL4(){
-        state = "score L4";
+        state = "Score L4";
     }
 
     public void eject(){ //in the emergency case you need to get rid of the coral. 
@@ -166,7 +166,7 @@ public class ScoringControl implements Subsystem {
 
     @Override
     public void update() {
-        
+        EffectorStateProcessing();
     }
 
     @Override

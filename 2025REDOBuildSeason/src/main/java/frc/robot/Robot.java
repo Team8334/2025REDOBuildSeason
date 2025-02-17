@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.SubsystemManager;
+import frc.robot.Subsystem.ScoringControl;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -37,6 +38,8 @@ public class Robot extends TimedRobot {
 
     Mecanum.getInstance();
 
+    ScoringControl.getInstance();
+
     SubsystemManager.initializeSubsystems();
   }
 
@@ -51,6 +54,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     SubsystemManager.updateSubsystems();
+    
   }
 
   /**
