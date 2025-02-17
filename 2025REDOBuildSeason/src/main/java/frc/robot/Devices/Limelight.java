@@ -77,6 +77,10 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         return (int)LimelightHelpers.getFiducialID(tableName);
     }
 
+    public double getX(){
+        return x;
+    }
+
     public void setAlliance(String alliance)
     {
         this.alliance = alliance;
