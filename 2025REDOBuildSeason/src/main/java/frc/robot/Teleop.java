@@ -18,16 +18,15 @@ public class Teleop {
     Mecanum mecanum;
     ScoringControl scoringControl;
 
-
     private double controllerLeftX;
     private double controllerLeftY;
     private double controllerRightX;
 
     public double SafeSpeed = 0.1;
-    public boolean IsElevatorUp = false;
     public boolean IsSlowMode = false;
     public boolean IsDriveFast;
     public boolean OperatorWants = false;
+    public boolean ElevatorIsUp;
 
     public Teleop() {
         driverController = new Controller(PortMap.DRIVER_CONTROLLER);
@@ -61,27 +60,27 @@ public class Teleop {
             IsSlowMode = !IsSlowMode;
         }
 
-        if (Math.abs(controllerLeftY) >= 0.5 && !IsElevatorUp) {
+        if (Math.abs(controllerLeftY) >= 0.5 && scoringControl.elevatorIsSafe) {
             forward = (controllerLeftY);
-        } else if (Math.abs(controllerLeftY) >= 0.5 && IsElevatorUp || IsSlowMode) {
+        } else if (Math.abs(controllerLeftY) >= 0.5 && !scoringControl.elevatorIsSafe) {
             forward = (controllerLeftY * SafeSpeed);
             System.out.println("slow mode");
         } else {
             forward = 0;
         }
 
-        if (Math.abs(controllerLeftX) >= 0.5 && !IsElevatorUp) {
+        if (Math.abs(controllerLeftX) >= 0.5 && scoringControl.elevatorIsSafe) {
             strafe = (controllerLeftX);
-        } else if (Math.abs(controllerLeftX) >= 0.5 && IsElevatorUp || IsSlowMode) {
+        } else if (Math.abs(controllerLeftX) >= 0.5 && ! scoringControl.elevatorIsSafe) {
             strafe = (controllerLeftX * SafeSpeed);
             System.out.println("slow mode");
         } else {
             strafe = 0;
         }
 
-        if (Math.abs(controllerRightX) >= 0.2 && !IsElevatorUp) {
+        if (Math.abs(controllerRightX) >= 0.2 && scoringControl.elevatorIsSafe) {
             rotation = (controllerRightX);
-        } else if (Math.abs(controllerRightX) >= 0.2 && IsElevatorUp || IsSlowMode) {
+        } else if (Math.abs(controllerRightX) >= 0.2 && !scoringControl.elevatorIsSafe) {
             rotation = (controllerRightX * SafeSpeed);
             System.out.println("slow mode");
         } else {
@@ -108,22 +107,18 @@ public class Teleop {
 */
         if (operatorController.getAButton() && !IsDriveFast) {
             scoringControl.ScoreL1();
-            IsElevatorUp = true;
         }
 
         if (operatorController.getBButton() && !IsDriveFast) {
             scoringControl.ScoreL2();
-            IsElevatorUp = true;
         }
 
         if (operatorController.getXButton() && !IsDriveFast) {
             scoringControl.ScoreL3();
-            IsElevatorUp = true;
         }
 
         if (operatorController.getYButton() && !IsDriveFast) {
             scoringControl.ScoreL4();
-            IsElevatorUp = true;
         }
     }
 

@@ -25,6 +25,7 @@ public class ScoringControl implements Subsystem {
     private double effectorDos;
 
     public String state = "passive";
+    public boolean elevatorIsSafe;
 
     public static ScoringControl getInstance() {
         if (instance == null) {
@@ -60,32 +61,43 @@ public class ScoringControl implements Subsystem {
 
     public void Passive(){
         state = "passive";
+        elevatorIsSafe = true;
+    }
+
+    public void Ramp(){
+        state = "ramp";
     }
 
     public void OperatorWantsCoral(){
         state = "operator wants coral";
+        elevatorIsSafe = true;
     }
 
     public void CoralTripsSensor(){
         if (laserDetectedDistance < coralDetectThreshold){
         state = "coral tripped sensor";
         }
+        elevatorIsSafe = true;
     }
 
     public void ScoreL1(){
         state = "Score L1";
+        elevatorIsSafe = false;
     }
 
     public void ScoreL2(){
         state = "Score L2";
+        elevatorIsSafe = false;
     }
 
     public void ScoreL3(){
         state = "Score L3";
+        elevatorIsSafe = false;
     }
 
     public void ScoreL4(){
         state = "Score L4";
+        elevatorIsSafe = false;
     }
 
     public void eject(){ //in the emergency case you need to get rid of the coral. 
@@ -102,12 +114,17 @@ public class ScoringControl implements Subsystem {
 
                 break;
 
+            case "ramp":
+                    effectorUno = 0.0;
+                    effectorDos = 0.0;
+                    //code for elevator here. preset: ramp
+                    System.out.println("ramp");
+                break;
+
             case "operator wants coral":
                     effectorUno = 0.5;
                     effectorDos = 0.5;
-                    //code for elevator here. preset: Ramp
                     System.out.println("operator wants coral");
-                
                 break;
 
             case "coral tripped sensor":
@@ -118,33 +135,37 @@ public class ScoringControl implements Subsystem {
                 break;
 
             case "Score L1":
-                    effectorUno = 0.0;
-                    effectorDos = 0.0;
                     //code for elevator here. preset: L1
+                    //if statement here, checking if the elevator is in position before proceeding
+                    effectorUno = -0.5;
+                    effectorDos = -0.5;
                     System.out.println("scoring in L1");
                 
                 break;
             
             case "Score L2":
+                    //code for elevator here. preset: L2
+                    //if statement here, checking if the elevator is in position before proceeding
                     effectorUno = -0.5;
                     effectorDos = -0.5;
-                    //code for elevator here. preset: L2
                     System.out.println("scoring in L2");
 
                 break;
 
             case "Score L3":
+                    //code for elevator here. preset: L3
+                    //if statement here, checking if the elevator is in position before proceeding
                     effectorUno = -0.5;
                     effectorDos = -0.5;
-                    //code for elevator here. preset: L3
                     System.out.println("scoring in L3");
                     
                 break;
 
             case "Score L4":
+                    //code for elevator here. preset: L4
+                    //if statement here, checking if the elevator is in position before proceeding
                     effectorUno = -0.5;
                     effectorDos = -0.5;
-                    //code for elevator here. preset: L4
                     System.out.println("scoring in L4");
 
                 break;
