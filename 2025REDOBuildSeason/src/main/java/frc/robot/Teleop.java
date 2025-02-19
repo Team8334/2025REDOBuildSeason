@@ -98,27 +98,31 @@ public class Teleop {
     }
 
     public void manipulatorControl() {
-     /*    if (operatorController.getAButton()) {
+         if (operatorController.getAButton()) {
             scoringControl.OperatorWantsCoral();
         }
         if (operatorController.getBButton()) {
             scoringControl.eject();
         }
-*/
-        if (operatorController.getAButton() && !IsDriveFast) {
-            scoringControl.ScoreL1();
-        }
+
+      //  if (operatorController.getAButton() && !IsDriveFast) {
+       //     scoringControl.ScoreL1();
+      //      System.out.println("L1");
+       // }
 
         if (operatorController.getBButton() && !IsDriveFast) {
             scoringControl.ScoreL2();
+            System.out.println("L2");
         }
 
         if (operatorController.getXButton() && !IsDriveFast) {
             scoringControl.ScoreL3();
+            System.out.println("L3");
         }
 
         if (operatorController.getYButton() && !IsDriveFast) {
             scoringControl.ScoreL4();
+            System.out.println("L4");
         }
     }
 

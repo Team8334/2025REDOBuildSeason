@@ -6,6 +6,7 @@ import frc.robot.Devices.NEOSparkMaxMotor;
 import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
 import au.grapplerobotics.ConfigurationFailedException;
+import edu.wpi.first.wpilibj.Timer;
 
 public class ScoringControl implements Subsystem {
 
@@ -13,6 +14,8 @@ public class ScoringControl implements Subsystem {
     //much testing is need for this branch. delete this comment when you have tested it.
 
     private static ScoringControl instance = null;
+
+    Timer timer;
 
     private NEOSparkMaxMotor effectorMotorUno = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_1);
     private NEOSparkMaxMotor effectorMotorDos = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_2);
@@ -122,8 +125,15 @@ public class ScoringControl implements Subsystem {
                 break;
 
             case "operator wants coral":
+                    timer = new Timer();
+                    timer.start();
+                    if (timer.get() < 1){
                     effectorUno = 0.5;
                     effectorDos = 0.5;
+                    }
+                    else {
+                        state = "passive";
+                    }
                     System.out.println("operator wants coral");
                 break;
 
