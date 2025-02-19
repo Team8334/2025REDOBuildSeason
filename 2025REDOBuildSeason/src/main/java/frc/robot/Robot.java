@@ -27,6 +27,7 @@ import frc.robot.Subsystem.SubsystemManager;
  */
 public class Robot extends TimedRobot {
   Teleop teleop;
+  FrontLimelight frontLimelight;
 
   
 
@@ -52,6 +53,11 @@ public class Robot extends TimedRobot {
     Mecanum.getInstance();
     //ScoringControl.getInstance();
 
+    frontLimelight = frontLimelight.getInstance();
+
+    Mecanum.getInstance();
+
+    SubsystemManager.initializeSubsystems();
   }
 
   /**
@@ -62,7 +68,13 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+
+    SubsystemManager.updateSubsystems();
+    frontLimelight.log();
+    
+  }
+
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
    * autonomous modes using the dashboard. The sendable chooser code works with the Java

@@ -36,15 +36,16 @@ public class NEOSparkMaxMotor {
     }
     public void set(double speed){
        
-        if (isInverted){
+        /*if (isInverted){
             speed*=-1;
-        }
+        }*/
         SmartDashboard.putNumber(this.getName()+"/set speed", speed);
+        
         if (m_motor == null) {
             System.out.println("YOU SET THE SPEED OF A NONEXISTANT MOTOR: " + CANID);
-        } else {
+        } 
+        else {
             m_motor.set(speed);
-            System.out.println("Speed is " + speed);
         }
     }
     public void setInverted(boolean isInverted){
