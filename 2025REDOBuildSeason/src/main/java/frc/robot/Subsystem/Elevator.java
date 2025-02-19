@@ -1,6 +1,7 @@
 package frc.robot.Subsystem;
 
 import frc.robot.Data.EncoderValues;
+import frc.robot.Devices.ModifiedEncoders;
 import frc.robot.Data.PortMap;
 import frc.robot.Devices.Controller;
 //import frc.robot.Devices.NEOSparkMaxMotor;
@@ -16,7 +17,8 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
-import edu.wpi.first.wpilibj.Encoder;
+//import edu.wpi.first.wpilibj.Encoder;
+//import edu.wpi.first.wpilibj.DutyCycleEncoder;
 //import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.PWM;
@@ -50,6 +52,7 @@ public class Elevator implements Subsystem {
     public static final double kMfaxElevatorHeightMeters = 10; // safe guard could replace this with encoder. change to actual height
     public static final double kElevatorEncoderDistPerPulse = 2.0 * Math.PI * kElevatorDrumRadius / 4096; // place holder for encoder. this is for the sim
     
+    private ModifiedEncoders encoder;
     //private NEOSparkMaxMotor elevatorMotor = new NEOSparkMaxMotor(2);
     //private final DCMotor m_elevatorGearbox = DCMotor.getNEO(2); //sets the motor gearbox
 
@@ -58,9 +61,6 @@ public class Elevator implements Subsystem {
 
     ElevatorFeedforward m_feedforward = 
         new ElevatorFeedforward(kElevatorkS, kElevatorkG, kElevatorkV, kElevatorkA);
-
-    private final Encoder m_encoder = 
-        new Encoder(kEncoderAChannel, kEncoderBChannel);
 
     //private final ElevatorSim m_elevatorSim = 
        // new ElevatorSim(m_elevatorGearbox, kElevatorGearing, kCarriageMass, kElevatorDrumRadius, kMinElevatorHeightMeters, kMaxElevatorHeightMeters, true, 0, 0.01, 0.0);
@@ -83,27 +83,21 @@ public class Elevator implements Subsystem {
     
     public Elevator() //sets up encoder tursn to distance
     {
+        encoder = new ModifiedEncoders(0);
         SubsystemManager.registerSubsystem(this);
-        m_encoder.setDistancePerPulse(4.0/256.0);
         SmartDashboard.putData("Elevator Sim", m_mech2d);
     }
 
     public void updateTelemetry() //puts distance for sim
     {
-        //m_elevatorMech2d.setLength(m_encoder.getDistance());
+        //m_elevatorMech2d.setLength(encoder.getDistance());
     }
 
     @Override
     public void update() 
     {
-        //m_elevatorSim.setInput(m_motor.getSpeed()* RobotController.getBatteryVoltage());
-        //m_elevatorSim.update(.020);
-        m_encoder.getDistance();
-        m_encoder.get();
-        System.out.println(m_encoder.getDistance());
-        System.out.println(m_encoder.getRate());
-        System.out.println(m_encoder.get());
-        System.out.println("elise was here");
+        SmartDashboard.putNumber("Elevator/encoder", encoder.getAbsoluteDistance());
+        //SmartDashboard.putNumber("Elevator/encoder", encoder.getAbsoluteDistance());
         /*if (controller.getAButtonPressed()) {
             reachGoal(EncoderValues.ELEVATOR_L2);
         } else if (controller.getBButtonPressed()){
@@ -121,7 +115,7 @@ public class Elevator implements Subsystem {
 
     public void reachGoal(double goal) {
         m_controller.setGoal(goal);
-        double pidOutput = m_controller.calculate(m_encoder.getDistance());
+        double pidOutput = m_controller.calculate(encoder.getAbsoluteDistance());
         double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
     }
 
@@ -134,12 +128,10 @@ public class Elevator implements Subsystem {
     @Override
     public void initialize() {
        //m_elevatorSim.setInput(m_motor.getSpeed()* RobotController.getBatteryVoltage());
-       m_encoder.getDistance();
     }
 
     @Override
     public void log() {
-        
     }
 
     @Override

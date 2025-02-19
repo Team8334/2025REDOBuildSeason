@@ -42,10 +42,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotInit() {
-    Elevator.getInstance();
-
-  }
+  public void robotInit() {}
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
