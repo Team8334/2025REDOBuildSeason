@@ -2,6 +2,7 @@ package frc.robot.Subsystem;
 
 import frc.robot.Data.PortMap;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Devices.NEOSparkMaxMotor;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -29,7 +30,7 @@ public class Mecanum implements Subsystem {
     private double desiredAngleVelocity;
     private double currentAngleVelocity;
 
-    private PIDController strafePID = new PIDController(0.55, 0, 0.00001);
+    private PIDController strafePID = new PIDController(5.5, 0, 0.00001);
 
     private double MAX_SPEED_CONSTANT_FORWARD = 20; //TO DO: calculate this (meters per sec)
     private double MAX_SPEED_CONSTANT_STRAFE = 20; //Meters per sec. Should calculate this too.
@@ -44,6 +45,7 @@ public class Mecanum implements Subsystem {
     // Creating my kinematics object using the wheel locations.
     MecanumDriveKinematics m_kinematics = new MecanumDriveKinematics(
             m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
+    private double where_you_want_to_be;
 
     public static Mecanum getInstance() {
         if (instance == null) {
@@ -81,9 +83,19 @@ public class Mecanum implements Subsystem {
 
     private double rotationControl(double rotationInput){
         currentAngleVelocity = (gyro.getAngleVelocityDegrees()*(Math.PI/180));
+        double currentAngle = (gyro.getAngleDegrees()*(Math.PI/180));
+        //maybe try is sftrafe over a threshold and rotationInput is over a threshold
+        if (Math.abs(currentAngleVelocity) >= 0.15 && Math.abs(rotationInput) >= 0) {
+            where_you_want_to_be = currentAngle;
+        }
         if(Math.abs(rotationInput) <= .2){
-            desiredAngleVelocity = 0;
-            return strafePID.calculate(currentAngleVelocity, desiredAngleVelocity);
+            double correction = strafePID.calculate(currentAngle, where_you_want_to_be);
+            SmartDashboard.putNumber(getName()+"/correction", correction);
+            SmartDashboard.putNumber(getName()+"/where_you_want_to_be", where_you_want_to_be);
+            SmartDashboard.putNumber(getName()+"/currentAngle", currentAngle);
+            SmartDashboard.putNumber(getName()+"/currentAngleVelocity", currentAngleVelocity);
+
+            return correction;
         }
         else{
             return rotationInput;
