@@ -9,12 +9,14 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.Teleop;
 import frc.robot.Auto.AutoMissionChooser;
 import frc.robot.Auto.AutoMissionExecutor;
 import frc.robot.Auto.Missions.MissionBase;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Devices.Gyro;
+//import frc.robot.Subsystem.ScoringControl;
 
 
 /**
@@ -47,6 +49,7 @@ public class Robot extends TimedRobot {
     Gyro.getInstance();
     teleop = new Teleop();
     Mecanum.getInstance();
+    //ScoringControl.getInstance();
 
   }
 

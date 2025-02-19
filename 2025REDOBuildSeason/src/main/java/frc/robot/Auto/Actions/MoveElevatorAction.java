@@ -1,7 +1,8 @@
 package frc.robot.Auto.Actions;
 
-//imports a timer
+//imports important things
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //import frc.robot.Subsystem.Elevators;//CHANGE ACCORDING TO REAL NAME
 
