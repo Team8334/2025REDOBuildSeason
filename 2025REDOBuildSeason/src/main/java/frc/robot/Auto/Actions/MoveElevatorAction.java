@@ -4,7 +4,7 @@ package frc.robot.Auto.Actions;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-//import frc.robot.Subsystem.Elevators;//CHANGE ACCORDING TO REAL NAME
+//import frc.robot.Subsystem.Elevator;//CHANGE ACCORDING TO REAL NAME
 
 /* This action should move the elevator up or down
  * 
