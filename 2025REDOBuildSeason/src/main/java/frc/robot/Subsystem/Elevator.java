@@ -96,8 +96,10 @@ public class Elevator implements Subsystem {
     @Override
     public void update() 
     {
-        SmartDashboard.putNumber("Elevator/encoder", encoder.getAbsoluteDistance());
-        //SmartDashboard.putNumber("Elevator/encoder", encoder.getAbsoluteDistance());
+        SmartDashboard.putBoolean("Connected", encoder.isConnected());
+        SmartDashboard.putNumber("Frequency", encoder.getFrequency());
+        SmartDashboard.putNumber("Output", encoder.get());
+        SmartDashboard.putNumber("ShiftedOutput", encoder.shiftedOutput());
         /*if (controller.getAButtonPressed()) {
             reachGoal(EncoderValues.ELEVATOR_L2);
         } else if (controller.getBButtonPressed()){
