@@ -21,7 +21,7 @@ public class RedScoreL4 extends MissionBase{
        
         runAction(new WaitAction(AutoMissionChooser.delay)); // MAY NOT BE NEEDED
         runAction(new DriveForTimeAction(-0.5,  4));
-        runAction(new TurnDegreesAction(30, 1));// add 5 degrees because the robot has consistently com up 5 degrees short of the needed turn
+        runAction(new TurnDegreesAction(30, 1));// add 5 degrees because michalangelo has consistently com up 5 degrees short of the needed turn
         runAction(new MoveElevatorAction(2, 0.2)); // May be needed depending on how robot starts
         runAction(new EffectorAction(1));
 
