@@ -13,14 +13,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoMissionChooser {
     enum DesiredMission {
-        //exampleMission,
-        doNothing,
-        MoveAcrossLineMission,
-        // general missions
+        exampleMission,
+        // general missions that use alliance to determine the actual missions
         ScoringL1Mission,
         ScoringL4Mission,
         Testing,
         // actual missions
+        MoveAcrossLineMission,
+        doNothing,
         RedScoreL1,
         RedScoreL4,
         BlueScoreL1,
@@ -49,7 +49,6 @@ public class AutoMissionChooser {
         missionChooser.addOption("Testing", DesiredMission.Testing);
 
         SmartDashboard.putNumber("Auto Delay (seconds)", 0);
-
 
         SmartDashboard.putData("Auto Mission", missionChooser);
         SmartDashboard.putString("Current Action System", "None");
@@ -97,7 +96,7 @@ public class AutoMissionChooser {
             // testing mission
             case Testing:
                 return Optional.of(new Testing());
-            // if scoring in L1, and automatically does appropriate alliance mission
+            // if scoring in L1, and does mission according to alliance
             case ScoringL1Mission:
                 if (alliance == "Red") {
                     return Optional.of(new RedScoreL1());
@@ -108,7 +107,7 @@ public class AutoMissionChooser {
                 else {
                     return Optional.of(new DoNothingMission());
                 }
-            // if scoring in L4, and automatically does appropriate alliance mission
+            // if scoring in L4, and does mission according alliance
             case ScoringL4Mission:
                 if (alliance == "Red") {
                     return Optional.of(new RedScoreL4());
