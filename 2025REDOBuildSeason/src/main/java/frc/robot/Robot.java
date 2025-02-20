@@ -18,6 +18,7 @@ import frc.robot.Subsystem.Mecanum;
 import frc.robot.Devices.Gyro;
 import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.SubsystemManager;
+import frc.robot.Subsystem.ScoringControl;
 
 
 /**
@@ -57,6 +58,8 @@ public class Robot extends TimedRobot {
 
     Mecanum.getInstance();
 
+    ScoringControl.getInstance();
+
     SubsystemManager.initializeSubsystems();
   }
 
@@ -71,7 +74,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     SubsystemManager.updateSubsystems();
-    frontLimelight.log();
     
   }
 
