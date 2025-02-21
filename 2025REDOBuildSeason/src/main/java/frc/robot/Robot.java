@@ -9,6 +9,7 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.Teleop;
 import frc.robot.Auto.AutoMissionChooser;
 import frc.robot.Auto.AutoMissionExecutor;
@@ -50,6 +51,7 @@ public class Robot extends TimedRobot {
     Gyro.getInstance();
     teleop = new Teleop();
     Mecanum.getInstance();
+    //ScoringControl.getInstance();
 
     frontLimelight = frontLimelight.getInstance();
 

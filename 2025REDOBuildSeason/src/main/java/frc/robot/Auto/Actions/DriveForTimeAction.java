@@ -9,7 +9,7 @@ import frc.robot.Subsystem.Mecanum;
 
 /* This action moves the robot forward for a certain number
  * of seconds at a certain speed
- * negative is forward, positive is backward
+ * negative is FORWARD, positive is backward
  */
 
 public class DriveForTimeAction implements Actions {
