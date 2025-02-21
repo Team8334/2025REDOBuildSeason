@@ -4,8 +4,9 @@ import frc.robot.Data.EncoderValues;
 import frc.robot.Devices.ModifiedEncoders;
 import frc.robot.Data.PortMap;
 import frc.robot.Devices.Controller;
-//import frc.robot.Devices.NEOSparkMaxMotor;
-import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import frc.robot.Devices.NEOSparkMaxMotor;
+import frc.robot.Data.PortMap;
+//import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -17,16 +18,12 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
-//import edu.wpi.first.wpilibj.Encoder;
-//import edu.wpi.first.wpilibj.DutyCycleEncoder;
 //import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.RobotController;
 
 public class Elevator implements Subsystem {
-    //note the sim stuff is only to test. To do for real robot take out the constants
-
     public static Elevator instance = null;
 
     //private Controller controller = new Controller(0);
@@ -53,7 +50,7 @@ public class Elevator implements Subsystem {
     public static final double kElevatorEncoderDistPerPulse = 2.0 * Math.PI * kElevatorDrumRadius / 4096; // place holder for encoder. this is for the sim
     
     private ModifiedEncoders encoder;
-    //private NEOSparkMaxMotor elevatorMotor = new NEOSparkMaxMotor(2);
+    private NEOSparkMaxMotor elevatorMotor;
     //private final DCMotor m_elevatorGearbox = DCMotor.getNEO(2); //sets the motor gearbox
 
     private final ProfiledPIDController m_controller = 
@@ -65,9 +62,7 @@ public class Elevator implements Subsystem {
     //private final ElevatorSim m_elevatorSim = 
        // new ElevatorSim(m_elevatorGearbox, kElevatorGearing, kCarriageMass, kElevatorDrumRadius, kMinElevatorHeightMeters, kMaxElevatorHeightMeters, true, 0, 0.01, 0.0);
     
-
-    //private final Encoder encoder = new Encoder(8);
-    private final PWM m_motor = new PWM(0);
+    //private final PWM m_motor = new PWM(0);
 
     private final Mechanism2d m_mech2d = new Mechanism2d(20, 50);
     private final MechanismRoot2d m_mech2dRoot = m_mech2d.getRoot("Elevator Root", 10, 0);
@@ -83,7 +78,8 @@ public class Elevator implements Subsystem {
     
     public Elevator() //sets up encoder tursn to distance
     {
-        encoder = new ModifiedEncoders(0);
+        encoder = new ModifiedEncoders(PortMap.ELEVATOR_ENCODER);
+        elevatorMotor = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR);
         SubsystemManager.registerSubsystem(this);
         SmartDashboard.putData("Elevator Sim", m_mech2d);
     }
@@ -96,10 +92,10 @@ public class Elevator implements Subsystem {
     @Override
     public void update() 
     {
-        SmartDashboard.putBoolean("Connected", encoder.isConnected());
-        SmartDashboard.putNumber("Frequency", encoder.getFrequency());
-        SmartDashboard.putNumber("Output", encoder.get());
-        SmartDashboard.putNumber("ShiftedOutput", encoder.shiftedOutput());
+        SmartDashboard.putBoolean("Elevator/Connected", encoder.isConnected());
+        SmartDashboard.putNumber("Elevator/Frequency", encoder.getFrequency());
+        SmartDashboard.putNumber("Elevator/Output", encoder.get());
+        SmartDashboard.putNumber("Elevator/ShiftedOutput", encoder.shiftedOutput());
         /*if (controller.getAButtonPressed()) {
             reachGoal(EncoderValues.ELEVATOR_L2);
         } else if (controller.getBButtonPressed()){
@@ -124,7 +120,7 @@ public class Elevator implements Subsystem {
 
     public void stop() {
         m_controller.setGoal(0.0);
-        //elevatorMotor.set(0.0);
+        elevatorMotor.set(0.0);
     }
 
     @Override

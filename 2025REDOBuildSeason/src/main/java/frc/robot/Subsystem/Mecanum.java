@@ -12,10 +12,10 @@ public class Mecanum implements Subsystem {
 
     private static Mecanum instance = null;
 
-    private NEOSparkMaxMotor rearLeftMotor = new NEOSparkMaxMotor(2);
-    private NEOSparkMaxMotor frontRightMotor = new NEOSparkMaxMotor(3);
-    private NEOSparkMaxMotor rearRightMotor = new NEOSparkMaxMotor(4);
-    private NEOSparkMaxMotor frontLeftMotor = new NEOSparkMaxMotor(1);
+    private NEOSparkMaxMotor rearLeftMotor;
+    private NEOSparkMaxMotor frontRightMotor;
+    private NEOSparkMaxMotor rearRightMotor; 
+    private NEOSparkMaxMotor frontLeftMotor;
 
     private double frontLeft;
     private double frontRight;
@@ -73,7 +73,10 @@ public class Mecanum implements Subsystem {
 
     @Override
     public void initialize() {
-
+        rearLeftMotor = new NEOSparkMaxMotor(2);
+        frontRightMotor = new NEOSparkMaxMotor(3);
+        rearRightMotor = new NEOSparkMaxMotor(4);
+        frontLeftMotor = new NEOSparkMaxMotor(1);
     }
 
     @Override

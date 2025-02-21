@@ -12,35 +12,73 @@ public class ModifiedEncoders {
 
     private Encoder encoder;
     private DutyCycleEncoder dutyCycleEncoder;
-    private static double fullRange = 1.3;
+    private static double fullRange = 1;
     private static double expectedZero = 0;
     private double ratio = 1.0;
 
     public ModifiedEncoders(int channel){
-        dutyCycleEncoder = new DutyCycleEncoder(channel);
-        dutyCycleEncoder = new DutyCycleEncoder(0, fullRange, expectedZero);
-        dutyCycleEncoder.setAssumedFrequency(975.6);
+        //dutyCycleEncoder = new DutyCycleEncoder(channel);
+        dutyCycleEncoder = new DutyCycleEncoder(channel, fullRange, expectedZero);
     }
 
     public Boolean isConnected(){
-        boolean connected = dutyCycleEncoder.isConnected();
-        return connected;
+        //boolean connected = dutyCycleEncoder.isConnected();
+        //return connected;
+        if(dutyCycleEncoder != null){
+            return (dutyCycleEncoder.isConnected());
+        }
+        else{
+            return false;
+        }
     }
     
     public int getFrequency(){
-        int frequency = dutyCycleEncoder.getFrequency();
-        return frequency;
+        //int frequency = dutyCycleEncoder.getFrequency();
+        //return frequency;
+
+        if(dutyCycleEncoder != null){
+            return (dutyCycleEncoder.getFrequency());
+        }
+        else{
+            return 0;
+        }
     }
     
     public double get(){
-        double output = dutyCycleEncoder.get();
-        return output;
+        //double output = dutyCycleEncoder.get();
+        //return output;
+
+        if(dutyCycleEncoder != null){
+            return (dutyCycleEncoder.get());
+        }
+        else{
+            return 0;
+        }
+    }
+
+    public double extendedCycle(){
+        double saveEncoder;
+        double currentEncoder;
+        int cycle = 0;
+        if(saveEncoder - currentEncoder > .25){
+            return cycle + 1;
+        }
+        if(saveEncoder - currentEncoder < .25){
+            return cycle -1;
+        }
     }
     
     public double shiftedOutput(){
-        double percentOfRange = fullRange * 0.1;
-        double shiftedOutput = MathUtil.inputModulus(dutyCycleEncoder.get(), 0 - percentOfRange, fullRange - percentOfRange);
-        return shiftedOutput;
+        //return shiftedOutput;
+
+        if(dutyCycleEncoder != null){
+            double percentOfRange = fullRange * 0.1;
+            double shiftedOutput = MathUtil.inputModulus(dutyCycleEncoder.get(), 0 - percentOfRange, fullRange - percentOfRange);
+            return shiftedOutput;
+        }
+        else{
+            return 0;
+        }
     }
     
     
