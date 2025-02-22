@@ -62,16 +62,16 @@ public class ModifiedEncoders {
         }
     }
 
-    public double extendedCycle(){
-        if(saveEncoder - dutyCycleEncoder.get() >= 180){
-            return cycle += 1;
+    public double getExtendedCyclePosition(){
+        double currentValue = dutyCycleEncoder.get();
+        if(saveEncoder - currentValue >= 0.5){
+            cycle += 1;
         }
-        if(saveEncoder - dutyCycleEncoder.get() < 180){
-            return cycle -= 1;
+        if(saveEncoder - currentValue < -0.5){
+            cycle -= 1;
         }
-        else {
-            return cycle;
-        }
+        saveEncoder = currentValue;
+        return cycle + currentValue;
 
     }
     

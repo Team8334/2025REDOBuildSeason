@@ -12,7 +12,7 @@ package frc.robot.Data;
 
         public static final int OPERATOR_CONTROLLER = 1;
         public static final int ELEVATOR_ENCODER = 4;
-        public static final int ELEVATOR_MOTOR_ONE = 27; // this is for test robot
+        public static final int ELEVATOR_MOTOR_ONE = 27; // this is for test robot 5 and 6 for competition robot?
         public static final int ELEVATOR_MOTOR_TWO = 10; // check this
     }
 
