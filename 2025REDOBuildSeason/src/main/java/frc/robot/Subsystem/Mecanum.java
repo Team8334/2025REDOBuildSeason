@@ -9,16 +9,17 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import frc.robot.Devices.Gyro;
 import edu.wpi.first.math.controller.PIDController;
+import frc.robot.Subsystem.Elevator;
 
 public class Mecanum implements Subsystem {
 
     private static Mecanum instance = null;
     private Gyro gyro;
 
-    private NEOSparkMaxMotor rearLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_LEFT);
-    private NEOSparkMaxMotor frontRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_RIGHT);
-    private NEOSparkMaxMotor rearRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_RIGHT);
-    private NEOSparkMaxMotor frontLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_LEFT);
+    private NEOSparkMaxMotor rearLeftMotor;
+    private NEOSparkMaxMotor frontRightMotor;
+    private NEOSparkMaxMotor rearRightMotor; 
+    private NEOSparkMaxMotor frontLeftMotor;
 
     private double frontLeft;
     private double frontRight;
@@ -59,6 +60,9 @@ public class Mecanum implements Subsystem {
             gyro = Gyro.getInstance();
     }
 
+    /*
+     * currently not functional
+     */
     public void drive(double forward, double strafe, double rotation) {
         // Example chassis speeds: 1 meter per second forward, 3 meters
         // per second to the left, and rotation at 1.5 radians per second
@@ -71,13 +75,22 @@ public class Mecanum implements Subsystem {
         frontRight = wheelSpeeds.frontRightMetersPerSecond;
         rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
         rearRight = wheelSpeeds.rearRightMetersPerSecond;
-
-        frontLeftMotor.set(frontLeft);
-        frontRightMotor.set(frontRight);
-        rearLeftMotor.set(rearLeft);
-        rearRightMotor.set(rearRight);
-        System.out.println("DRIVE IS BEING CALLED");
     }
+
+    // @Override
+    // public void update() {
+    //     if(Elevator.instance.height() > PortMap.MAX_HEIGHT_FOR_DRIVING) {
+    //         frontLeftMotor.set(0.0);
+    //         frontRightMotor.set(0.0);
+    //         rearLeftMotor.set(0.0);
+    //         rearRightMotor.set(0.0);
+    //     }
+    //     frontLeftMotor.set(frontLeft);
+    //     frontRightMotor.set(frontRight);
+    //     rearLeftMotor.set(rearLeft);
+    //     rearRightMotor.set(rearRight);
+    //     System.out.println("DRIVE IS BEING CALLED");
+    // }
 
     private double rotationControl(double rotationInput){
         currentAngleVelocity = (gyro.getAngleVelocityDegrees()*(Math.PI/180));
@@ -106,14 +119,17 @@ public class Mecanum implements Subsystem {
         rearRightMotor.setWheelRotationSpeed(rearRight);
     }
 
-    @Override
-    public void update() {
+    // @Override
+    // public void update() {
         
-    }
+    // }
 
     @Override
     public void initialize() {
-
+        rearLeftMotor = new NEOSparkMaxMotor(2);
+        frontRightMotor = new NEOSparkMaxMotor(3);
+        rearRightMotor = new NEOSparkMaxMotor(4);
+        frontLeftMotor = new NEOSparkMaxMotor(1);
     }
 
     @Override
@@ -129,6 +145,12 @@ public class Mecanum implements Subsystem {
     @Override
     public String getName() {
         return "mecanum";
+    }
+    public boolean moving() {
+        if(frontRight >= PortMap.MOVING_THRESHOLD || frontLeft >= PortMap.MOVING_THRESHOLD || rearLeft >= PortMap.MOVING_THRESHOLD || rearRight >= PortMap.MOVING_THRESHOLD) {
+            return true;
+        }
+        return false;
     }
 
 }
