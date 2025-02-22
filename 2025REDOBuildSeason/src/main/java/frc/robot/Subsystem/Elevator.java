@@ -27,7 +27,7 @@ public class Elevator implements Subsystem {
     public static final double kElevatorkS = 0.0; //volts 
     public static final double kElevatorkG = 2.28; // volts 
     public static final double kElevatorkV = 3.07; //volt per velocity 
-    public static final double kElevatorkA = 0.41; // bolt per acceleration 
+    public static final double kElevatorkA = 0.41; // volt per acceleration 
 
     public static final double kElevatorDrumRadius = Units.inchesToMeters(1.0); // change this to actual
     public static final double kElevatorEncoderDistPerPulse = 2.0 * Math.PI * kElevatorDrumRadius / 4096; // place holder for encoder. this is for the sim
@@ -55,7 +55,7 @@ public class Elevator implements Subsystem {
         return instance;
     }
     
-    public Elevator() //sets up encoder tursn to distance
+    public Elevator() //sets up encoder turns to distance
     {
         encoder = new ModifiedEncoders(PortMap.ELEVATOR_ENCODER);
         elevatorMotorOne = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_ONE);
