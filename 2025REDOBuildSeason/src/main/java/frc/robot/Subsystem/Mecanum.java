@@ -57,8 +57,6 @@ public class Mecanum implements Subsystem {
 
     public Mecanum() {
             SubsystemManager.registerSubsystem(this);
-            frontLeftMotor.setInverted(true);
-            rearLeftMotor.setInverted(true);
             gyro = Gyro.getInstance();
     }
 
@@ -142,10 +140,12 @@ public class Mecanum implements Subsystem {
 
     @Override
     public void initialize() {
-        rearLeftMotor = new NEOSparkMaxMotor(2);
+        rearLeftMotor = new NEOSparkMaxMotor();
         frontRightMotor = new NEOSparkMaxMotor(3);
         rearRightMotor = new NEOSparkMaxMotor(4);
         frontLeftMotor = new NEOSparkMaxMotor(1);
+        frontLeftMotor.setInverted(true);
+        rearLeftMotor.setInverted(true);
     }
 
     @Override
