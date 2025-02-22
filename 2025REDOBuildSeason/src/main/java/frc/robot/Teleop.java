@@ -98,7 +98,9 @@ public class Teleop {
     }
 
     public void manipulatorControl() {
-         if (operatorController.getAButton()) {
+        scoringControl.setManualEffectorSpeed(operatorController.getRightY());
+        
+        if (operatorController.getAButton()) {
             scoringControl.OperatorWantsCoral();
         }
         if (operatorController.getBButton()) {

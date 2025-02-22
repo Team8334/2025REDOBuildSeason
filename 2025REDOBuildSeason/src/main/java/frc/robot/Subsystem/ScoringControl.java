@@ -107,6 +107,11 @@ public class ScoringControl implements Subsystem {
         state = "ejecting coral";
     }
 
+    public void setManualEffectorSpeed(double speed){
+        effectorUno = speed;
+        effectorDos = speed;
+    }
+
     public void EffectorStateProcessing(){
         switch (state)
         {
@@ -197,7 +202,8 @@ public class ScoringControl implements Subsystem {
 
     @Override
     public void update() {
-        EffectorStateProcessing();
+        //EffectorStateProcessing();
+        EffectorRun();
     }
 
     @Override

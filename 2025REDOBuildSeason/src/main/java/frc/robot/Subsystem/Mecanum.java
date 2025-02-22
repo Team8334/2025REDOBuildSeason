@@ -124,6 +124,10 @@ public class Mecanum implements Subsystem {
         frontRight = wheelSpeeds.frontRightMetersPerSecond;
         rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
         rearRight = wheelSpeeds.rearRightMetersPerSecond;
+        SmartDashboard.putNumber("Mecanum/frontLeft", frontLeft);
+        SmartDashboard.putNumber("Mecanum/frontRight", frontRight);
+        SmartDashboard.putNumber("Mecanum/rearLeft", rearLeft);
+        SmartDashboard.putNumber("Mecanum/rearRight", rearRight);
 
         frontLeftMotor.setWheelRotationSpeed(frontLeft);
         frontRightMotor.setWheelRotationSpeed(frontRight);

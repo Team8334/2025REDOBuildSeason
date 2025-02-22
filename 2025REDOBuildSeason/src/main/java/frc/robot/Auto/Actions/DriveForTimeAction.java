@@ -34,7 +34,7 @@ public class DriveForTimeAction implements Actions {
 
     @Override
     public void update() {
-        mDrive.drive(this.speed, 0, 0);
+        mDrive.driveWithSpeed(this.speed, 0, 0);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class DriveForTimeAction implements Actions {
     @Override
     public void done() {
         timer.stop();
-        mDrive.drive(0, 0,0);
+        mDrive.driveWithSpeed(0, 0,0);
     }
 }
 
