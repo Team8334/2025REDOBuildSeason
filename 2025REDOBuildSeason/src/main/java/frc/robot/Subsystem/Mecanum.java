@@ -75,6 +75,12 @@ public class Mecanum implements Subsystem {
         frontRight = wheelSpeeds.frontRightMetersPerSecond;
         rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
         rearRight = wheelSpeeds.rearRightMetersPerSecond;
+
+        
+        frontLeftMotor.set(frontLeft);
+        frontRightMotor.set(frontRight);
+        rearLeftMotor.set(rearLeft);
+        rearRightMotor.set(rearRight);
     }
 
     // @Override
@@ -146,6 +152,7 @@ public class Mecanum implements Subsystem {
         frontLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_LEFT);
         frontLeftMotor.setInverted(true);
         rearLeftMotor.setInverted(true);
+        where_you_want_to_be = (gyro.getAngleDegrees()*(Math.PI/180));
     }
 
     @Override

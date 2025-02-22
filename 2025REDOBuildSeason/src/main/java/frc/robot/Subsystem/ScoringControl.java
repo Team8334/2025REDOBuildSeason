@@ -17,15 +17,15 @@ public class ScoringControl implements Subsystem {
 
     Timer timer;
 
-    private NEOSparkMaxMotor effectorMotorUno = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_1);
-    private NEOSparkMaxMotor effectorMotorDos = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_2);
+    private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
+    private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
 
     private LaserCan lc = new LaserCan(PortMap.LASER_CAN);
     public int laserDetectedDistance;
     public double coralDetectThreshold = 5; //in mm
 
-    private double effectorUno;
-    private double effectorDos;
+    private double effectorUpper;
+    private double effectorLower;
 
     public String state = "passive";
     public boolean elevatorIsSafe;
@@ -37,13 +37,14 @@ public class ScoringControl implements Subsystem {
         return instance;
     }
 
+
     public ScoringControl(){
         SubsystemManager.registerSubsystem(this);
     }
 
     public void EffectorRun(){
-        effectorMotorUno.set(effectorUno);
-        effectorMotorDos.set(effectorDos);
+        effectorMotorLower.set(effectorUpper);
+        effectorMotorUpper.set(effectorLower);
     }
 
     public void laserConfig(){
@@ -108,23 +109,23 @@ public class ScoringControl implements Subsystem {
     }
 
     public void setManualEffectorSpeed(double speed){
-        effectorUno = speed;
-        effectorDos = speed;
+        effectorUpper = speed;
+        effectorLower = speed;
     }
 
     public void EffectorStateProcessing(){
         switch (state)
         {
             case "passive":
-                    effectorUno = 0.0;
-                    effectorDos = 0.0;
+                    effectorUpper = 0.0;
+                    effectorLower = 0.0;
                     System.out.println("passive");
 
                 break;
 
             case "ramp":
-                    effectorUno = 0.0;
-                    effectorDos = 0.0;
+                    effectorUpper = 0.0;
+                    effectorLower = 0.0;
                     //code for elevator here. preset: ramp
                     System.out.println("ramp");
                 break;
@@ -133,8 +134,8 @@ public class ScoringControl implements Subsystem {
                     timer = new Timer();
                     timer.start();
                     if (timer.get() < 1){
-                    effectorUno = 0.5;
-                    effectorDos = 0.5;
+                    effectorUpper = 0.5;
+                    effectorLower = 0.5;
                     }
                     else {
                         state = "passive";
@@ -143,8 +144,8 @@ public class ScoringControl implements Subsystem {
                 break;
 
             case "coral tripped sensor":
-                    effectorUno = 0.0;
-                    effectorDos = 0.0;
+                    effectorUpper = 0.0;
+                    effectorLower = 0.0;
                     System.out.println("coral tripped sensor");
 
                 break;
@@ -152,8 +153,8 @@ public class ScoringControl implements Subsystem {
             case "Score L1":
                     //code for elevator here. preset: L1
                     //if statement here, checking if the elevator is in position before proceeding
-                    effectorUno = -0.5;
-                    effectorDos = -0.5;
+                    effectorUpper = -0.5;
+                    effectorLower = -0.5;
                     System.out.println("scoring in L1");
                 
                 break;
@@ -161,8 +162,8 @@ public class ScoringControl implements Subsystem {
             case "Score L2":
                     //code for elevator here. preset: L2
                     //if statement here, checking if the elevator is in position before proceeding
-                    effectorUno = -0.5;
-                    effectorDos = -0.5;
+                    effectorUpper = -0.5;
+                    effectorLower = -0.5;
                     System.out.println("scoring in L2");
 
                 break;
@@ -170,8 +171,8 @@ public class ScoringControl implements Subsystem {
             case "Score L3":
                     //code for elevator here. preset: L3
                     //if statement here, checking if the elevator is in position before proceeding
-                    effectorUno = -0.5;
-                    effectorDos = -0.5;
+                    effectorUpper = -0.5;
+                    effectorLower = -0.5;
                     System.out.println("scoring in L3");
                     
                 break;
@@ -179,15 +180,15 @@ public class ScoringControl implements Subsystem {
             case "Score L4":
                     //code for elevator here. preset: L4
                     //if statement here, checking if the elevator is in position before proceeding
-                    effectorUno = -0.5;
-                    effectorDos = -0.5;
+                    effectorUpper = -0.5;
+                    effectorLower = -0.5;
                     System.out.println("scoring in L4");
 
                 break;
             
             case "ejecting coral":
-                    effectorUno = -0.5;
-                    effectorDos = -0.5;
+                    effectorUpper = -0.5;
+                    effectorLower = -0.5;
                     //we might need to manipulate the elevator to ensure the piece is successfully ditched. 
                     //when testing, you might need to add a slight time delay to ensure the coral is successfully ejected.
                     if (laserDetectedDistance > coralDetectThreshold){ 
