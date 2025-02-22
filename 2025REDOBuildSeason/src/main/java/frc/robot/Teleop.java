@@ -60,34 +60,34 @@ public class Teleop {
             IsSlowMode = !IsSlowMode;
         }
 
-        if (Math.abs(controllerLeftY) >= 0.5 && scoringControl.elevatorIsSafe) {
+        if (Math.abs(controllerLeftY) >= 0.1 && scoringControl.elevatorIsSafe) {
             forward = (controllerLeftY);
-        } else if (Math.abs(controllerLeftY) >= 0.5 && !scoringControl.elevatorIsSafe) {
+        } else if (Math.abs(controllerLeftY) >= 0.1 && !scoringControl.elevatorIsSafe) {
             forward = (controllerLeftY * SafeSpeed);
             System.out.println("slow mode");
         } else {
             forward = 0;
         }
 
-        if (Math.abs(controllerLeftX) >= 0.5 && scoringControl.elevatorIsSafe) {
+        if (Math.abs(controllerLeftX) >= 0.1 && scoringControl.elevatorIsSafe) {
             strafe = (controllerLeftX);
-        } else if (Math.abs(controllerLeftX) >= 0.5 && ! scoringControl.elevatorIsSafe) {
+        } else if (Math.abs(controllerLeftX) >= 0.1 && ! scoringControl.elevatorIsSafe) {
             strafe = (controllerLeftX * SafeSpeed);
             System.out.println("slow mode");
         } else {
             strafe = 0;
         }
 
-        if (Math.abs(controllerRightX) >= 0.2 && scoringControl.elevatorIsSafe) {
+        if (Math.abs(controllerRightX) >= 0.1 && scoringControl.elevatorIsSafe) {
             rotation = (controllerRightX);
-        } else if (Math.abs(controllerRightX) >= 0.2 && !scoringControl.elevatorIsSafe) {
+        } else if (Math.abs(controllerRightX) >= 0.1 && !scoringControl.elevatorIsSafe) {
             rotation = (controllerRightX * SafeSpeed);
             System.out.println("slow mode");
         } else {
             rotation = 0;
         }
 
-        mecanum.drive(forward, strafe, rotation);
+        mecanum.driveWithSpeed(forward, strafe, rotation);
 
         if (forward > 0.15 || strafe > 0.15 || rotation > 0.15) {
             IsDriveFast = true;

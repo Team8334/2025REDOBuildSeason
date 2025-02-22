@@ -119,10 +119,10 @@ public class Mecanum implements Subsystem {
         rearRightMotor.setWheelRotationSpeed(rearRight);
     }
 
-    // @Override
-    // public void update() {
+    @Override
+    public void update() {
         
-    // }
+    }
 
     @Override
     public void initialize() {
