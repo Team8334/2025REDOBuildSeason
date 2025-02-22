@@ -140,10 +140,10 @@ public class Mecanum implements Subsystem {
 
     @Override
     public void initialize() {
-        rearLeftMotor = new NEOSparkMaxMotor();
-        frontRightMotor = new NEOSparkMaxMotor(3);
-        rearRightMotor = new NEOSparkMaxMotor(4);
-        frontLeftMotor = new NEOSparkMaxMotor(1);
+        rearLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_LEFT);
+        frontRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_RIGHT);
+        rearRightMotor = new NEOSparkMaxMotor(PortMap.MECANUM_BACK_RIGHT);
+        frontLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_LEFT);
         frontLeftMotor.setInverted(true);
         rearLeftMotor.setInverted(true);
     }

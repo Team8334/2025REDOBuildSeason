@@ -27,6 +27,7 @@ public class Teleop {
     public boolean IsDriveFast;
     public boolean OperatorWants = false;
     public boolean ElevatorIsUp;
+    public double EffectorSpeed = 0.2;
 
     public Teleop() {
         driverController = new Controller(PortMap.DRIVER_CONTROLLER);
@@ -64,7 +65,7 @@ public class Teleop {
             forward = (controllerLeftY);
         } else if (Math.abs(controllerLeftY) >= 0.1 && !scoringControl.elevatorIsSafe) {
             forward = (controllerLeftY * SafeSpeed);
-            System.out.println("slow mode");
+            //System.out.println("slow mode");
         } else {
             forward = 0;
         }
@@ -73,7 +74,7 @@ public class Teleop {
             strafe = (controllerLeftX);
         } else if (Math.abs(controllerLeftX) >= 0.1 && ! scoringControl.elevatorIsSafe) {
             strafe = (controllerLeftX * SafeSpeed);
-            System.out.println("slow mode");
+            //System.out.println("slow mode");
         } else {
             strafe = 0;
         }
@@ -82,7 +83,7 @@ public class Teleop {
             rotation = (controllerRightX);
         } else if (Math.abs(controllerRightX) >= 0.1 && !scoringControl.elevatorIsSafe) {
             rotation = (controllerRightX * SafeSpeed);
-            System.out.println("slow mode");
+            //System.out.println("slow mode");
         } else {
             rotation = 0;
         }
@@ -94,11 +95,11 @@ public class Teleop {
         } else {
             IsDriveFast = false;
         }
-        System.out.println(IsDriveFast + "fast");
+        //System.out.println(IsDriveFast + "fast");
     }
 
     public void manipulatorControl() {
-        scoringControl.setManualEffectorSpeed(operatorController.getRightY());
+        scoringControl.setManualEffectorSpeed(operatorController.getRightY() * EffectorSpeed);
         
         if (operatorController.getAButton()) {
             scoringControl.OperatorWantsCoral();

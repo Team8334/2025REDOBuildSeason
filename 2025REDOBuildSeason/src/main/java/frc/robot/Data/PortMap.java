@@ -19,8 +19,8 @@ package frc.robot.Data;
         public static final int ELEVATOR_MOTOR_TWO = 10; // check this
 
         //values for following motors and sensors are currently unknown. delete this comment once you get the real values.
-        public static final int EFFECTOR_MOTOR_1 = 9;
-        public static final int EFFECTOR_MOTOR_2 = 0; //what motors are these?
+        public static final int EFFECTOR_MOTOR_1 = 27; //9, 27 on test robot
+        public static final int EFFECTOR_MOTOR_2 = 10; //what motors are these?
         public static final int LASER_CAN = 12;
             
         }
