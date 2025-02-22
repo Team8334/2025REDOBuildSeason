@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.ScoringControl;
+import frc.robot.Subsystem.Elevator;
+
 
 public class Teleop {
 
@@ -15,6 +17,7 @@ public class Teleop {
     Controller operatorController;
 
     Mecanum mecanum;
+    Elevator elevator;
     ScoringControl scoringControl;
 
     private double controllerLeftX;
@@ -41,6 +44,7 @@ public class Teleop {
 
         mecanum = Mecanum.getInstance();
         scoringControl = ScoringControl.getInstance();
+        elevator = Elevator.getInstance();
     }
 
     public void teleopPeriodic() {

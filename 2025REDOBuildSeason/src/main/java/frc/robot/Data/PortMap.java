@@ -15,8 +15,9 @@ package frc.robot.Data;
         public static final float MAX_HEIGHT_FOR_DRIVING = (float)(10000000000000000000.0);
 
         public static final int ELEVATOR_ENCODER = 4;
-        public static final int ELEVATOR_MOTOR_ONE = 5; // this is for test robot
-        public static final int ELEVATOR_MOTOR_TWO = 6; // check these elevator values
+        public static final int ELEVATOR_MOTOR_ONE = 27; // this is for test robot 5 and 6 for competition robot?
+        public static final int ELEVATOR_MOTOR_TWO = 10; // check this
+    
 
         //values for following motors and sensors are currently unknown. delete this comment once you get the real values.
         public static final int EFFECTOR_MOTOR_LOWER = 9; //9, 27 on test robot
