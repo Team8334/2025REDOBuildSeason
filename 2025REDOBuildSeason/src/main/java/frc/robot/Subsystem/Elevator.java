@@ -39,7 +39,7 @@ public class Elevator implements Subsystem {
 
     private double elevatorOne;
     private double elevatorTwo;
-    public double elevatorSpeed = .25; //adjust this
+    public double elevatorSpeed = .15; //adjust this
 
     private final ProfiledPIDController m_controller = new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(2.45, 2.45));
     ElevatorFeedforward m_feedforward = new ElevatorFeedforward(kElevatorkS, kElevatorkG, kElevatorkV, kElevatorkA);
@@ -85,10 +85,10 @@ public class Elevator implements Subsystem {
 
     public void reachGoal(double goal) {
         m_controller.setGoal(goal);
-        double pidOutput = m_controller.calculate(encoder.get());
+        double pidOutput = m_controller.calculate(encoder.extendedCycle());
         double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
-        elevatorOne = elevatorSpeed;
-        elevatorTwo = elevatorSpeed;
+        //elevatorOne = elevatorSpeed;
+        //elevatorTwo = -elevatorSpeed; //determine which side needs to be negative
     }
 
 
