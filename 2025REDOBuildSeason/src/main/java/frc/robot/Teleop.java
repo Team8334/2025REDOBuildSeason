@@ -3,6 +3,7 @@ package frc.robot;
 import frc.robot.Devices.Controller;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
+import frc.robot.Subsystem.Elevator;
 
 
 public class Teleop {
@@ -10,6 +11,7 @@ public class Teleop {
     Controller driverController;
     
         Mecanum mecanum;
+        Elevator elevator;
         private double controllerLeftX;
         private double controllerLeftY;
         private double controllerRightX;
@@ -21,6 +23,7 @@ public class Teleop {
             }
     
             mecanum = Mecanum.getInstance();
+            elevator = Elevator.getInstance();
         }
     
         public void teleopPeriodic() {
@@ -52,6 +55,13 @@ public class Teleop {
            else{
             rotation = 0;
            }
+
+           if(driverController.getAButton()){
+            elevator.reachGoal(3);
+           }
+           else {
+            elevator.reachGoal(0);
+           }
            mecanum.drive(forward, strafe, rotation);
            System.out.println("Controller x: " + driverController.getLeftX());
            System.out.println("Controller y: " + driverController.getLeftY());
@@ -59,7 +69,7 @@ public class Teleop {
         }
     
         public void manipulatorControl() {
-    
+        
         }
     
     }

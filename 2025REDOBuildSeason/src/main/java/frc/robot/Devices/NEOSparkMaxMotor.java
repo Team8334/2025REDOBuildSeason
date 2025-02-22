@@ -34,6 +34,11 @@ public class NEOSparkMaxMotor {
         return true;
        }
     }
+
+    public void setVoltage(double voltage){
+        m_motor.setVoltage(voltage);
+    }
+
     public void set(double speed){
        
         if (isInverted){

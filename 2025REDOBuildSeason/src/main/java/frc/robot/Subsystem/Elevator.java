@@ -25,9 +25,9 @@ public class Elevator implements Subsystem {
     public static final double kElevatorKd = 0;
 
     public static final double kElevatorkS = 0.0; //volts 
-    public static final double kElevatorkG = 2.28; // volts 
-    public static final double kElevatorkV = 3.07; //volt per velocity 
-    public static final double kElevatorkA = 0.41; // bolt per acceleration 
+    public static final double kElevatorkG = 0.62; // volts 
+    public static final double kElevatorkV = 1.19; //volt per velocity 
+    public static final double kElevatorkA = 0.06; // volt per acceleration 
 
     public static final double kElevatorDrumRadius = Units.inchesToMeters(1.0); // change this to actual
     public static final double kElevatorEncoderDistPerPulse = 2.0 * Math.PI * kElevatorDrumRadius / 4096; // place holder for encoder. this is for the sim
@@ -58,7 +58,7 @@ public class Elevator implements Subsystem {
     public Elevator() //sets up encoder tursn to distance
     {
         encoder = new ModifiedEncoders(PortMap.ELEVATOR_ENCODER);
-        //elevatorMotorOne = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_ONE);
+        elevatorMotorOne = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_ONE);
         //elevatorMotorTwo = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_TWO);
 
         //elevatorMotorOne.set(elevatorOne);
@@ -77,14 +77,18 @@ public class Elevator implements Subsystem {
     {
         SmartDashboard.putBoolean("Elevator/Connected", encoder.isConnected());
         SmartDashboard.putNumber("Elevator/Frequency", encoder.getFrequency());
-        SmartDashboard.putNumber("Elevator/Output", encoder.getExtendedCyclePosition());
+        SmartDashboard.putNumber("Elevator/Output",-1* encoder.getExtendedCyclePosition());
         SmartDashboard.putNumber("Elevator/ShiftedOutput", encoder.shiftedOutput());
+        
     }
     
     public void reachGoal(double goal) {
         m_controller.setGoal(goal);
-        double pidOutput = m_controller.calculate(encoder.getExtendedCyclePosition());
+        double pidOutput = m_controller.calculate(-1 * encoder.getExtendedCyclePosition());
         double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
+      //  elevatorMotorOne.setVoltage(feedforwardOutput + pidOutput/2);
+        SmartDashboard.putNumber("Elevator/motorOneVoltage", feedforwardOutput+pidOutput);
+        SmartDashboard.putNumber("Elevator/goal", goal);
         //elevatorOne = elevatorSpeed;
         //elevatorTwo = -elevatorSpeed; //determine which side needs to be negative
     }
@@ -100,7 +104,7 @@ public class Elevator implements Subsystem {
     public void initialize() {
         m_mech2d = new Mechanism2d(20, 50);
         m_mech2dRoot = m_mech2d.getRoot("Elevator Root", 10, 0);
-        m_elevatorMech2d = new MechanismLigament2d("Elevator", encoder.get(), 90);
+        m_elevatorMech2d = new MechanismLigament2d("Elevator", -1* encoder.get(), 90);
         SmartDashboard.putData("Elevator Sim", m_mech2d);
         //m_elevatorSim.setInput(m_motor.getSpeed()* RobotController.getBatteryVoltage());
     }
