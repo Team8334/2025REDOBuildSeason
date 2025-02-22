@@ -49,8 +49,9 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public void robotInit() {
-    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    // m_chooser.addOption("My Auto", kCustomAuto);
+    //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    // m_chooser.addOption("My Auto");
+
     SmartDashboard.putData("Auto choices", m_chooser);
     Gyro.getInstance();
     teleop = new Teleop();
