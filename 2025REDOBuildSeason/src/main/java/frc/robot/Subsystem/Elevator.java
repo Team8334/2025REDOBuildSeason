@@ -86,7 +86,7 @@ public class Elevator implements Subsystem {
         m_controller.setGoal(goal);
         double pidOutput = m_controller.calculate(-1 * encoder.getExtendedCyclePosition());
         double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
-      //  elevatorMotorOne.setVoltage(feedforwardOutput + pidOutput/2);
+        elevatorMotorOne.setVoltage(feedforwardOutput + pidOutput/2);
         SmartDashboard.putNumber("Elevator/motorOneVoltage", feedforwardOutput+pidOutput);
         SmartDashboard.putNumber("Elevator/goal", goal);
         //elevatorOne = elevatorSpeed;
@@ -95,7 +95,6 @@ public class Elevator implements Subsystem {
     
     
     public void stop() {
-        m_controller.setGoal(0.0);
         elevatorMotorOne.set(0.0);
         elevatorMotorTwo.set(0.0);
     }
