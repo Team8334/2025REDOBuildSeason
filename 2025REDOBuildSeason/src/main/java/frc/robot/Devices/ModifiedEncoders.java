@@ -2,6 +2,7 @@ package frc.robot.Devices;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
+import frc.robot.Data.PortMap;
 import edu.wpi.first.math.MathUtil;
 
 public class ModifiedEncoders {
@@ -16,9 +17,14 @@ public class ModifiedEncoders {
     private static double expectedZero = 0;
     private double ratio = 1.0;
 
+    double saveEncoder;
+    int cycle = 0;
+    
+
     public ModifiedEncoders(int channel){
         //dutyCycleEncoder = new DutyCycleEncoder(channel);
         dutyCycleEncoder = new DutyCycleEncoder(channel, fullRange, expectedZero);
+        saveEncoder = dutyCycleEncoder.get();
     }
 
     public Boolean isConnected(){
@@ -57,15 +63,16 @@ public class ModifiedEncoders {
     }
 
     public double extendedCycle(){
-        double saveEncoder;
-        double currentEncoder;
-        int cycle = 0;
-        if(saveEncoder - currentEncoder > .25){
-            return cycle + 1;
+        if(saveEncoder - dutyCycleEncoder.get() >= 180){
+            return cycle += 1;
         }
-        if(saveEncoder - currentEncoder < .25){
-            return cycle -1;
+        if(saveEncoder - dutyCycleEncoder.get() < 180){
+            return cycle -= 1;
         }
+        else {
+            return cycle;
+        }
+
     }
     
     public double shiftedOutput(){

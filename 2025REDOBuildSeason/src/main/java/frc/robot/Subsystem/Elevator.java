@@ -6,7 +6,6 @@ import frc.robot.Data.PortMap;
 import frc.robot.Devices.Controller;
 import frc.robot.Devices.NEOSparkMaxMotor;
 import frc.robot.Data.PortMap;
-//import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -18,18 +17,8 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
-//import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import edu.wpi.first.wpilibj.PWM;
-import edu.wpi.first.wpilibj.RobotController;
-
 public class Elevator implements Subsystem {
     public static Elevator instance = null;
-
-    //private Controller controller = new Controller(0);
-
-    public static final int kEncoderAChannel = 0;
-    public static final int kEncoderBChannel = 1;
 
     public static final double kElevatorKp = 10;
     public static final double kElevatorKi = 2.5;
@@ -40,34 +29,24 @@ public class Elevator implements Subsystem {
     public static final double kElevatorkV = 3.07; //volt per velocity 
     public static final double kElevatorkA = 0.41; // bolt per acceleration 
 
-    public static final double kElevatorGearing = 10.0; 
     public static final double kElevatorDrumRadius = Units.inchesToMeters(1.0); // change this to actual
-    public static final double kCarriageMass = 2; 
-
-    public static final double kSetpointMeters = 0.75; // constant setpoint
-    public static final double kMinElevatorHeightMeters = 0.0; //safe guard could replace this with encoder
-    public static final double kMfaxElevatorHeightMeters = 10; // safe guard could replace this with encoder. change to actual height
     public static final double kElevatorEncoderDistPerPulse = 2.0 * Math.PI * kElevatorDrumRadius / 4096; // place holder for encoder. this is for the sim
-    
+
     private ModifiedEncoders encoder;
-    private NEOSparkMaxMotor elevatorMotor;
-    //private final DCMotor m_elevatorGearbox = DCMotor.getNEO(2); //sets the motor gearbox
+    private NEOSparkMaxMotor elevatorMotorOne;
+    private NEOSparkMaxMotor elevatorMotorTwo;
+    private Controller controller;
 
-    private final ProfiledPIDController m_controller = 
-        new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(2.45, 2.45)); // need to find values for these
+    private double elevatorOne;
+    private double elevatorTwo;
+    public double elevatorSpeed = .25; //adjust this
 
-    ElevatorFeedforward m_feedforward = 
-        new ElevatorFeedforward(kElevatorkS, kElevatorkG, kElevatorkV, kElevatorkA);
-
-    //private final ElevatorSim m_elevatorSim = 
-       // new ElevatorSim(m_elevatorGearbox, kElevatorGearing, kCarriageMass, kElevatorDrumRadius, kMinElevatorHeightMeters, kMaxElevatorHeightMeters, true, 0, 0.01, 0.0);
-    
-    //private final PWM m_motor = new PWM(0);
+    private final ProfiledPIDController m_controller = new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(2.45, 2.45));
+    ElevatorFeedforward m_feedforward = new ElevatorFeedforward(kElevatorkS, kElevatorkG, kElevatorkV, kElevatorkA);
 
     private final Mechanism2d m_mech2d = new Mechanism2d(20, 50);
     private final MechanismRoot2d m_mech2dRoot = m_mech2d.getRoot("Elevator Root", 10, 0);
-    //private final MechanismLigament2d m_elevatorMech2d = m_mech2dRoot.append(
-       // new MechanismLigament2d("Elevator", m_elevatorSim.getPositionMeters(), 90));
+    private final MechanismLigament2d m_elevatorMech2d = new MechanismLigament2d("Elevator", encoder.get(), 90);
 
     public static Elevator getInstance() {
         if(instance == null) {
@@ -79,14 +58,20 @@ public class Elevator implements Subsystem {
     public Elevator() //sets up encoder tursn to distance
     {
         encoder = new ModifiedEncoders(PortMap.ELEVATOR_ENCODER);
-        elevatorMotor = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR);
+        elevatorMotorOne = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_ONE);
+        elevatorMotorTwo = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_TWO);
+        controller = new Controller(PortMap.OPERATOR_CONTROLLER);
+
+        elevatorMotorOne.set(elevatorOne);
+        elevatorMotorTwo.set(elevatorTwo);
+        
         SubsystemManager.registerSubsystem(this);
         SmartDashboard.putData("Elevator Sim", m_mech2d);
     }
 
-    public void updateTelemetry() //puts distance for sim
+    public void updateTelemetry()
     {
-        //m_elevatorMech2d.setLength(encoder.getDistance());
+        m_elevatorMech2d.setLength(encoder.get());
     }
 
     @Override
@@ -96,31 +81,21 @@ public class Elevator implements Subsystem {
         SmartDashboard.putNumber("Elevator/Frequency", encoder.getFrequency());
         SmartDashboard.putNumber("Elevator/Output", encoder.get());
         SmartDashboard.putNumber("Elevator/ShiftedOutput", encoder.shiftedOutput());
-        /*if (controller.getAButtonPressed()) {
-            reachGoal(EncoderValues.ELEVATOR_L2);
-        } else if (controller.getBButtonPressed()){
-            reachGoal(EncoderValues.ELEVATOR_L2);
-        } else if (controller.getXButtonPressed()){
-            reachGoal(EncoderValues.ELEVATOR_L3);
-        } else if (controller.getYButtonPressed()){
-            reachGoal(EncoderValues.ELEVATOR_L4);
-        } else {
-            reachGoal(0);
-        }*/
-
-        // set the case for use of autonoumous. Like set state for bottom.
     }
 
     public void reachGoal(double goal) {
         m_controller.setGoal(goal);
-        double pidOutput = m_controller.calculate(encoder.getAbsoluteDistance());
+        double pidOutput = m_controller.calculate(encoder.get());
         double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
+        elevatorOne = elevatorSpeed;
+        elevatorTwo = elevatorSpeed;
     }
 
 
     public void stop() {
         m_controller.setGoal(0.0);
-        elevatorMotor.set(0.0);
+        elevatorMotorOne.set(0.0);
+        elevatorMotorTwo.set(0.0);
     }
 
     @Override
