@@ -7,6 +7,7 @@ import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
 import au.grapplerobotics.ConfigurationFailedException;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ScoringControl implements Subsystem {
 
@@ -52,9 +53,10 @@ public class ScoringControl implements Subsystem {
             lc.setRangingMode(LaserCan.RangingMode.SHORT);
             lc.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 16, 16));
             lc.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
-          } catch (ConfigurationFailedException e) {
+          } 
+        catch (ConfigurationFailedException e) {
             System.out.println("Configuration failed! " + e);
-          }
+        }
     }
 
     public double laserDistance(){
@@ -205,6 +207,8 @@ public class ScoringControl implements Subsystem {
     public void update() {
         //EffectorStateProcessing();
         EffectorRun();
+        SmartDashboard.putNumber("Laser Detected Distance", laserDetectedDistance);
+        System.out.println(lc.getMeasurement().distance_mm);
     }
 
     @Override
