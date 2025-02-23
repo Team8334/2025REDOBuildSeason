@@ -208,7 +208,7 @@ public class ScoringControl implements Subsystem {
         //EffectorStateProcessing();
         EffectorRun();
         SmartDashboard.putNumber("Laser Detected Distance", laserDetectedDistance);
-        System.out.println(lc.getMeasurement().distance_mm);
+        //System.out.println(lc.getMeasurement().distance_mm);
     }
 
     @Override
