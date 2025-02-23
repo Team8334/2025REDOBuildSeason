@@ -59,12 +59,16 @@ public class Elevator implements Subsystem {
     {
         encoder = new ModifiedEncoders(PortMap.ELEVATOR_ENCODER);
         elevatorMotorOne = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_ONE);
-        //elevatorMotorTwo = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_TWO);
+        elevatorMotorTwo = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_TWO);
 
         //elevatorMotorOne.set(elevatorOne);
         //elevatorMotorTwo.set(elevatorTwo);
+
+       // elevatorMotorTwo.setInverted(true);
         
         SubsystemManager.registerSubsystem(this);
+
+        encoder.zeroCycle();
     }
     
     public void updateTelemetry()
@@ -87,6 +91,7 @@ public class Elevator implements Subsystem {
         double pidOutput = m_controller.calculate(-1 * encoder.getExtendedCyclePosition());
         double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
         elevatorMotorOne.setVoltage(feedforwardOutput + pidOutput/2);
+        elevatorMotorTwo.setVoltage((feedforwardOutput + pidOutput/2)*-1);
         SmartDashboard.putNumber("Elevator/motorOneVoltage", feedforwardOutput+pidOutput);
         SmartDashboard.putNumber("Elevator/goal", goal);
         //elevatorOne = elevatorSpeed;

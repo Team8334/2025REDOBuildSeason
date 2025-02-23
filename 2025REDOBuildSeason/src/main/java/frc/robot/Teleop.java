@@ -82,30 +82,29 @@ public class Teleop {
         scoringControl.setManualEffectorSpeed(operatorController.getRightY() * EffectorSpeed);
 
         if (operatorController.getAButton()) {
-            scoringControl.OperatorWantsCoral();
+            scoringControl.moveToRamp();
         }
-        if (operatorController.getBButton()) {
-            scoringControl.eject();
-        }
+        // if (operatorController.getBButton()) {
+        //     scoringControl.eject();
+        // }
 
         // if (operatorController.getAButton() && !IsDriveFast) {
         // scoringControl.ScoreL1();
         // System.out.println("L1");
         // }
 
-        if (operatorController.getBButton() && !IsDriveFast) {
-            scoringControl.ScoreL2();
+        if (operatorController.getBButton()) {
+            scoringControl.scoreL2();
             System.out.println("L2");
         }
 
-        if (operatorController.getXButton() && !IsDriveFast) {
-            scoringControl.ScoreL3();
+        if (operatorController.getXButton()) {
+            scoringControl.scoreL3();
             System.out.println("L3");
         }
 
-        if (operatorController.getYButton() && !IsDriveFast) {
-            scoringControl.ScoreL4();
-            System.out.println("L4");
+        if (operatorController.getYButton()) {
+            scoringControl.passive();
         }
     }
 

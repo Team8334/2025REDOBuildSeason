@@ -25,6 +25,11 @@ public class ModifiedEncoders {
         //dutyCycleEncoder = new DutyCycleEncoder(channel);
         dutyCycleEncoder = new DutyCycleEncoder(channel, fullRange, expectedZero);
         saveEncoder = dutyCycleEncoder.get();
+        cycle = 0;
+    }
+
+    public void zeroCycle(){
+        cycle = 0;
     }
 
     public Boolean isConnected(){

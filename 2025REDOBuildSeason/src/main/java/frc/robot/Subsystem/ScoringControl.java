@@ -20,9 +20,9 @@ public class ScoringControl implements Subsystem {
 
     Timer timer;
     Elevator elevator;
-
-    private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
-    private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
+//comment these back in!!
+   // private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
+   // private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
 
     private LaserCan lc = new LaserCan(PortMap.LASER_CAN);
     public int laserDetectedDistance;
@@ -47,8 +47,8 @@ public class ScoringControl implements Subsystem {
     }
 
     public void EffectorRun(){
-        effectorMotorLower.set(effectorUpper);
-        effectorMotorUpper.set(effectorLower);
+      //  effectorMotorLower.set(effectorUpper);
+      //  effectorMotorUpper.set(effectorLower);
     }
 
     public void laserConfig(){
@@ -103,13 +103,6 @@ public class ScoringControl implements Subsystem {
                     
                 break;
 
-            // case "coral tripped sensor":
-            //         effectorUpper = 0.0;
-            //         effectorLower = 0.0;
-            //         System.out.println("coral tripped sensor");
-
-            //     break;
-
             case "Score L1":
                     elevator.reachGoal(EncoderValues.ELEVATOR_L1);
                 
@@ -137,43 +130,36 @@ public class ScoringControl implements Subsystem {
         SmartDashboard.putString("scoringState", state);
     }
 
-    public void Passive(){
+    public void passive(){
         state = "passive";
         elevatorIsSafe = true;
     }
 
-    public void Ramp(){
+    public void moveToRamp(){
         state = "ramp";
     }
 
-    public void OperatorWantsCoral(){
+    public void intakeCoral(){
         state = "operator wants coral";
         elevatorIsSafe = true;
     }
 
-    public void CoralTripsSensor(){
-        if (laserDetectedDistance < coralDetectThreshold){
-        state = "coral tripped sensor";
-        }
-        elevatorIsSafe = true;
-    }
-
-    public void ScoreL1(){
+    public void scoreL1(){
         state = "Score L1";
         elevatorIsSafe = false;
     }
 
-    public void ScoreL2(){
+    public void scoreL2(){
         state = "Score L2";
         elevatorIsSafe = false;
     }
 
-    public void ScoreL3(){
+    public void scoreL3(){
         state = "Score L3";
         elevatorIsSafe = false;
     }
 
-    public void ScoreL4(){
+    public void scoreL4(){
         state = "Score L4";
         elevatorIsSafe = false;
     }
@@ -184,7 +170,7 @@ public class ScoringControl implements Subsystem {
 
     @Override
     public void update() {
-        //EffectorStateProcessing();
+        EffectorStateProcessing();
         EffectorRun();
     }
 

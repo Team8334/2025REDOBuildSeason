@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
 
     ScoringControl.getInstance();
 
-   // Elevator.getInstance();
+    Elevator.getInstance();
 
     SubsystemManager.initializeSubsystems();
   }
