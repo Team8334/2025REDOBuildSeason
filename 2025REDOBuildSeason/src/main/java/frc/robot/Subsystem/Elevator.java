@@ -70,6 +70,10 @@ public class Elevator implements Subsystem {
 
         encoder.zeroCycle();
     }
+
+    public void elevatorZero(){
+        encoder.zeroCycle();
+    }
     
     public void updateTelemetry()
     {
@@ -86,6 +90,7 @@ public class Elevator implements Subsystem {
         
     }
     
+
     public void reachGoal(double goal) {
         m_controller.setGoal(goal);
         double pidOutput = m_controller.calculate(-1 * encoder.getExtendedCyclePosition());

@@ -104,7 +104,7 @@ public class Teleop {
         }
 
         if (operatorController.getYButton()) {
-            scoringControl.passive();
+            scoringControl.scoreL4();
         }
     }
 

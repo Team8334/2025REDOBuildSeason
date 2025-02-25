@@ -2,6 +2,7 @@ package frc.robot.Devices;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Data.PortMap;
 import edu.wpi.first.math.MathUtil;
 
@@ -17,14 +18,14 @@ public class ModifiedEncoders {
     private static double expectedZero = 0;
     private double ratio = 1.0;
 
-    double saveEncoder;
-    int cycle = 0;
+    private double saveEncoder;
+    private int cycle = 0;
     
 
     public ModifiedEncoders(int channel){
         //dutyCycleEncoder = new DutyCycleEncoder(channel);
         dutyCycleEncoder = new DutyCycleEncoder(channel, fullRange, expectedZero);
-        saveEncoder = dutyCycleEncoder.get();
+        saveEncoder = 0;
         cycle = 0;
     }
 
@@ -58,7 +59,7 @@ public class ModifiedEncoders {
     public double get(){
         //double output = dutyCycleEncoder.get();
         //return output;
-
+        
         if(dutyCycleEncoder != null){
             return (dutyCycleEncoder.get());
         }
@@ -69,14 +70,18 @@ public class ModifiedEncoders {
 
     public double getExtendedCyclePosition(){
         double currentValue = dutyCycleEncoder.get();
-        if(saveEncoder - currentValue >= 0.5){
+        System.out.println(currentValue + "," + cycle + "," + saveEncoder);
+        if((saveEncoder - currentValue) >= 0.5){
             cycle += 1;
         }
-        if(saveEncoder - currentValue < -0.5){
+        if((saveEncoder - currentValue) < -0.5){
             cycle -= 1;
         }
         saveEncoder = currentValue;
+
+        SmartDashboard.putNumber("cycle", cycle);
         return cycle + currentValue;
+
 
     }
     
