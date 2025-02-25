@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.ScoringControl;
+import frc.robot.Subsystem.Targeting;
+import frc.robot.Subsystem.FrontLimelight;
+import frc.robot.Subsystem.Alignment;
 
 public class Teleop {
 
@@ -15,6 +18,7 @@ public class Teleop {
     Controller operatorController;
 
     Mecanum mecanum;
+    Alignment alignment;
     ScoringControl scoringControl;
 
     private double controllerLeftX;
@@ -28,19 +32,30 @@ public class Teleop {
     public boolean ElevatorIsUp;
     public double EffectorSpeed = -0.2;
 
+    private boolean aligning = false;
+    private boolean aButtonPressed;
+    private boolean rightBumperPressed;
+    private boolean leftBumperPressed;
+
     public Teleop() {
         driverController = new Controller(PortMap.DRIVER_CONTROLLER);
         if (!driverController.isOperational()) {
             System.out.println("404 Controller not found :(");
         }
+    
+        mecanum = Mecanum.getInstance();
+        alignment = Alignment.getInstance();
+        scoringControl = ScoringControl.getInstance();
+
+        aButtonPressed = driverController.getAButtonPressed();
+        rightBumperPressed = driverController.getRightBumperButtonPressed();
+        leftBumperPressed = driverController.getLeftBumperButtonPressed();
+        
 
         operatorController = new Controller(PortMap.OPERATOR_CONTROLLER);
         if (!operatorController.isOperational()) {
             System.out.println("404 Controller not found :(");
         }
-
-        mecanum = Mecanum.getInstance();
-        scoringControl = ScoringControl.getInstance();
     }
 
     public void teleopPeriodic() {
@@ -55,23 +70,44 @@ public class Teleop {
         double forward;
         double strafe;
         double rotation;
-
-        if (Math.abs(controllerLeftY) >= 0.1) {
-            forward = (controllerLeftY);
-        } else {
-            forward = 0;
+        
+        if(aButtonPressed){
+            aligning = true;
+            alignment.alignReef();
         }
-        if (Math.abs(controllerLeftX) >= 0.1) {
-            strafe = (controllerLeftX);
-        } else {
-            strafe = 0;
+        if(rightBumperPressed){
+            aligning = true;
+            alignment.alignRight();
         }
-        if (Math.abs(controllerRightX) >= 0.1) {
-            rotation = (controllerRightX);
-        } else {
-            rotation = 0;
+        if(leftBumperPressed){
+            aligning = true;
+            alignment.alignLeft();
         }
-        mecanum.driveWithSpeed(forward, strafe, rotation);
+        if(!aButtonPressed && !rightBumperPressed && !leftBumperPressed){
+            aligning = false;
+        }
+        if(!aligning){
+            if(Math.abs(controllerLeftY) >= 0.5){
+                forward = (controllerLeftY*0.5);
+            }
+            else{
+                forward = 0;
+            }
+            if(Math.abs(controllerLeftX) >= 0.5){
+                strafe = (controllerLeftX*0.5);
+            }
+            else{
+                strafe = 0;
+            }
+            if(Math.abs(controllerRightX) >= 0.2){
+                rotation = (controllerRightX*0.35);
+            }
+            else{
+                rotation = 0;
+            }
+            mecanum.drive(forward, strafe, rotation);
+        }
+      
     }
 
     public void manipulatorControl() {
