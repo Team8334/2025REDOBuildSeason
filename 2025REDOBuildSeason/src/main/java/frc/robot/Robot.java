@@ -18,8 +18,12 @@ import frc.robot.Subsystem.Mecanum;
 import frc.robot.Devices.Gyro;
 import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.SubsystemManager;
+import frc.robot.Subsystem.ScoringControl;
 
 
+import frc.robot.Teleop;
+import frc.robot.Subsystem.Elevator;
+import frc.robot.Subsystem.SubsystemManager;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -51,11 +55,12 @@ public class Robot extends TimedRobot {
     Gyro.getInstance();
     teleop = new Teleop();
     Mecanum.getInstance();
-    //ScoringControl.getInstance();
 
     frontLimelight = frontLimelight.getInstance();
 
-    Mecanum.getInstance();
+    ScoringControl.getInstance();
+
+   // Elevator.getInstance();
 
     SubsystemManager.initializeSubsystems();
   }
@@ -71,7 +76,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     SubsystemManager.updateSubsystems();
-    frontLimelight.log();
     
   }
 
@@ -157,5 +161,6 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
 }
