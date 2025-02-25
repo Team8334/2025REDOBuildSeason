@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.ScoringControl;
+import frc.robot.Subsystem.Elevator;
+
 
 public class Teleop {
 
@@ -15,6 +17,7 @@ public class Teleop {
     Controller operatorController;
 
     Mecanum mecanum;
+    Elevator elevator;
     ScoringControl scoringControl;
 
     private double controllerLeftX;
@@ -41,6 +44,7 @@ public class Teleop {
 
         mecanum = Mecanum.getInstance();
         scoringControl = ScoringControl.getInstance();
+        elevator = Elevator.getInstance();
     }
 
     public void teleopPeriodic() {
@@ -78,30 +82,29 @@ public class Teleop {
         scoringControl.setManualEffectorSpeed(operatorController.getRightY() * EffectorSpeed);
 
         if (operatorController.getAButton()) {
-            scoringControl.OperatorWantsCoral();
+            scoringControl.moveToRamp();
         }
-        if (operatorController.getBButton()) {
-            scoringControl.eject();
-        }
+        // if (operatorController.getBButton()) {
+        //     scoringControl.eject();
+        // }
 
         // if (operatorController.getAButton() && !IsDriveFast) {
         // scoringControl.ScoreL1();
         // System.out.println("L1");
         // }
 
-        if (operatorController.getBButton() && !IsDriveFast) {
-            scoringControl.ScoreL2();
+        if (operatorController.getBButton()) {
+            scoringControl.scoreL2();
             System.out.println("L2");
         }
 
-        if (operatorController.getXButton() && !IsDriveFast) {
-            scoringControl.ScoreL3();
+        if (operatorController.getXButton()) {
+            scoringControl.scoreL3();
             System.out.println("L3");
         }
 
-        if (operatorController.getYButton() && !IsDriveFast) {
-            scoringControl.ScoreL4();
-            System.out.println("L4");
+        if (operatorController.getYButton()) {
+            scoringControl.scoreL4();
         }
     }
 
