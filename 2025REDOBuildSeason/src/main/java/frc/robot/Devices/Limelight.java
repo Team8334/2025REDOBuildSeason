@@ -3,7 +3,7 @@ package frc.robot.Devices;
 import frc.robot.Interfaces.Vision;
 import frc.robot.Interfaces.Devices;
 import frc.robot.Data.ExternalLibraries.LimelightHelpers;
-
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -29,6 +29,8 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     double y;
     double area;
     double l;
+    double[] targetPose;
+    double targetRotation;
 
     private NetworkTable table;
     private String tableName;
@@ -51,6 +53,9 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         ty = table.getEntry("ty");
         ta = table.getEntry("ta");
         tl = table.getEntry("tl");
+
+        targetPose = LimelightHelpers.getTargetPose_RobotSpace(limelightName);
+        targetRotation = targetPose.rotation()
         
         table.getEntry("ledMode").setNumber(1); //0=default; 1=off; 2=blinking; 3 = on
     }

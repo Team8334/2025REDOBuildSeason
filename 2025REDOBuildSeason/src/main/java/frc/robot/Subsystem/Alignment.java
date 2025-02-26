@@ -39,11 +39,11 @@ public class Alignment implements Subsystem{
         alignmentTimer.restart();
 
         if(alignmentTimer.get() <= 2 && x > -25){
-            mecanum.drive(0.0,-0.25,0.0);
+            mecanum.driveWithSpeed(0.0,-0.25,0.0);
         }
         else{
             alignmentTimer.stop();
-            mecanum.drive(0,0,0);
+            mecanum.driveWithSpeed(0,0,0);
             System.out.println("Alignment complete");
         }
     }
@@ -52,11 +52,11 @@ public class Alignment implements Subsystem{
         alignmentTimer.restart();
 
         if(alignmentTimer.get() <= 2 && x < 25){
-            mecanum.drive(0.0,0.25,0.0);
+            mecanum.driveWithSpeed(0.0,0.25,0.0);
         }
         else{
             alignmentTimer.stop();
-            mecanum.drive(0,0,0);
+            mecanum.driveWithSpeed(0,0,0);
             System.out.println("Alignment complete");
         }
     }
@@ -65,11 +65,11 @@ public class Alignment implements Subsystem{
         alignmentTimer.restart();
 
         if(alignmentTimer.get() <= 5 || area < 25){
-            mecanum.drive(targeting.frontFollow("reef"), 0, targeting.frontLockOn("reef"));
+            mecanum.driveWithSpeed(targeting.frontFollow("reef"), 0, targeting.frontLockOn("reef"));
         }
         else{
             alignmentTimer.stop();
-            mecanum.drive(0, 0, 0);
+            mecanum.driveWithSpeed(0, 0, 0);
             System.out.println("Alignment complete");
         }
     }

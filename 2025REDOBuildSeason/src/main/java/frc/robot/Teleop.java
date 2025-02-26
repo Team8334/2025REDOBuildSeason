@@ -24,6 +24,7 @@ public class Teleop {
     private double controllerLeftX;
     private double controllerLeftY;
     private double controllerRightX;
+    public String driveState = "Idle";
 
     public double SafeSpeed = 0.1;
     public boolean IsSlowMode = false;
@@ -32,7 +33,6 @@ public class Teleop {
     public boolean ElevatorIsUp;
     public double EffectorSpeed = -0.2;
 
-    private boolean aligning = false;
     private boolean aButtonPressed;
     private boolean rightBumperPressed;
     private boolean leftBumperPressed;
@@ -60,7 +60,7 @@ public class Teleop {
 
     public void teleopPeriodic() {
         driveBaseControl();
-        manipulatorControl();
+        //manipulatorControl();
     }
 
     public void driveBaseControl() {
@@ -70,44 +70,65 @@ public class Teleop {
         double forward;
         double strafe;
         double rotation;
-        
-        if(aButtonPressed){
-            aligning = true;
-            alignment.alignReef();
+
+        switch(driveState){
+            case "Idle": {
+                if(Math.abs(controllerLeftY) >= 0.2 || Math.abs(controllerLeftX) >= 0.2 || Math.abs(controllerRightX) >= 0.2){
+                    driveState = "Manually Driving";
+                }
+                if(Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2){
+                    if(aButtonPressed || rightBumperPressed || leftBumperPressed){
+                        driveState = "Automatically Driving";
+                    }
+                }
+                mecanum.driveWithSpeed(0, 0, 0);
+            }
+            break;
+            case "Manually Driving": {
+                if(Math.abs(controllerLeftY) >= 0.2){
+                    forward = (controllerLeftY);
+                }
+                else{
+                    forward = 0;
+                }
+                if(Math.abs(controllerLeftX) >= 0.2){
+                    strafe = (controllerLeftX);
+                }
+                else{
+                    strafe = 0;
+                }
+                if(Math.abs(controllerRightX) >= 0.2){
+                    rotation = (controllerRightX);
+                }
+                else{
+                    rotation = 0;
+                }
+                if(Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2){
+                    driveState = "Idle";
+                }
+                mecanum.driveWithSpeed(forward, strafe, rotation);
+            }
+            break;
+            case "Automatically Driving": {
+                if(Math.abs(controllerLeftY) >= 0.2 || Math.abs(controllerLeftX) >= 0.2 || Math.abs(controllerRightX) >= 0.2){
+                    driveState = "Manually Driving";
+                }
+                if(aButtonPressed){
+                    alignment.alignReef();
+                }
+                else if(rightBumperPressed){
+                    alignment.alignRight();
+                }
+                else if(leftBumperPressed){
+                    alignment.alignLeft();
+                }
+                else{
+                    driveState = "Idle";
+                }
+            }
+            break;
         }
-        if(rightBumperPressed){
-            aligning = true;
-            alignment.alignRight();
-        }
-        if(leftBumperPressed){
-            aligning = true;
-            alignment.alignLeft();
-        }
-        if(!aButtonPressed && !rightBumperPressed && !leftBumperPressed){
-            aligning = false;
-        }
-        if(!aligning){
-            if(Math.abs(controllerLeftY) >= 0.5){
-                forward = (controllerLeftY*0.5);
-            }
-            else{
-                forward = 0;
-            }
-            if(Math.abs(controllerLeftX) >= 0.5){
-                strafe = (controllerLeftX*0.5);
-            }
-            else{
-                strafe = 0;
-            }
-            if(Math.abs(controllerRightX) >= 0.2){
-                rotation = (controllerRightX*0.35);
-            }
-            else{
-                rotation = 0;
-            }
-            mecanum.drive(forward, strafe, rotation);
-        }
-      
+        //System.out.println(driveState);
     }
 
     public void manipulatorControl() {
