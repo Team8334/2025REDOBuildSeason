@@ -3,9 +3,25 @@ package frc.robot.Devices;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Data.PortMap;
+
+import com.studica.frc.AHRS;
+
 import edu.wpi.first.math.MathUtil;
 
 public class ModifiedEncoders {
+    
+    private static ModifiedEncoders instance = null;
+    AHRS ahrs;
+
+    public static ModifiedEncoders getInstance()
+    {
+        if (instance == null)
+        {
+            instance = new ModifiedEncoders();
+        }
+        return instance;
+    }
+    
     enum output{
         getRate,
         getDistance

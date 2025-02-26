@@ -30,7 +30,7 @@ public class EffectorAction implements Actions{
 
     @Override
     public void update(){
-        score.EffectorStateProcessing(); // NEED TO ADD DOUBLE SECONDS AND SCORING STATE TO SCORINGCONTROL?
+        score.EffectorStateProcessing(); // EffectorRun better?
     }
 
     @Override

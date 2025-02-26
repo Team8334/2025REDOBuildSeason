@@ -39,7 +39,6 @@ public class TurnDegreesAction implements Actions{
     @Override
     public void start()
     {
-        //gyro.reset();
         currentDegrees = gyro.getAngleDegrees();
         targetDegrees = (desiredDegrees + currentDegrees); // this is how much in total degrees we need to turn
         timer = new Timer();
