@@ -70,7 +70,6 @@ public class ModifiedEncoders {
 
     public double getExtendedCyclePosition(){
         double currentValue = dutyCycleEncoder.get();
-        System.out.println(currentValue + "," + cycle + "," + saveEncoder);
         if((saveEncoder - currentValue) >= 0.5){
             cycle += 1;
         }

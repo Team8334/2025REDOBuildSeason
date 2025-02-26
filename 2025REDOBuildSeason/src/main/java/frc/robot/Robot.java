@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
   Teleop teleop;
   FrontLimelight frontLimelight;
   Elevator elevator;
+  ScoringControl scoringControl;
 
   
 
@@ -61,13 +62,15 @@ public class Robot extends TimedRobot {
 
     frontLimelight = frontLimelight.getInstance();
 
-    ScoringControl.getInstance();
+    scoringControl =ScoringControl.getInstance();
 
     elevator = Elevator.getInstance();
 
     SubsystemManager.initializeSubsystems();
 
     elevator.elevatorZero();
+
+    scoringControl.passive();
   }
 
   /**

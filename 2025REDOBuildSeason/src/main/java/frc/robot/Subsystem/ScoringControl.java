@@ -21,8 +21,8 @@ public class ScoringControl implements Subsystem {
     Timer timer;
     Elevator elevator;
 //comment these back in!!
-   // private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
-   // private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
+    private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
+    private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
 
     private LaserCan lc = new LaserCan(PortMap.LASER_CAN);
     public int laserDetectedDistance;
@@ -47,8 +47,8 @@ public class ScoringControl implements Subsystem {
     }
 
     public void EffectorRun(){
-      //  effectorMotorLower.set(effectorUpper);
-      //  effectorMotorUpper.set(effectorLower);
+        effectorMotorLower.set(effectorUpper);
+        effectorMotorUpper.set(effectorLower);
     }
 
     public void laserConfig(){

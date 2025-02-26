@@ -7,6 +7,6 @@ public class EncoderValues {
     public static final double ELEVATOR_RAMP = -0.42;
     public static final double ELEVATOR_L1 = 0.04; // 46cm
     public static final double ELEVATOR_L2 = 0.74; //81cm
-    public static final double ELEVATOR_L3 = 1.91; //121 cm
-    public static final double ELEVATOR_L4 = 4.21; // 183cm
+    public static final double ELEVATOR_L3 = 2.07; //121 cm
+    public static final double ELEVATOR_L4 = 4.3; // 183cm
 }

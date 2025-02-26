@@ -41,7 +41,7 @@ public class Elevator implements Subsystem {
     private double elevatorTwo;
     public double elevatorSpeed = .15; //adjust this
 
-    private final ProfiledPIDController m_controller = new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(2.45, 2.45));
+    private final ProfiledPIDController m_controller = new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(4.2, 6));
     ElevatorFeedforward m_feedforward = new ElevatorFeedforward(kElevatorkS, kElevatorkG, kElevatorkV, kElevatorkA);
 
     private Mechanism2d m_mech2d;
@@ -95,8 +95,8 @@ public class Elevator implements Subsystem {
         m_controller.setGoal(goal);
         double pidOutput = m_controller.calculate(-1 * encoder.getExtendedCyclePosition());
         double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
-        elevatorMotorOne.setVoltage(feedforwardOutput + pidOutput/2);
-        elevatorMotorTwo.setVoltage((feedforwardOutput + pidOutput/2)*-1);
+        elevatorMotorOne.setVoltage(feedforwardOutput + pidOutput);
+        elevatorMotorTwo.setVoltage((feedforwardOutput + pidOutput)*-1);
         SmartDashboard.putNumber("Elevator/motorOneVoltage", feedforwardOutput+pidOutput);
         SmartDashboard.putNumber("Elevator/goal", goal);
         //elevatorOne = elevatorSpeed;
