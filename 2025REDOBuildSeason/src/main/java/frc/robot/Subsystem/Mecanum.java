@@ -46,7 +46,7 @@ public class Mecanum implements Subsystem {
     // Creating my kinematics object using the wheel locations.
     MecanumDriveKinematics m_kinematics = new MecanumDriveKinematics(
             m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
-    private double where_you_want_to_be;
+    private double desiredAngle;
 
     public static Mecanum getInstance() {
         if (instance == null) {
@@ -103,10 +103,10 @@ public class Mecanum implements Subsystem {
         double currentAngle = (gyro.getAngleDegrees()*(Math.PI/180));
         //maybe try is sftrafe over a threshold and rotationInput is over a threshold
         if (Math.abs(currentAngleVelocity) >= 0.15 && Math.abs(rotationInput) >= 0) {
-            where_you_want_to_be = currentAngle;
+            desiredAngle = currentAngle;
         }
         if(Math.abs(rotationInput) <= .2){
-            double correction = strafePID.calculate(currentAngle, where_you_want_to_be);
+            double correction = strafePID.calculate(currentAngle, desiredAngle);
             SmartDashboard.putNumber(getName()+"/correction", correction);
             SmartDashboard.putNumber(getName()+"/where_you_want_to_be", where_you_want_to_be);
             SmartDashboard.putNumber(getName()+"/currentAngle", currentAngle);

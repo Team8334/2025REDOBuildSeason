@@ -4,6 +4,7 @@ import frc.robot.Interfaces.Vision;
 import frc.robot.Interfaces.Devices;
 import frc.robot.Data.ExternalLibraries.LimelightHelpers;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -30,10 +31,11 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     double area;
     double l;
     double[] targetPose;
-    double targetRotation;
+    Rotation2d targetRotation;
 
     private NetworkTable table;
     private String tableName;
+    private LimelightTarget_Fiducial limelightTarget_Fiducial;
 
     // how many degrees back is your limelight rotated from perfectly vertical? NEED VALUE FOR ROBOT
     protected double limelightMountAngleDegrees = 0; 
@@ -48,6 +50,8 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         this.limelightID = limelightID;
         this.tableName = tableName;
 
+        limelightTarget_Fiducial = new LimelightTarget_Fiducial();
+
         table = NetworkTableInstance.getDefault().getTable(tableName);
         tx = table.getEntry("tx");
         ty = table.getEntry("ty");
@@ -55,7 +59,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         tl = table.getEntry("tl");
 
         targetPose = LimelightHelpers.getTargetPose_RobotSpace(limelightName);
-        targetRotation = targetPose.rotation()
+        targetRotation = limelightTarget_Fiducial.getTargetPose_RobotSpace2D().getRotation();
         
         table.getEntry("ledMode").setNumber(1); //0=default; 1=off; 2=blinking; 3 = on
     }
@@ -83,6 +87,10 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
 
     public double getX(){
         return x;
+    }
+
+    public double getTargetRotation(){
+        return targetRotation.getRadians();
     }
 
     public double getArea(){
@@ -157,7 +165,8 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Y", y);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Area", area);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Latency", l);
-        SmartDashboard.putString("Limelight" +limelightID +"/Target Name", findTagName());
+        SmartDashboard.putString("Limelight" + limelightID +"/Target Name", findTagName());
+        SmartDashboard.putNumberArray("Limelight" + limelightID +"/Target Pose", targetPose);
     }
 
     
