@@ -30,8 +30,9 @@ public class Mecanum implements Subsystem {
     private double rotationScalar = ((2 * Math.PI) / 60.0 / 10.71);
     private double desiredAngleVelocity;
     private double currentAngleVelocity;
+    private double desiredAngle;
 
-    private PIDController strafePID = new PIDController(5.5, 0, 0.00001);
+    private PIDController speedControlPID = new PIDController(5.5, 0, 0.00001);
 
     private double MAX_SPEED_CONSTANT_FORWARD = 20; //TO DO: calculate this (meters per sec)
     private double MAX_SPEED_CONSTANT_STRAFE = 20; //Meters per sec. Should calculate this too.
@@ -46,7 +47,7 @@ public class Mecanum implements Subsystem {
     // Creating my kinematics object using the wheel locations.
     MecanumDriveKinematics m_kinematics = new MecanumDriveKinematics(
             m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
-    private double where_you_want_to_be;
+   
 
     public static Mecanum getInstance() {
         if (instance == null) {
@@ -103,12 +104,12 @@ public class Mecanum implements Subsystem {
         double currentAngle = (gyro.getAngleDegrees()*(Math.PI/180));
         //maybe try is sftrafe over a threshold and rotationInput is over a threshold
         if (Math.abs(currentAngleVelocity) >= 0.15 && Math.abs(rotationInput) >= 0) {
-            where_you_want_to_be = currentAngle;
+            desiredAngle = currentAngle;
         }
         if(Math.abs(rotationInput) <= .2){
-            double correction = strafePID.calculate(currentAngle, where_you_want_to_be);
+            double correction = speedControlPID.calculate(currentAngle, desiredAngle);
             SmartDashboard.putNumber(getName()+"/correction", correction);
-            SmartDashboard.putNumber(getName()+"/where_you_want_to_be", where_you_want_to_be);
+            SmartDashboard.putNumber(getName()+"/desiredAngle", desiredAngle);
             SmartDashboard.putNumber(getName()+"/currentAngle", currentAngle);
             SmartDashboard.putNumber(getName()+"/currentAngleVelocity", currentAngleVelocity);
 
@@ -152,7 +153,7 @@ public class Mecanum implements Subsystem {
         frontLeftMotor = new NEOSparkMaxMotor(PortMap.MECANUM_FRONT_LEFT);
         frontLeftMotor.setInverted(true);
         rearLeftMotor.setInverted(true);
-        where_you_want_to_be = (gyro.getAngleDegrees()*(Math.PI/180));
+        desiredAngle = (gyro.getAngleDegrees()*(Math.PI/180));
     }
 
     @Override
