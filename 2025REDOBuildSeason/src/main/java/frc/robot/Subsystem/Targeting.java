@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import frc.robot.Devices.Limelight;
 import frc.robot.Subsystem.FrontLimelight;
+import frc.robot.Devices.Gyro;
 
 public class Targeting implements Subsystem // This class contains functions for finding and
                                             // locking onto elements of the field using
@@ -24,6 +25,12 @@ public class Targeting implements Subsystem // This class contains functions for
 
     private PIDController xPID = new PIDController(1, 0, 0);
     private PIDController areaPID = new PIDController(1, 0, 0);
+    private PIDController rotationPID = new PIDController(1, 0, 0);
+
+    private Gyro gyro = Gyro.getInstance();
+
+    double currentAngle = gyro.getAngleDegrees();
+    double desiredAngle;
 
     Limelight limelight;
     FrontLimelight frontLimelight;
@@ -52,13 +59,25 @@ public class Targeting implements Subsystem // This class contains functions for
     {
         frontLimelight.setPipeline(0);
         frontTags = frontLimelight.findTagName();
-        if (frontTags == target)
-        {
+        if (frontTags == target){
             frontLockOnState = "Locking on to target";
             return (xPID.calculate(frontLimelight.getX(), 0) / 150.0);//150 is an arbitrary speed divisor. Increase/decrease as needed.
         }
-        else
-        {
+        else{
+            frontLockOnState = "Cannot see target";
+            return 0.0;
+        }
+    }
+
+    public double frontAngleAlign(String target){
+        desiredAngle = frontLimelight.getTargetRotation();
+        frontLimelight.setPipeline(0);
+        frontTags = frontLimelight.findTagName();
+        if (frontTags == target){
+            frontLockOnState = "Locking on to target";
+            return (rotationPID.calculate(currentAngle, desiredAngle) / 100);
+        }
+        else {
             frontLockOnState = "Cannot see target";
             return 0.0;
         }
@@ -69,13 +88,11 @@ public class Targeting implements Subsystem // This class contains functions for
     {
         frontLimelight.setPipeline(0);
         frontTags = frontLimelight.findTagName();
-        if (frontTags == target)
-        {
+        if (frontTags == target){
             frontFollowState = "Following target";
             return (areaPID.calculate(frontLimelight.getArea(), 25) / 50);//50 is an arbitrary speed divisor. Increase/decrease as needed.
         }
-        else
-        {
+        else{
             frontFollowState = "Cannot see target";
             return 0.0;
         }

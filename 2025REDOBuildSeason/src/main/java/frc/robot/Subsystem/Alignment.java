@@ -65,7 +65,20 @@ public class Alignment implements Subsystem{
         alignmentTimer.restart();
 
         if(alignmentTimer.get() <= 5 || area < 25){
-            mecanum.driveWithSpeed(targeting.frontFollow("reef"), 0, targeting.frontLockOn("reef"));
+            mecanum.driveWithSpeed(0, targeting.frontLockOn("reef"), targeting.frontAngleAlign("reef"));
+        }
+        else{
+            alignmentTimer.stop();
+            mecanum.driveWithSpeed(0, 0, 0);
+            System.out.println("Alignment complete");
+        }
+    }
+
+    public void driveToReef(){
+        alignmentTimer.restart();
+
+        if(alignmentTimer.get() <= 5 || area < 25){
+            mecanum.driveWithSpeed(targeting.frontFollow("reef"), 0, 0);
         }
         else{
             alignmentTimer.stop();

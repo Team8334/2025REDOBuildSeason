@@ -36,6 +36,7 @@ public class Teleop {
     private boolean aButtonPressed;
     private boolean rightBumperPressed;
     private boolean leftBumperPressed;
+    private boolean bButtonPressed;
 
     public Teleop() {
         driverController = new Controller(PortMap.DRIVER_CONTROLLER);
@@ -50,7 +51,7 @@ public class Teleop {
         aButtonPressed = driverController.getAButtonPressed();
         rightBumperPressed = driverController.getRightBumperButtonPressed();
         leftBumperPressed = driverController.getLeftBumperButtonPressed();
-        
+        bButtonPressed = driverController.getBButtonPressed();
 
         operatorController = new Controller(PortMap.OPERATOR_CONTROLLER);
         if (!operatorController.isOperational()) {
@@ -77,7 +78,7 @@ public class Teleop {
                     driveState = "Manually Driving";
                 }
                 if(Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2){
-                    if(aButtonPressed || rightBumperPressed || leftBumperPressed){
+                    if(aButtonPressed || rightBumperPressed || leftBumperPressed || bButtonPressed){
                         driveState = "Automatically Driving";
                     }
                 }
@@ -115,6 +116,9 @@ public class Teleop {
                 }
                 if(aButtonPressed){
                     alignment.alignReef();
+                }
+                if(bButtonPressed){
+                    alignment.driveToReef();
                 }
                 else if(rightBumperPressed){
                     alignment.alignRight();

@@ -90,7 +90,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     }
 
     public double getTargetRotation(){
-        return targetRotation.getRadians();
+        return targetRotation.getDegrees();
     }
 
     public double getArea(){
