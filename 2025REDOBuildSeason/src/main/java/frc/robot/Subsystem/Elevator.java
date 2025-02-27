@@ -41,7 +41,7 @@ public class Elevator implements Subsystem {
     private double elevatorTwo;
     public double elevatorSpeed = .15; //adjust this
 
-    private final ProfiledPIDController m_controller = new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(2.45, 2.45));
+    private final ProfiledPIDController m_controller = new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(4.2, 6));
     ElevatorFeedforward m_feedforward = new ElevatorFeedforward(kElevatorkS, kElevatorkG, kElevatorkV, kElevatorkA);
 
     private Mechanism2d m_mech2d;
@@ -59,12 +59,20 @@ public class Elevator implements Subsystem {
     {
         encoder = new ModifiedEncoders(PortMap.ELEVATOR_ENCODER);
         elevatorMotorOne = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_ONE);
-        //elevatorMotorTwo = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_TWO);
+        elevatorMotorTwo = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_TWO);
 
         //elevatorMotorOne.set(elevatorOne);
         //elevatorMotorTwo.set(elevatorTwo);
+
+       // elevatorMotorTwo.setInverted(true);
         
         SubsystemManager.registerSubsystem(this);
+
+        encoder.zeroCycle();
+    }
+
+    public void elevatorZero(){
+        encoder.zeroCycle();
     }
     
     public void updateTelemetry()
@@ -82,11 +90,13 @@ public class Elevator implements Subsystem {
         
     }
     
+
     public void reachGoal(double goal) {
         m_controller.setGoal(goal);
         double pidOutput = m_controller.calculate(-1 * encoder.getExtendedCyclePosition());
         double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
-        elevatorMotorOne.setVoltage(feedforwardOutput + pidOutput/2);
+        elevatorMotorOne.setVoltage(feedforwardOutput + pidOutput);
+        elevatorMotorTwo.setVoltage((feedforwardOutput + pidOutput)*-1);
         SmartDashboard.putNumber("Elevator/motorOneVoltage", feedforwardOutput+pidOutput);
         SmartDashboard.putNumber("Elevator/goal", goal);
         //elevatorOne = elevatorSpeed;

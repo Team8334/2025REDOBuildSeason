@@ -19,7 +19,7 @@ import frc.robot.Devices.Gyro;
 import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.SubsystemManager;
 import frc.robot.Subsystem.ScoringControl;
-
+import au.grapplerobotics.CanBridge;
 
 import frc.robot.Teleop;
 import frc.robot.Subsystem.Elevator;
@@ -32,6 +32,8 @@ import frc.robot.Subsystem.SubsystemManager;
 public class Robot extends TimedRobot {
   Teleop teleop;
   FrontLimelight frontLimelight;
+  Elevator elevator;
+  ScoringControl scoringControl;
 
   
 
@@ -49,8 +51,10 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public void robotInit() {
-    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    // m_chooser.addOption("My Auto", kCustomAuto);
+    //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    // m_chooser.addOption("My Auto");
+    CanBridge.runTCP();
+
     SmartDashboard.putData("Auto choices", m_chooser);
     Gyro.getInstance();
     teleop = new Teleop();
@@ -58,11 +62,15 @@ public class Robot extends TimedRobot {
 
     frontLimelight = frontLimelight.getInstance();
 
-    ScoringControl.getInstance();
+    scoringControl =ScoringControl.getInstance();
 
-   // Elevator.getInstance();
+    elevator = Elevator.getInstance();
 
     SubsystemManager.initializeSubsystems();
+
+    elevator.elevatorZero();
+
+    scoringControl.passive();
   }
 
   /**
