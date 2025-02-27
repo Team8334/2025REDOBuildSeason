@@ -37,6 +37,9 @@ public class ModifiedEncoders {
     private double saveEncoder;
     private int cycle = 0;
     
+    public ModifiedEncoders(){
+        
+    }
 
     public ModifiedEncoders(int channel){
         //dutyCycleEncoder = new DutyCycleEncoder(channel);

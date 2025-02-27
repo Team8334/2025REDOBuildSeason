@@ -21,9 +21,9 @@ public class AutoMissionChooser {
         // actual missions
         MoveAcrossLineMission,
         doNothing,
-        RedScoreL1,
+        RedScoreL2,
         RedScoreL4,
-        BlueScoreL1,
+        BlueScoreL2,
         BlueScoreL4,
 
     }
@@ -44,7 +44,7 @@ public class AutoMissionChooser {
         // add more here as needed, is what is seen when choosing a mission
         missionChooser.addOption("Do Nothing", DesiredMission.doNothing);
         missionChooser.addOption("Leave Community", DesiredMission.MoveAcrossLineMission);
-        missionChooser.addOption("Scoring L1", DesiredMission.ScoringL1Mission);
+        missionChooser.addOption("Scoring L2", DesiredMission.ScoringL1Mission);
         missionChooser.addOption("Scoring L4", DesiredMission.ScoringL4Mission);
         missionChooser.addOption("Testing", DesiredMission.Testing);
 
@@ -99,10 +99,10 @@ public class AutoMissionChooser {
             // if scoring in L1, and does mission according to alliance
             case ScoringL1Mission:
                 if (alliance == "Red") {
-                    return Optional.of(new RedScoreL1());
+                    return Optional.of(new RedScoreL2());
                 }
                 else if (alliance == "Blue") {
-                    return Optional.of(new BlueScoreL1());
+                    return Optional.of(new BlueScoreL2());
                 }
                 else {
                     return Optional.of(new DoNothingMission());

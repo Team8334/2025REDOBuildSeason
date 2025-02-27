@@ -3,7 +3,7 @@ package frc.robot.Auto.Actions;
 //imports important things
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import frc.robot.Data.EncoderValues;
 import frc.robot.Subsystem.ScoringControl;
 
 /* 
@@ -42,6 +42,6 @@ public class EffectorAction implements Actions{
     public void done(){
         timer.stop();
         score.EffectorStateProcessing();
-        System.out.println("Scoring in L1 done");
+        System.out.println("Scoring done");
     }
 }
