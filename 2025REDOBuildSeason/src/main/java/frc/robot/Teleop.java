@@ -30,6 +30,7 @@ public class Teleop {
     public boolean OperatorWants = false;
     public boolean ElevatorIsUp;
     public double EffectorSpeed = -0.2;
+    public double factorOfReduction;
 
     public Teleop() {
         driverController = new Controller(PortMap.DRIVER_CONTROLLER);
@@ -75,13 +76,19 @@ public class Teleop {
         } else {
             rotation = 0;
         }
-        mecanum.driveWithSpeed(forward, strafe, rotation);
-    }
+        //mecanum.driveWithSpeed(forward, strafe, rotation);
 
+        if(factorOfReduction > 0){
+            mecanum.driveWithSpeed(forward/factorOfReduction, strafe/factorOfReduction, rotation/factorOfReduction);
+        } else {
+            mecanum.driveWithSpeed(forward, strafe, rotation);
+        }
+    }
     public void manipulatorControl() {
         scoringControl.setManualEffectorSpeed(operatorController.getRightY() * EffectorSpeed);
 
         if (operatorController.getAButton()) {
+            factorOfReduction = 0;
             scoringControl.moveToRamp();
         }
         // if (operatorController.getBButton()) {
@@ -95,16 +102,20 @@ public class Teleop {
 
         if (operatorController.getBButton()) {
             scoringControl.scoreL2();
+            factorOfReduction = 15;
             System.out.println("L2");
         }
 
         if (operatorController.getXButton()) {
             scoringControl.scoreL3();
+            factorOfReduction = 19;
             System.out.println("L3");
         }
 
         if (operatorController.getYButton()) {
             scoringControl.scoreL4();
+            factorOfReduction = 23;
+            System.out.println("L4");
         }
     }
 
