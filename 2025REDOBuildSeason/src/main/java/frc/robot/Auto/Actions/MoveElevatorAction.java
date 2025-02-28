@@ -36,6 +36,7 @@ public class MoveElevatorAction implements Actions{
     @Override
     public void update(){
         scoringControl.EffectorStateProcessing();
+        SmartDashboard.putString("Elevator State: " + state);
     }
     
 
@@ -47,5 +48,6 @@ public class MoveElevatorAction implements Actions{
     @Override
     public void done(){
         timer.stop();
+        state = "passive";
     }
 }

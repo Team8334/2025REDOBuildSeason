@@ -9,15 +9,22 @@ import frc.robot.Auto.Actions.DriveForTimeAction;
 import frc.robot.Auto.Actions.ParallelAction;
 import frc.robot.Auto.Actions.TurnDegreesAction;
 import frc.robot.Auto.Actions.WaitAction;
+import frc.robot.Auto.Actions.MoveElevatorAction;
+import frc.robot.Auto.Actions.EffectorAction;
 
 public class Testing extends MissionBase{
     
     @Override
     protected void routine() throws AutoMissionEndedException {
        
-        runAction(new TurnDegreesAction(-110, 3));
-        runAction(new DriveForTimeAction (0.2, 2));;
-        runAction(new WaitAction(1));
+    // Testing actions
+        runAction(new MoveElevatorAction(2, "Score L2"));
+        //runAction(new EffectorAction(1));
+        
+    // Working actions
+        //runAction(new TurnDegreesAction(-110, 3));
+        //runAction(new DriveForTimeAction (0.2, 2));;
+        //runAction(new WaitAction(1));
         //runAction(new TurnDegreesAction(180, 3));
     }
 }

@@ -79,6 +79,7 @@ public class AutoMissionChooser {
 
         if (cachedDesiredMission != desiredMission) {
             System.out.println("Auto selection changed, updating creator: desiredMission->" + desiredMission.name());
+            System.out.println("String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral");
             autoMission = getAutoMissionForParams(desiredMission);
         }
 

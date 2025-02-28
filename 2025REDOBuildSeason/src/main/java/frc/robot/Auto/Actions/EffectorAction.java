@@ -30,7 +30,7 @@ public class EffectorAction implements Actions{
 
     @Override
     public void update(){
-        score.EffectorStateProcessing(); // EffectorRun better?
+        score.EffectorRun();
     }
 
     @Override
