@@ -11,6 +11,7 @@ import frc.robot.Subsystem.Mecanum;
 public class FrontLockOnAction implements Actions
 {
     private double forward;
+    private double strafe;
     private double rotation;
 
     private double toleranceDistance = 0.0025;
@@ -18,7 +19,7 @@ public class FrontLockOnAction implements Actions
     private Mecanum mecanum;
 
     private Targeting targeting;
-    private FrontLimelight limelight;
+    private FrontLimelight frontLimelight;
     private String target;
     private boolean driveTo;
 
@@ -29,18 +30,19 @@ public class FrontLockOnAction implements Actions
     /**
      * Run code once when the action is started, for setup
      */
-    public FrontLockOnAction(String target, boolean driveTo, double seconds)
+    public FrontLockOnAction(String target, boolean driveTo, double seconds) //Takes 3 seconds to align, then drives to the thing
     {
         this.driveTo = driveTo;
         this.target = target;
         targeting = Targeting.getInstance();
-        limelight = FrontLimelight.getInstance();
+        frontLimelight = FrontLimelight.getInstance();
         mecanum = Mecanum.getInstance();
 
-        forward = targeting.frontFollow(target);
-        rotation = targeting.frontLockOn(target);
+        forward = targeting.frontFollow(target, 25);
+        strafe = targeting.frontLockOn(target, 0);
+        rotation = targeting.frontAngleAlign(target);
 
-        limelight.setPipeline(0);
+        frontLimelight.setPipeline(0);
 
         this.seconds = seconds;
     }
@@ -61,12 +63,15 @@ public class FrontLockOnAction implements Actions
     @Override
     public void update()
     {
-        if ((limelight.findTagName() != "Unknown") && driveTo && limelight.getPipeline() == 0)
+        if ((frontLimelight.findTagName() != "Unknown") && driveTo && frontLimelight.getPipeline() == 0 && timer.get() <= 3)
         {
-            mecanum.driveWithSpeed(forward, 0, rotation);
-
+            mecanum.driveWithSpeed(0, strafe, rotation);
         }
-        else if ((limelight.findTagName() != "Unknown") && !driveTo && limelight.getPipeline() == 0)
+        if((frontLimelight.findTagName() != "Unknown") && driveTo && frontLimelight.getPipeline() == 0 && timer.get() > 3)
+        {
+            mecanum.driveWithSpeed(forward, 0, 0);
+        }
+        else if ((frontLimelight.findTagName() != "Unknown") && !driveTo && frontLimelight.getPipeline() == 0)
         {
             mecanum.driveWithSpeed(0.0, 0, rotation);
         }
@@ -88,7 +93,7 @@ public class FrontLockOnAction implements Actions
     @Override
     public boolean isFinished()
     {
-        if (timer.get() >= seconds) 
+        if (timer.get() >= seconds || frontLimelight.getArea() >= 25) 
         {
             return true;
         } 

@@ -55,13 +55,13 @@ public class Targeting implements Subsystem // This class contains functions for
         frontLimelight.setAlliance(alliance);
     }
 
-    public double frontLockOn(String target)
+    public double frontLockOn(String target, double desiredX) //0 as Desired X for aligning with the middle
     {
         frontLimelight.setPipeline(0);
         frontTags = frontLimelight.findTagName();
         if (frontTags == target){
             frontLockOnState = "Locking on to target";
-            return (xPID.calculate(frontLimelight.getX(), 0) / 150.0);//150 is an arbitrary speed divisor. Increase/decrease as needed.
+            return (xPID.calculate(frontLimelight.getX(), desiredX) / 150.0);//150 is an arbitrary speed divisor. Increase/decrease as needed.
         }
         else{
             frontLockOnState = "Cannot see target";
@@ -83,14 +83,14 @@ public class Targeting implements Subsystem // This class contains functions for
         }
     }
 
-    public double frontFollow(String target) // Setting "forward" in Mecanum.drive or Mecanum.driveWithSpeed as this function will cause the robot to follow the target. 
-                           // USE AT OWN RISK. Feel free to increase the speed divisor value to make it even slower.
+    public double frontFollow(String target, double desiredArea) // Setting "forward" in Mecanum.drive or Mecanum.driveWithSpeed as this function will cause the robot to follow the target. 
+                           // USE AT OWN RISK. Feel free to increase the speed divisor value to make it even slower. 25 is a good area for going towards something
     {
         frontLimelight.setPipeline(0);
         frontTags = frontLimelight.findTagName();
         if (frontTags == target){
             frontFollowState = "Following target";
-            return (areaPID.calculate(frontLimelight.getArea(), 25) / 50);//50 is an arbitrary speed divisor. Increase/decrease as needed.
+            return (areaPID.calculate(frontLimelight.getArea(), desiredArea) / 50);//50 is an arbitrary speed divisor. Increase/decrease as needed.
         }
         else{
             frontFollowState = "Cannot see target";

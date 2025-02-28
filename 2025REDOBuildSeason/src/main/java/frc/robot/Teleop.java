@@ -115,16 +115,16 @@ public class Teleop {
                     driveState = "Manually Driving";
                 }
                 if(aButtonPressed){
-                    alignment.alignReef();
+                    alignment.align("Reef");
                 }
                 if(bButtonPressed){
-                    alignment.driveToReef();
+                    alignment.driveTo("Reef");
                 }
                 else if(rightBumperPressed){
-                    alignment.alignRight();
+                    alignment.alignRight("Reef");
                 }
                 else if(leftBumperPressed){
-                    alignment.alignLeft();
+                    alignment.alignLeft("Reef");
                 }
                 else{
                     driveState = "Idle";

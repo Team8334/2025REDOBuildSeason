@@ -35,11 +35,11 @@ public class Alignment implements Subsystem{
         return instance;
     }
 
-    public void alignLeft(){
+    public void alignLeft(String target){
         alignmentTimer.restart();
 
         if(alignmentTimer.get() <= 2 && x > -25){
-            mecanum.driveWithSpeed(0.0,-0.25,0.0);
+            mecanum.driveWithSpeed(0.0, targeting.frontLockOn(target, -25),0.0);
         }
         else{
             alignmentTimer.stop();
@@ -48,11 +48,11 @@ public class Alignment implements Subsystem{
         }
     }
 
-    public void alignRight(){
+    public void alignRight(String target){
         alignmentTimer.restart();
 
         if(alignmentTimer.get() <= 2 && x < 25){
-            mecanum.driveWithSpeed(0.0,0.25,0.0);
+            mecanum.driveWithSpeed(0.0, targeting.frontLockOn(target, 25),0.0);
         }
         else{
             alignmentTimer.stop();
@@ -61,11 +61,11 @@ public class Alignment implements Subsystem{
         }
     }
 
-    public void alignReef(){
+    public void align(String target){
         alignmentTimer.restart();
 
         if(alignmentTimer.get() <= 5 || area < 25){
-            mecanum.driveWithSpeed(0, targeting.frontLockOn("reef"), targeting.frontAngleAlign("reef"));
+            mecanum.driveWithSpeed(0, targeting.frontLockOn(target, 0), targeting.frontAngleAlign(target));
         }
         else{
             alignmentTimer.stop();
@@ -74,11 +74,11 @@ public class Alignment implements Subsystem{
         }
     }
 
-    public void driveToReef(){
+    public void driveTo(String target){
         alignmentTimer.restart();
 
         if(alignmentTimer.get() <= 5 || area < 25){
-            mecanum.driveWithSpeed(targeting.frontFollow("reef"), 0, 0);
+            mecanum.driveWithSpeed(targeting.frontFollow(target, 25), 0, 0);
         }
         else{
             alignmentTimer.stop();
