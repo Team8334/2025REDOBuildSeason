@@ -31,6 +31,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     double area;
     double l;
     double[] targetPose;
+    double[] robotPose;
     Rotation2d targetRotation;
 
     private NetworkTable table;
@@ -59,6 +60,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         tl = table.getEntry("tl");
 
         targetPose = LimelightHelpers.getTargetPose_RobotSpace(limelightName);
+        robotPose = LimelightHelpers.getBotPose_TargetSpace(limelightName);
         targetRotation = limelightTarget_Fiducial.getTargetPose_RobotSpace2D().getRotation();
         
         table.getEntry("ledMode").setNumber(1); //0=default; 1=off; 2=blinking; 3 = on
@@ -166,6 +168,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Area", area);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Latency", l);
         SmartDashboard.putString("Limelight" + limelightID +"/Target Name", findTagName());
+        SmartDashboard.putNumberArray("Limelight" + limelightID +"/Robot Pose Target Space", robotPose);
         SmartDashboard.putNumberArray("Limelight" + limelightID +"/Target Pose", targetPose);
     }
 

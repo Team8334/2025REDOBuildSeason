@@ -63,11 +63,11 @@ public class FrontLockOnAction implements Actions
     @Override
     public void update()
     {
-        if ((frontLimelight.findTagName() != "Unknown") && driveTo && frontLimelight.getPipeline() == 0 && timer.get() <= 3)
+        if ((frontLimelight.findTagName() != "Unknown") && driveTo && frontLimelight.getPipeline() == 0 && timer.get() <= 2)
         {
             mecanum.driveWithSpeed(0, strafe, rotation);
         }
-        if((frontLimelight.findTagName() != "Unknown") && driveTo && frontLimelight.getPipeline() == 0 && timer.get() > 3)
+        if((frontLimelight.findTagName() != "Unknown") && driveTo && frontLimelight.getPipeline() == 0 && timer.get() > 2)
         {
             mecanum.driveWithSpeed(forward, 0, 0);
         }
@@ -80,6 +80,7 @@ public class FrontLockOnAction implements Actions
             mecanum.driveWithSpeed(0, 0, 0);
         }
         SmartDashboard.putNumber("forward", forward);
+        SmartDashboard.putNumber("strafe", strafe);
         SmartDashboard.putNumber("rotation", rotation);
     }
 
