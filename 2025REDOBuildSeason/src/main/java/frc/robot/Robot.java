@@ -24,6 +24,7 @@ import au.grapplerobotics.CanBridge;
 import frc.robot.Teleop;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Subsystem.SubsystemManager;
+import frc.robot.Data.States;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -35,11 +36,11 @@ public class Robot extends TimedRobot {
   Elevator elevator;
   ScoringControl scoringControl;
 
+  States state;
+
   private AutoMissionExecutor autoMissionExecutor = new AutoMissionExecutor();
   private AutoMissionChooser autoMissionChooser = new AutoMissionChooser();
 
-  // private static final String kDefaultAuto = "Default";
-  // private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
 
     frontLimelight = frontLimelight.getInstance();
 
-    scoringControl =ScoringControl.getInstance();
+    scoringControl = ScoringControl.getInstance();
 
     elevator = Elevator.getInstance();
 
@@ -65,7 +66,7 @@ public class Robot extends TimedRobot {
 
     elevator.elevatorZero();
 
-    scoringControl.passive();
+    scoringControl.setState(States.PASSIVE);
   }
 
   /**
@@ -104,7 +105,6 @@ public class Robot extends TimedRobot {
   }
 
     m_autoSelected = m_chooser.getSelected();
-    System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /** This function is called periodically during autonomous. */

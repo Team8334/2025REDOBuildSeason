@@ -9,6 +9,7 @@ import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.ScoringControl;
 import frc.robot.Subsystem.Elevator;
+import frc.robot.Data.States;
 
 public class Teleop {
 
@@ -18,6 +19,7 @@ public class Teleop {
     Mecanum mecanum;
     Elevator elevator;
     ScoringControl scoringControl;
+    States state;
 
     private double controllerLeftX;
     private double controllerLeftY;
@@ -87,23 +89,23 @@ public class Teleop {
 
         if (operatorController.getAButton()) {
             factorOfReduction = 0;
-            scoringControl.moveToRamp();
+            scoringControl.setState(States.RAMP);
         }
         
         if (operatorController.getBButton()) {
-            scoringControl.scoreL2();
+            scoringControl.setState(States.SCOREL2);
             factorOfReduction = 12;
             System.out.println("L2");
         }
 
         if (operatorController.getXButton()) {
-            scoringControl.scoreL3();
+            scoringControl.setState(state.SCOREL3);
             factorOfReduction = 15;
             System.out.println("L3");
         }
 
         if (operatorController.getYButton()) {
-            scoringControl.scoreL4();
+            scoringControl.setState(state.SCOREL4);
             factorOfReduction = 18;
             System.out.println("L4");
         }

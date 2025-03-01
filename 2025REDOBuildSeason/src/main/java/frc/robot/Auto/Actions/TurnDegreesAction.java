@@ -4,7 +4,6 @@ package frc.robot.Auto.Actions;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Devices.Gyro;
 
-// imported math things
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -12,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * This action turns the robot a certain number of degrees
  * for a certain number of seconds
  * negative is left and positive is right
- * May immplement pid at some point
+ * May implement pid at some point
  */
 
 public class TurnDegreesAction implements Actions{
@@ -49,8 +48,6 @@ public class TurnDegreesAction implements Actions{
         SmartDashboard.putNumber("targetDegrees ", targetDegrees);
         SmartDashboard.putNumber("desiredDegrees ", desiredDegrees);
         currentDegrees = gyro.getAngleDegrees(); // gets the current degrees
-        System.out.println("currentDegrees: " + currentDegrees);
-        System.out.println("targetDegrees: " + targetDegrees);
         SmartDashboard.putNumber("currentDegreese ", currentDegrees);
         
         turn = (targetDegrees - currentDegrees)/ 180; //the power of the turn, divided to make power less
@@ -62,12 +59,7 @@ public class TurnDegreesAction implements Actions{
 
     @Override
     public boolean isFinished(){
-        if (targetDegrees == currentDegrees || timer.get() >= seconds){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return targetDegrees == currentDegrees || timer.get() >= seconds;
     }
     
     
@@ -75,7 +67,6 @@ public class TurnDegreesAction implements Actions{
     public void done(){
         SmartDashboard.putString( "Current Action", "TurnDegreesAction Ended");
         SmartDashboard.putNumber("turnDegreesAction/speed" , turn);
-        //currentDegrees = targetDegrees;
         mDrive.drive(0, 0, 0);
     }
 }

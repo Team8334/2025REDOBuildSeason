@@ -18,7 +18,7 @@ public class BlueScoreL4 extends MissionBase{
     @Override
     protected void routine() throws AutoMissionEndedException {
        
-        runAction(new WaitAction(AutoMissionChooser.delay)); // MAY NOT BE NEEDED
+        runAction(new WaitAction(AutoMissionChooser.delay)); // a delay to avoid other robots during competition.
         runAction(new DriveForTimeAction(-0.5, 5));
         runAction(new TurnDegreesAction(30, 4));// add 5 degrees because michalangelo has consistently com up 5 degrees short of the needed turn
         runAction(new MoveElevatorAction(2, 0.3)); // May be needed depending on how robot starts

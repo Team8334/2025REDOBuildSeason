@@ -127,12 +127,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     }
     
     public boolean isOperational(){
-        if(limelightName == null){
-            return false;
-        }
-        else{
-            return true;
-        }
+        return limelightName != null;
     }
 
     public void limelightUpdate() {
@@ -142,7 +137,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         l = tl.getDouble(0.0);
     }
 
-    public void logtoSmartDashboard() {
+    public void logToSmartDashboard() {
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target X", x);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Y", y);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Area", area);

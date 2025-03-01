@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Data.EncoderValues;
+import frc.robot.Data.States;
 
 public class ScoringControl implements Subsystem {
 
@@ -31,7 +32,10 @@ public class ScoringControl implements Subsystem {
     private double effectorUpper;
     private double effectorLower;
 
-    public String state = "passive";
+    States state;
+
+    public String monitoringState;
+
     public boolean elevatorIsSafe;
 
     public static ScoringControl getInstance() {
@@ -67,7 +71,7 @@ public class ScoringControl implements Subsystem {
         return laserDetectedDistance;
     }
 
-    public void setState(String state){
+    public void setState(States state){
         this.state = state;
     }
 
@@ -79,80 +83,39 @@ public class ScoringControl implements Subsystem {
     public void EffectorStateProcessing(){
         switch (state)
         {
-            case "passive":
+            case PASSIVE:
                     effectorUpper = 0.0;
                     effectorLower = 0.0;
                     elevator.stop();
+                    monitoringState = "Passive";
                 break;
 
-            case "ramp":
+            case RAMP:
                     elevator.reachGoal(EncoderValues.ELEVATOR_RAMP);
                     
                 break;
 
-            case "Score L1":
+            case SCOREL1:
                     elevator.reachGoal(EncoderValues.ELEVATOR_L1);
                 
                 break;
             
-            case "Score L2":
+            case SCOREL2:
                     elevator.reachGoal(EncoderValues.ELEVATOR_L2);
 
                 break;
 
-            case "Score L3":
+            case SCOREL3:
                     elevator.reachGoal(EncoderValues.ELEVATOR_L3);
                     
                 break;
 
-            case "Score L4":
+            case SCOREL4:
                    elevator.reachGoal(EncoderValues.ELEVATOR_L4);
-                break;
-            
-            case "ejecting coral":
-
                 break;
 
         }
-        SmartDashboard.putString("scoringState", state);
-    }
-
-    public void passive(){
-        state = "passive";
-        elevatorIsSafe = true;
-    }
-
-    public void moveToRamp(){
-        state = "ramp";
-    }
-
-    public void intakeCoral(){
-        state = "operator wants coral";
-        elevatorIsSafe = true;
-    }
-
-    public void scoreL1(){
-        state = "Score L1";
-        elevatorIsSafe = false;
-    }
-
-    public void scoreL2(){
-        state = "Score L2";
-        elevatorIsSafe = false;
-    }
-
-    public void scoreL3(){
-        state = "Score L3";
-        elevatorIsSafe = false;
-    }
-
-    public void scoreL4(){
-        state = "Score L4";
-        elevatorIsSafe = false;
-    }
-
-    public void eject(){ //in the emergency case you need to get rid of the coral. 
-        state = "ejecting coral";
+        SmartDashboard.putString("scoringState", monitoringState);
     }
 
     @Override

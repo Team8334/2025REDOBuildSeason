@@ -36,7 +36,7 @@ public class FrontLimelight extends Limelight implements Subsystem{
     };
 
     public void log(){
-        logtoSmartDashboard();
+        logToSmartDashboard();
     };
 
     public boolean isEnabled(){

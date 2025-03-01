@@ -33,30 +33,15 @@ public class ModifiedEncoders {
     }
 
     public Boolean isConnected(){
-        if(dutyCycleEncoder != null){
-            return (dutyCycleEncoder.isConnected());
-        }
-        else{
-            return false;
-        }
+        return dutyCycleEncoder != null ? dutyCycleEncoder.isConnected() : false;
     }
     
     public int getFrequency(){
-        if(dutyCycleEncoder != null){
-            return (dutyCycleEncoder.getFrequency());
-        }
-        else{
-            return 0;
-        }
+        return dutyCycleEncoder != null ? dutyCycleEncoder.getFrequency() : 0;
     }
     
     public double get(){
-        if(dutyCycleEncoder != null){
-            return (dutyCycleEncoder.get());
-        }
-        else{
-            return 0;
-        }
+        return dutyCycleEncoder != null ? dutyCycleEncoder.get() : 0;
     }
 
     public double getExtendedCyclePosition(){
@@ -104,41 +89,12 @@ public class ModifiedEncoders {
            
         }
     }
-    
-    public double getRate(){
-        if(encoder != null){
-            return encoder.getRaw();
-        }
-        else{
-            return 0;
-        }
-    }
-
-    public double getRelativeDistance(){
-        if (encoder != null){
-            return encoder.getDistance();
-        }
-        else{
-            return 0;
-        }
-    }
 
     public double getAbsoluteDistance(){
-        if(dutyCycleEncoder != null)
-        {
-            return dutyCycleEncoder.get();
-        }
-        else{
-            return 8;
-        }
+        return dutyCycleEncoder != null ? dutyCycleEncoder.get() : 0;
     }
 
     public double getAbsolutePosition(){
-        if(dutyCycleEncoder != null){
-            return (dutyCycleEncoder.get() * 360);
-        }
-        else{
-            return 0;
-        }
+        return dutyCycleEncoder != null ? (dutyCycleEncoder.get()*360) : 0;
     }
 }
