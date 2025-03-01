@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -68,6 +69,10 @@ public class Elevator implements Subsystem {
 
     public void elevatorZero(){
         encoder.zeroCycle();
+    }
+
+    public void safetyCheck(){
+        
     }
     
     public void updateTelemetry(){

@@ -1,6 +1,5 @@
 package frc.robot.Auto.Actions;
 
-//imports important things
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

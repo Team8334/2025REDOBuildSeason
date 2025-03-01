@@ -83,7 +83,12 @@ public class Teleop {
         }
     }
     public void manipulatorControl() {
-        scoringControl.setManualEffectorSpeed(operatorController.getRightY() * EffectorSpeed);
+        if(operatorController.getRightY()>=0.2){
+        EffectorSpeed = operatorController.getRightY();
+        }
+        else {
+            EffectorSpeed = 0;
+        }
 
         if (operatorController.getAButton()) {
             factorOfReduction = 0;
