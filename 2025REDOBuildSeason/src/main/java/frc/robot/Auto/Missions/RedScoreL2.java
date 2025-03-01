@@ -19,13 +19,13 @@ public class RedScoreL2 extends MissionBase{
     @Override
     protected void routine() throws AutoMissionEndedException {
        
-        runAction(new WaitAction(AutoMissionChooser.delay)); // MAY NOT BE NEEDED
-        runAction(new DriveForTimeAction(-0.5,  4));
+        //runAction(new WaitAction(AutoMissionChooser.delay)); // MAY NOT BE NEEDED
+        //runAction(new DriveForTimeAction(-0.5,  4));
         //runAction(new TurnDegreesAction(65, 1));// add 5 degrees because michalangelo has consistently com up 5 degrees short of the needed turn
         
         // String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral
-        runAction(new MoveElevatorAction(1, "passive"));
-        runAction(new EffectorAction(1));
+        runAction(new MoveElevatorAction(1, "Score L2"));
+        runAction(new EffectorAction(0.5,1));
 
     }
 }

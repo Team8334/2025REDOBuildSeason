@@ -18,10 +18,10 @@ public class Testing extends MissionBase{
     protected void routine() throws AutoMissionEndedException {
        
     // Testing actions
-        runAction(new MoveElevatorAction(2, "Score L2"));
-        //runAction(new EffectorAction(1));
-        
+    
     // Working actions
+        runAction(new MoveElevatorAction(2, "Score L2"));
+        runAction(new EffectorAction(0.2, 2));
         //runAction(new TurnDegreesAction(-110, 3));
         //runAction(new DriveForTimeAction (0.2, 2));;
         //runAction(new WaitAction(1));

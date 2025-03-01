@@ -14,23 +14,32 @@ import frc.robot.Subsystem.ScoringControl;
 public class EffectorAction implements Actions{
     
     private double seconds;
+    private double speed;
+    //private String state;
     Timer timer;
-    private ScoringControl score = null;
+    private ScoringControl scoringControl = null;
 
-    public EffectorAction(double seconds){
+    public EffectorAction(double speed, double seconds){
         this.seconds = seconds;
-        score = ScoringControl.getInstance();
+        this.speed = speed;
+        //this.state = state;
+        scoringControl = ScoringControl.getInstance();
+       // System.out.println("effectorSpeed" + this.speed);
     }
 
     @Override
     public void start(){
+        //scoringControl.setState(this.state);
+        //System.out.println("SeffectorSpeed " + this.speed);
         timer = new Timer();
         timer.start();
     }
 
     @Override
     public void update(){
-        score.EffectorRun();
+        //System.out.println("UeffectorSpeed " + this.speed);
+        scoringControl.setManualEffectorSpeed(this.speed);
+        //System.out.println("scoring");
     }
 
     @Override
@@ -41,7 +50,8 @@ public class EffectorAction implements Actions{
     @Override
     public void done(){
         timer.stop();
-        score.EffectorStateProcessing();
+        scoringControl.setManualEffectorSpeed(0);
+       // System.out.println("DeffectorSpeed " + this.speed);
         System.out.println("Scoring done");
     }
 }

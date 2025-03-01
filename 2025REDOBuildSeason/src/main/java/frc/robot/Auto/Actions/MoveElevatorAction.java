@@ -16,27 +16,28 @@ public class MoveElevatorAction implements Actions{
     
     private double seconds;
     private String state;
-   // private double speed;
-    private Elevator elevator;
-    private ScoringControl scoringControl;
+   // private Elevator elevator;
+    private ScoringControl scoringControl = null;
     Timer timer;
 
     public MoveElevatorAction (double seconds, String state){
         this.seconds = seconds;
         this.state = state;
+        scoringControl = ScoringControl.getInstance();
     }
     
     @Override
     public void start(){
         timer = new Timer();
         timer.start();
-        SmartDashboard.putString("scoringState", state);
+        SmartDashboard.putString("Elevator State: ", state);
     }
 
     @Override
     public void update(){
-        scoringControl.EffectorStateProcessing();
-        SmartDashboard.putString("Elevator State: " + state);
+        scoringControl.setState(this.state);
+        System.out.println("Elevator State: " + state);
+        //SmartDashboard.putString("Elevator State: ", state);
     }
     
 
@@ -48,6 +49,6 @@ public class MoveElevatorAction implements Actions{
     @Override
     public void done(){
         timer.stop();
-        state = "passive";
+        this.state = "passive";
     }
 }
