@@ -83,12 +83,7 @@ public class Teleop {
         }
     }
     public void manipulatorControl() {
-        if(operatorController.getRightY()>=0.2){
-        EffectorSpeed = operatorController.getRightY();
-        }
-        else {
-            EffectorSpeed = 0;
-        }
+        scoringControl.setManualEffectorSpeed(operatorController.getRightY());//re-test this. if this comment is in, assume the effector to be untested.
 
         if (operatorController.getAButton()) {
             factorOfReduction = 0;
@@ -97,19 +92,19 @@ public class Teleop {
         
         if (operatorController.getBButton()) {
             scoringControl.scoreL2();
-            factorOfReduction = 14;
+            factorOfReduction = 12;
             System.out.println("L2");
         }
 
         if (operatorController.getXButton()) {
             scoringControl.scoreL3();
-            factorOfReduction = 18;
+            factorOfReduction = 15;
             System.out.println("L3");
         }
 
         if (operatorController.getYButton()) {
             scoringControl.scoreL4();
-            factorOfReduction = 22;
+            factorOfReduction = 18;
             System.out.println("L4");
         }
     }
