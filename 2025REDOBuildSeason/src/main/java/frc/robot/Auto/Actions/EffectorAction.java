@@ -15,31 +15,24 @@ public class EffectorAction implements Actions{
     
     private double seconds;
     private double speed;
-    //private String state;
     Timer timer;
     private ScoringControl scoringControl = null;
 
     public EffectorAction(double speed, double seconds){
         this.seconds = seconds;
         this.speed = speed;
-        //this.state = state;
         scoringControl = ScoringControl.getInstance();
-       // System.out.println("effectorSpeed" + this.speed);
     }
 
     @Override
     public void start(){
-        //scoringControl.setState(this.state);
-        //System.out.println("SeffectorSpeed " + this.speed);
         timer = new Timer();
         timer.start();
     }
 
     @Override
     public void update(){
-        //System.out.println("UeffectorSpeed " + this.speed);
         scoringControl.setManualEffectorSpeed(this.speed);
-        //System.out.println("scoring");
     }
 
     @Override
@@ -51,7 +44,6 @@ public class EffectorAction implements Actions{
     public void done(){
         timer.stop();
         scoringControl.setManualEffectorSpeed(0);
-       // System.out.println("DeffectorSpeed " + this.speed);
         System.out.println("Scoring done");
     }
 }

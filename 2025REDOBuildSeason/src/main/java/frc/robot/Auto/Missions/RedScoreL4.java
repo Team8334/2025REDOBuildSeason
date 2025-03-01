@@ -26,6 +26,7 @@ public class RedScoreL4 extends MissionBase{
         // String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral
         runAction(new MoveElevatorAction(2, "Score L4")); // May be needed depending on how robot starts
         runAction(new EffectorAction(0.12,1));
+        runAction(new DriveForTimeAction(0.5, 0.2));
         runAction(new MoveElevatorAction(2, "ramp"));
     }
 }
