@@ -58,12 +58,12 @@ public class Elevator implements Subsystem {
     public Elevator() //sets up encoder turns to distance
     {
         encoder = new ModifiedEncoders(PortMap.ELEVATOR_ENCODER);
-        elevatorMotorOne = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_ONE);
-        elevatorMotorTwo = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_TWO);
+        //elevatorMotorOne = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_ONE);
+        //elevatorMotorTwo = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_TWO);
         controller = new Controller(PortMap.OPERATOR_CONTROLLER);
 
-        elevatorMotorOne.set(elevatorOne);
-        elevatorMotorTwo.set(elevatorTwo);
+        //elevatorMotorOne.set(elevatorOne);
+        //elevatorMotorTwo.set(elevatorTwo);
         
         SubsystemManager.registerSubsystem(this);
         SmartDashboard.putData("Elevator Sim", m_mech2d);

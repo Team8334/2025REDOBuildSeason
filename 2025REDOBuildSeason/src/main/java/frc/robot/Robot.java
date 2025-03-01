@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
 
     frontLimelight = frontLimelight.getInstance();
 
-    ScoringControl.getInstance();
+    //ScoringControl.getInstance();
 
    // Elevator.getInstance();
 

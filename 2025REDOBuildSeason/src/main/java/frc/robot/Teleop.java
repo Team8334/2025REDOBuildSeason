@@ -5,6 +5,7 @@ import frc.robot.Devices.Controller;
 import java.lang.annotation.ElementType;
 
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.ScoringControl;
@@ -46,12 +47,7 @@ public class Teleop {
     
         mecanum = Mecanum.getInstance();
         alignment = Alignment.getInstance();
-        scoringControl = ScoringControl.getInstance();
-
-        aButtonPressed = driverController.getAButtonPressed();
-        rightBumperPressed = driverController.getRightBumperButtonPressed();
-        leftBumperPressed = driverController.getLeftBumperButtonPressed();
-        bButtonPressed = driverController.getBButtonPressed();
+        //scoringControl = ScoringControl.getInstance();
 
         operatorController = new Controller(PortMap.OPERATOR_CONTROLLER);
         if (!operatorController.isOperational()) {
@@ -68,6 +64,12 @@ public class Teleop {
         controllerLeftY = driverController.getLeftY();
         controllerLeftX = driverController.getLeftX();
         controllerRightX = driverController.getRightX();
+
+        aButtonPressed = driverController.getAButton();
+        rightBumperPressed = driverController.getRightBumperButton();
+        leftBumperPressed = driverController.getLeftBumperButton();
+        bButtonPressed = driverController.getBButton();
+
         double forward;
         double strafe;
         double rotation;
@@ -132,7 +134,7 @@ public class Teleop {
             }
             break;
         }
-        //System.out.println(driveState);
+        SmartDashboard.putString("Drive State", driveState);
     }
 
     public void manipulatorControl() {

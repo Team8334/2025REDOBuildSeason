@@ -23,6 +23,7 @@ public class Alignment implements Subsystem{
         limelight = FrontLimelight.getInstance();
         mecanum = Mecanum.getInstance();
         targeting = Targeting.getInstance();
+        alignmentTimer = new Timer();
 
         x = limelight.getX();
         area = limelight.getArea();
