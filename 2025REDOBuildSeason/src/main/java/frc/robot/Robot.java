@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     // m_chooser.addOption("My Auto");
-    CanBridge.runTCP();
+    //CanBridge.runTCP();
 
     SmartDashboard.putData("Auto choices", m_chooser);
     Gyro.getInstance();
@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     SubsystemManager.updateSubsystems();
-    
+    frontLimelight.log();
   }
 
   /**

@@ -31,6 +31,7 @@ public class Targeting implements Subsystem // This class contains functions for
 
     double currentAngle = gyro.getAngleDegrees();
     double desiredAngle;
+    int pipeline;
 
     Limelight limelight;
     FrontLimelight frontLimelight;
@@ -53,11 +54,17 @@ public class Targeting implements Subsystem // This class contains functions for
             System.out.println("Exception occurred: " + e.getMessage());
         }
         frontLimelight.setAlliance(alliance);
+        if(alliance == "Red"){
+            pipeline = 0;
+        }
+        else{
+            pipeline = 1;
+        }
+        frontLimelight.setPipeline(pipeline);
     }
 
     public double frontLockOn(String target, double desiredX) //0 as Desired X for aligning with the middle
     {
-        frontLimelight.setPipeline(0);
         frontTags = frontLimelight.findTagName();
         if (frontTags == target){
             frontLockOnState = "Locking on to target";
@@ -71,7 +78,6 @@ public class Targeting implements Subsystem // This class contains functions for
 
     public double frontAngleAlign(String target){
         desiredAngle = frontLimelight.getTargetRotation();
-        frontLimelight.setPipeline(0);
         frontTags = frontLimelight.findTagName();
         if (frontTags == target){
             frontLockOnState = "Locking on to target";
@@ -86,7 +92,6 @@ public class Targeting implements Subsystem // This class contains functions for
     public double frontFollow(String target, double desiredArea) // Setting "forward" in Mecanum.drive or Mecanum.driveWithSpeed as this function will cause the robot to follow the target. 
                            // USE AT OWN RISK. Feel free to increase the speed divisor value to make it even slower. 25 is a good area for going towards something
     {
-        frontLimelight.setPipeline(0);
         frontTags = frontLimelight.findTagName();
         if (frontTags == target){
             frontFollowState = "Following target";

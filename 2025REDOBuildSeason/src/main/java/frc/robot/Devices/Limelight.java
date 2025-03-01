@@ -33,6 +33,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     double[] targetPose;
     double[] robotPose;
     Rotation2d targetRotation;
+    int alliancePipeline;
 
     private NetworkTable table;
     private String tableName;
@@ -170,6 +171,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         SmartDashboard.putString("Limelight" + limelightID +"/Target Name", findTagName());
         SmartDashboard.putNumberArray("Limelight" + limelightID +"/Robot Pose Target Space", robotPose);
         SmartDashboard.putNumberArray("Limelight" + limelightID +"/Target Pose", targetPose);
+        SmartDashboard.putString("Alliance", alliance);
     }
 
     
