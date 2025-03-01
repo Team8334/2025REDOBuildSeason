@@ -16,7 +16,7 @@ public class MoveElevatorAction implements Actions{
     
     private double seconds;
     private String state;
-   // private Elevator elevator;
+    //private Elevator elevator;
     private ScoringControl scoringControl = null;
     Timer timer;
 
@@ -30,13 +30,13 @@ public class MoveElevatorAction implements Actions{
     public void start(){
         timer = new Timer();
         timer.start();
-        SmartDashboard.putString("Elevator State: ", state);
+        //SmartDashboard.putString("Elevator State: ", state);
     }
 
     @Override
     public void update(){
         scoringControl.setState(this.state);
-        System.out.println("Elevator State: " + state);
+        //System.out.println("Elevator State: " + state);
         //SmartDashboard.putString("Elevator State: ", state);
     }
     

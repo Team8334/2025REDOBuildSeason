@@ -1,7 +1,8 @@
-package frc.robot.Auto.Missions;
+package frc.robot.Auto.Missions.BlueMissions;
 
 import frc.robot.Auto.AutoMissionChooser;
 import frc.robot.Auto.AutoMissionEndedException;
+import frc.robot.Auto.Missions.MissionBase;
 
 import frc.robot.Auto.Actions.DriveForTimeAction;
 import frc.robot.Auto.Actions.WaitAction;
@@ -22,7 +23,8 @@ public class BlueScoreL4 extends MissionBase{
         //runAction(new DriveForTimeAction(-0.5, 5));
         //runAction(new TurnDegreesAction(30, 4));// add 5 degrees because michalangelo has consistently com up 5 degrees short of the needed turn
         // String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral
-        runAction(new MoveElevatorAction(1, "Score L4")); // May be needed depending on how robot starts
+        runAction(new MoveElevatorAction(2, "Score L4")); // May be needed depending on how robot starts
         runAction(new EffectorAction(0.5,1));
+        runAction(new MoveElevatorAction(2, "ramp"));
     }
 }

@@ -20,9 +20,9 @@ public class Testing extends MissionBase{
     // Testing actions
     
     // Working actions
-        runAction(new MoveElevatorAction(2, "Score L2"));
-        runAction(new EffectorAction(0.2, 2));
-        //runAction(new TurnDegreesAction(-110, 3));
+        //runAction(new MoveElevatorAction(2, "Score L2"));
+        //runAction(new EffectorAction(0.2, 2));
+        //runAction(new TurnDegreesAction(95, 3));// negative is left
         //runAction(new DriveForTimeAction (0.2, 2));;
         //runAction(new WaitAction(1));
         //runAction(new TurnDegreesAction(180, 3));

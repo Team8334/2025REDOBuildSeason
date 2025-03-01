@@ -52,7 +52,7 @@ public class TurnDegreesAction implements Actions{
         SmartDashboard.putNumber("desiredDegrees ", desiredDegrees);
         currentDegrees = gyro.getAngleDegrees(); // gets the current degrees
         System.out.println("currentDegrees: " + currentDegrees);
-        System.out.println("targetDegrees: " + targetDegrees);
+        //System.out.println("targetDegrees: " + targetDegrees);
         SmartDashboard.putNumber("currentDegreese ", currentDegrees);
         
         turn = (targetDegrees - currentDegrees)/ 180; //the power of the turn, divided to make power less
@@ -79,6 +79,7 @@ public class TurnDegreesAction implements Actions{
     @Override
     public void done()
     {
+        System.out.println("currentDegrees: " + currentDegrees);
         SmartDashboard.putString( "Current Action", "TurnDegreesAction Ended");
         SmartDashboard.putNumber("turnDegreesAction/speed" , turn);
         //currentDegrees = targetDegrees;
