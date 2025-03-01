@@ -10,7 +10,6 @@ import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.ScoringControl;
 import frc.robot.Subsystem.Elevator;
 
-
 public class Teleop {
 
     Controller driverController;
@@ -76,7 +75,6 @@ public class Teleop {
         } else {
             rotation = 0;
         }
-        //mecanum.driveWithSpeed(forward, strafe, rotation);
 
         if(factorOfReduction > 0){
             mecanum.driveWithSpeed(forward/factorOfReduction, strafe/factorOfReduction, rotation/factorOfReduction);
@@ -91,30 +89,22 @@ public class Teleop {
             factorOfReduction = 0;
             scoringControl.moveToRamp();
         }
-        // if (operatorController.getBButton()) {
-        //     scoringControl.eject();
-        // }
-
-        // if (operatorController.getAButton() && !IsDriveFast) {
-        // scoringControl.ScoreL1();
-        // System.out.println("L1");
-        // }
-
+        
         if (operatorController.getBButton()) {
             scoringControl.scoreL2();
-            factorOfReduction = 15;
+            factorOfReduction = 14;
             System.out.println("L2");
         }
 
         if (operatorController.getXButton()) {
             scoringControl.scoreL3();
-            factorOfReduction = 19;
+            factorOfReduction = 18;
             System.out.println("L3");
         }
 
         if (operatorController.getYButton()) {
             scoringControl.scoreL4();
-            factorOfReduction = 23;
+            factorOfReduction = 22;
             System.out.println("L4");
         }
     }

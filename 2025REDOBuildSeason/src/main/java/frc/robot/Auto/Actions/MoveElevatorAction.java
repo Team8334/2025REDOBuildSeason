@@ -31,7 +31,6 @@ public class MoveElevatorAction implements Actions{
 
     }
     
-
     @Override
     public boolean isFinished() {
         return timer.get() >= seconds;

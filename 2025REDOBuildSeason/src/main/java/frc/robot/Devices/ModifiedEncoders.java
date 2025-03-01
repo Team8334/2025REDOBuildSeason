@@ -23,7 +23,6 @@ public class ModifiedEncoders {
     
 
     public ModifiedEncoders(int channel){
-        //dutyCycleEncoder = new DutyCycleEncoder(channel);
         dutyCycleEncoder = new DutyCycleEncoder(channel, fullRange, expectedZero);
         saveEncoder = 0;
         cycle = 0;
@@ -34,8 +33,6 @@ public class ModifiedEncoders {
     }
 
     public Boolean isConnected(){
-        //boolean connected = dutyCycleEncoder.isConnected();
-        //return connected;
         if(dutyCycleEncoder != null){
             return (dutyCycleEncoder.isConnected());
         }
@@ -45,9 +42,6 @@ public class ModifiedEncoders {
     }
     
     public int getFrequency(){
-        //int frequency = dutyCycleEncoder.getFrequency();
-        //return frequency;
-
         if(dutyCycleEncoder != null){
             return (dutyCycleEncoder.getFrequency());
         }
@@ -57,9 +51,6 @@ public class ModifiedEncoders {
     }
     
     public double get(){
-        //double output = dutyCycleEncoder.get();
-        //return output;
-        
         if(dutyCycleEncoder != null){
             return (dutyCycleEncoder.get());
         }
@@ -80,13 +71,9 @@ public class ModifiedEncoders {
 
         SmartDashboard.putNumber("cycle", cycle);
         return cycle + currentValue;
-
-
     }
     
     public double shiftedOutput(){
-        //return shiftedOutput;
-
         if(dutyCycleEncoder != null){
             double percentOfRange = fullRange * 0.1;
             double shiftedOutput = MathUtil.inputModulus(dutyCycleEncoder.get(), 0 - percentOfRange, fullRange - percentOfRange);
@@ -99,8 +86,7 @@ public class ModifiedEncoders {
     
     
     
-    public void setRatio(double ratio)
-    {
+    public void setRatio(double ratio){
         this.ratio = ratio;
     }
 

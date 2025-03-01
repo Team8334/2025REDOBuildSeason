@@ -60,19 +60,16 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         return "Limelight" + limelightID;
     }
 
-    public void setPipeline(int pipeline)
-    {
+    public void setPipeline(int pipeline){
         this.pipeline = pipeline;
         table.getEntry("pipeline").setNumber(pipeline);
     }
 
-    public int getPipeline()
-    {
+    public int getPipeline(){
         return pipeline;
     }
 
-    public int getId() //finds April Tag ID.
-    {
+    public int getId(){ //finds April Tag ID.
         return (int)LimelightHelpers.getFiducialID(tableName);
     }
 
@@ -84,13 +81,11 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         return area;
     }
 
-    public void setAlliance(String alliance)
-    {
+    public void setAlliance(String alliance){
         this.alliance = alliance;
     }
 
-    public String findTagName()
-    {
+    public String findTagName(){
         switch (getId())
         {
             case 12, 13 -> {
@@ -154,6 +149,4 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         SmartDashboard.putNumber("Limelight" + limelightID +"/Latency", l);
         SmartDashboard.putString("Limelight" +limelightID +"/Target Name", findTagName());
     }
-
-    
 }

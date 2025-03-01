@@ -28,8 +28,7 @@ public class TurnDegreesAction implements Actions{
     private Mecanum mDrive = null;
     private Gyro gyro;
      
-    public TurnDegreesAction(double degrees, double seconds) 
-    {   
+    public TurnDegreesAction(double degrees, double seconds) {   
         this.seconds = seconds;
         mDrive = Mecanum.getInstance();
         gyro = Gyro.getInstance();
@@ -37,8 +36,7 @@ public class TurnDegreesAction implements Actions{
     }
     
     @Override
-    public void start()
-    {
+    public void start(){
         //gyro.reset();
         currentDegrees = gyro.getAngleDegrees();
         targetDegrees = (desiredDegrees + currentDegrees); // this is how much in total degrees we need to turn
@@ -47,8 +45,7 @@ public class TurnDegreesAction implements Actions{
     }
     
     @Override
-    public void update()
-    {
+    public void update(){
         SmartDashboard.putNumber("targetDegrees ", targetDegrees);
         SmartDashboard.putNumber("desiredDegrees ", desiredDegrees);
         currentDegrees = gyro.getAngleDegrees(); // gets the current degrees
@@ -61,13 +58,10 @@ public class TurnDegreesAction implements Actions{
         mDrive.drive(0, 0, turn); // no forward, no strafe, only rotation
         System.out.println("gyro yaw:" + gyro.getAngleDegrees());
         SmartDashboard.putNumber("turnDegreesAction/speed " , turn);
-
-        
     }
 
     @Override
-    public boolean isFinished()
-    {
+    public boolean isFinished(){
         if (targetDegrees == currentDegrees || timer.get() >= seconds){
             return true;
         }
@@ -78,8 +72,7 @@ public class TurnDegreesAction implements Actions{
     
     
     @Override
-    public void done()
-    {
+    public void done(){
         SmartDashboard.putString( "Current Action", "TurnDegreesAction Ended");
         SmartDashboard.putNumber("turnDegreesAction/speed" , turn);
         //currentDegrees = targetDegrees;

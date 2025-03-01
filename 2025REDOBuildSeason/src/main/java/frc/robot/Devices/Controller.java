@@ -6,9 +6,7 @@ import frc.robot.Interfaces.Devices;
 
 public class Controller extends XboxController implements Devices {
 
-
     private HashMap<Integer, Boolean> debounceButtons = new HashMap<Integer, Boolean>();
-    
 
     public Controller(int port) {
         super(port);
@@ -61,5 +59,4 @@ public class Controller extends XboxController implements Devices {
     public String getName() {
         return "Controller";
     }
-
 }

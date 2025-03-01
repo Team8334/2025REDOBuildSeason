@@ -16,8 +16,7 @@ public class FrontLimelight extends Limelight implements Subsystem{
     }
 
     private FrontLimelight()
-    {
-        
+    {   
         super("limelight-front", 0, "limelight-front", 1); //figure out actual port
         this.limelightMountAngleDegrees = 0;
         this.limelightLensHeightMeters = 0;

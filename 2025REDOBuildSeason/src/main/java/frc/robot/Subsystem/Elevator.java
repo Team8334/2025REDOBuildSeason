@@ -60,11 +60,6 @@ public class Elevator implements Subsystem {
         encoder = new ModifiedEncoders(PortMap.ELEVATOR_ENCODER);
         elevatorMotorOne = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_ONE);
         elevatorMotorTwo = new NEOSparkMaxMotor(PortMap.ELEVATOR_MOTOR_TWO);
-
-        //elevatorMotorOne.set(elevatorOne);
-        //elevatorMotorTwo.set(elevatorTwo);
-
-       // elevatorMotorTwo.setInverted(true);
         
         SubsystemManager.registerSubsystem(this);
 
@@ -75,9 +70,8 @@ public class Elevator implements Subsystem {
         encoder.zeroCycle();
     }
     
-    public void updateTelemetry()
-    {
-        // m_elevatorMech2d.setLength(encoder.get());
+    public void updateTelemetry(){
+    
     }
     
     @Override
@@ -87,9 +81,7 @@ public class Elevator implements Subsystem {
         SmartDashboard.putNumber("Elevator/Frequency", encoder.getFrequency());
         SmartDashboard.putNumber("Elevator/Output",-1* encoder.getExtendedCyclePosition());
         SmartDashboard.putNumber("Elevator/ShiftedOutput", encoder.shiftedOutput());
-        
     }
-    
 
     public void reachGoal(double goal) {
         m_controller.setGoal(goal);
@@ -102,7 +94,6 @@ public class Elevator implements Subsystem {
         //elevatorOne = elevatorSpeed;
         //elevatorTwo = -elevatorSpeed; //determine which side needs to be negative
     }
-    
     
     public void stop() {
         elevatorMotorOne.set(0.0);

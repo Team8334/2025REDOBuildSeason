@@ -35,8 +35,6 @@ public class Robot extends TimedRobot {
   Elevator elevator;
   ScoringControl scoringControl;
 
-  
-
   private AutoMissionExecutor autoMissionExecutor = new AutoMissionExecutor();
   private AutoMissionChooser autoMissionChooser = new AutoMissionChooser();
 
@@ -45,14 +43,11 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   public void robotInit() {
-    //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    // m_chooser.addOption("My Auto");
     CanBridge.runTCP();
 
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -111,7 +106,6 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     System.out.println("Auto selected: " + m_autoSelected);
   }
-
 
   /** This function is called periodically during autonomous. */
   @Override

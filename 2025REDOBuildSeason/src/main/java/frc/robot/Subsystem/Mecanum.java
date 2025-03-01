@@ -47,7 +47,6 @@ public class Mecanum implements Subsystem {
     // Creating my kinematics object using the wheel locations.
     MecanumDriveKinematics m_kinematics = new MecanumDriveKinematics(
             m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
-   
 
     public static Mecanum getInstance() {
         if (instance == null) {
@@ -77,27 +76,11 @@ public class Mecanum implements Subsystem {
         rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
         rearRight = wheelSpeeds.rearRightMetersPerSecond;
 
-        
         frontLeftMotor.set(frontLeft);
         frontRightMotor.set(frontRight);
         rearLeftMotor.set(rearLeft);
         rearRightMotor.set(rearRight);
     }
-
-    // @Override
-    // public void update() {
-    //     if(Elevator.instance.height() > PortMap.MAX_HEIGHT_FOR_DRIVING) {
-    //         frontLeftMotor.set(0.0);
-    //         frontRightMotor.set(0.0);
-    //         rearLeftMotor.set(0.0);
-    //         rearRightMotor.set(0.0);
-    //     }
-    //     frontLeftMotor.set(frontLeft);
-    //     frontRightMotor.set(frontRight);
-    //     rearLeftMotor.set(rearLeft);
-    //     rearRightMotor.set(rearRight);
-    //     System.out.println("DRIVE IS BEING CALLED");
-    // }
 
     private double rotationControl(double rotationInput){
         currentAngleVelocity = (gyro.getAngleVelocityDegrees()*(Math.PI/180));
@@ -176,5 +159,4 @@ public class Mecanum implements Subsystem {
         }
         return false;
     }
-
 }

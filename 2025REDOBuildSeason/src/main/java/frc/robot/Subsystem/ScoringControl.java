@@ -20,7 +20,7 @@ public class ScoringControl implements Subsystem {
 
     Timer timer;
     Elevator elevator;
-//comment these back in!!
+
     private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
     private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
 
@@ -40,7 +40,6 @@ public class ScoringControl implements Subsystem {
         }
         return instance;
     }
-
 
     public ScoringControl(){
         SubsystemManager.registerSubsystem(this);
@@ -88,19 +87,6 @@ public class ScoringControl implements Subsystem {
 
             case "ramp":
                     elevator.reachGoal(EncoderValues.ELEVATOR_RAMP);
-                    
-                break;
-
-            case "operator wants coral":
-                    // timer = new Timer();
-                    // timer.start();
-                    // if (timer.get() < 1){
-                    // effectorUpper = 0.5;
-                    // effectorLower = 0.5;
-                    // }
-                    // else {
-                    //     state = "passive";
-                    // }
                     
                 break;
 
@@ -174,7 +160,6 @@ public class ScoringControl implements Subsystem {
         EffectorStateProcessing();
         EffectorRun();
         SmartDashboard.putNumber("Laser Detected Distance", laserDetectedDistance);
-        //System.out.println(lc.getMeasurement().distance_mm);
     }
 
     @Override
@@ -195,5 +180,4 @@ public class ScoringControl implements Subsystem {
     public String getName() {
         return "EndEffector";
     }
-
 }
