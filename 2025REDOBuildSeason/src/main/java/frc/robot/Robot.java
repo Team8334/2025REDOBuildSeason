@@ -4,13 +4,27 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.robot.Teleop;
+import frc.robot.Auto.AutoMissionChooser;
+import frc.robot.Auto.AutoMissionExecutor;
+import frc.robot.Auto.Missions.MissionBase;
 import frc.robot.Subsystem.Mecanum;
+import frc.robot.Devices.Gyro;
+import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.SubsystemManager;
+import frc.robot.Subsystem.ScoringControl;
+import au.grapplerobotics.CanBridge;
 
+import frc.robot.Teleop;
+import frc.robot.Subsystem.Elevator;
+import frc.robot.Subsystem.SubsystemManager;
+import frc.robot.Data.States;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -18,9 +32,15 @@ import frc.robot.Subsystem.SubsystemManager;
  */
 public class Robot extends TimedRobot {
   Teleop teleop;
+  FrontLimelight frontLimelight;
+  Elevator elevator;
+  ScoringControl scoringControl;
 
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  States state;
+
+  private AutoMissionExecutor autoMissionExecutor = new AutoMissionExecutor();
+  private AutoMissionChooser autoMissionChooser = new AutoMissionChooser();
+
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -28,16 +48,25 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  public Robot() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
+  public void robotInit() {
+    CanBridge.runTCP();
+
     SmartDashboard.putData("Auto choices", m_chooser);
-
+    Gyro.getInstance();
     teleop = new Teleop();
-
     Mecanum.getInstance();
 
+    frontLimelight = frontLimelight.getInstance();
+
+    scoringControl = ScoringControl.getInstance();
+
+    elevator = Elevator.getInstance();
+
     SubsystemManager.initializeSubsystems();
+
+    elevator.elevatorZero();
+
+    scoringControl.setState(States.PASSIVE);
   }
 
   /**
@@ -51,6 +80,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     SubsystemManager.updateSubsystems();
+    
   }
 
   /**
@@ -63,25 +93,24 @@ public class Robot extends TimedRobot {
    * below with additional strings. If using the SendableChooser make sure to add them to the
    * chooser code above as well.
    */
-  @Override
+  
+   @Override
   public void autonomousInit() {
+
+    if (autoMissionChooser.getAutoMission().isPresent()){
+    {
+      autoMissionChooser.getAutoMission().get().setStartPose();
+    }
+    autoMissionExecutor.start();
+  }
+
     m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+
   }
 
   /** This function is called once when teleop is enabled. */
@@ -96,11 +125,29 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    // Reset all auto mission states.
+    if (autoMissionExecutor != null)
+    {
+      autoMissionExecutor.stop();
+    }
+    autoMissionChooser.reset();
+    autoMissionChooser.updateMissionCreator();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    autoMissionChooser.outputToSmartDashboard();
+    autoMissionChooser.updateMissionCreator();
+
+    Optional<MissionBase> autoMission = autoMissionChooser.getAutoMission();
+    if (autoMission.isPresent() && autoMission.get() != autoMissionExecutor.getAutoMission())
+    {
+      System.out.println("Set auto mission to: " + autoMission.get().getClass().toString());
+      autoMissionExecutor.setAutoMission(autoMission.get());
+    }
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override
@@ -116,5 +163,6 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
 }

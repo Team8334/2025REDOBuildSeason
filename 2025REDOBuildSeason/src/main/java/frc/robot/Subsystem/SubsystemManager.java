@@ -19,12 +19,17 @@ public class SubsystemManager {
      * Initializes all registered subsystems by calling their initialize method. This method should
      * be called once at the beginning of the program to set up all of the robot's subsystems.
      */
-    public static void initializeSubsystems() {
+     public static void initializeSubsystems() {
         for (Subsystem subsystem : subsystems) {
             subsystem.initialize();
         }
     }
 
+    public static void updateSubsystems(){
+        for (Subsystem subsystem : subsystems) {
+            subsystem.update();
+        }
+    }
     /**
      * Returns the list of registered subsystems. This list is unmodifiable, as the purpose is to
      * allow access to the list for the purpose of iterating over the list to perform actions on
@@ -35,15 +40,4 @@ public class SubsystemManager {
     public static List<Subsystem> getSubsystems() {
         return subsystems;
     }
-
-    /**
-     * Updates all registered subsystems by calling their update method.
-     */
-
-    public static void updateSubsystems() {
-        for (Subsystem subsystem : subsystems) {
-            subsystem.update();
-        }
-    }
-
 }
