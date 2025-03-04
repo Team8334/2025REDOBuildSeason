@@ -47,7 +47,7 @@ public class Teleop {
     
         mecanum = Mecanum.getInstance();
         alignment = Alignment.getInstance();
-        //scoringControl = ScoringControl.getInstance();
+        scoringControl = ScoringControl.getInstance();
 
         operatorController = new Controller(PortMap.OPERATOR_CONTROLLER);
         if (!operatorController.isOperational()) {
