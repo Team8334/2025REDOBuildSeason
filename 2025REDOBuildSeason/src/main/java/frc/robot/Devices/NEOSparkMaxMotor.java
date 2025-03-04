@@ -64,12 +64,15 @@ public class NEOSparkMaxMotor {
        }
     }
 
+    public void setVoltage(double voltage){
+        m_motor.setVoltage(voltage);
+    }
+
     public void set(double speed){
        
         if (isInverted){
             speed*=-1;
         }
-        //System.out.println("Speed is being set");
         SmartDashboard.putNumber(this.getName()+"/set speed", speed);
         
         if (m_motor == null) {
@@ -77,7 +80,6 @@ public class NEOSparkMaxMotor {
         } 
         else {
             m_motor.set(speed);
-           // System.out.println("Speed is " + speed);
         }
     }
 

@@ -35,4 +35,3 @@ public class WaitAction implements Actions {
     }
     
 }
-

@@ -28,7 +28,6 @@ public class Gyro {
 
     // gets current angle of the gyro
     public double getAngleDegrees(){
-        //System.out.println("gyro yaw:" + ahrs.getAngle());
         return ahrs.getAngle();
     }
 
@@ -37,6 +36,7 @@ public class Gyro {
     }
 
     // resets the gyro to 0
-    public void reset(){}
-
+    public void reset(){
+        
+    }
 }

@@ -10,8 +10,8 @@ public class AutoMissionExecutor {
     private MissionBase mAutoMission = null;
     private Thread mThread = null;
 
-    public void setAutoMission(MissionBase new_auto_Mission) {
-        mAutoMission = new_auto_Mission;
+    public void setAutoMission(MissionBase newAutoMission) {
+        mAutoMission = newAutoMission;
         mThread = new Thread(new Runnable() {
             
             @Override
@@ -25,7 +25,6 @@ public class AutoMissionExecutor {
 
     public void start() {
         if (mThread != null) {
-            //System.out.println("mThread is not null");
             mThread.start();
         }
     }
@@ -55,10 +54,7 @@ public class AutoMissionExecutor {
     }
 
     public boolean isInterrupted() {
-        if (mAutoMission == null) {
-            return false;
-        }
-        return mAutoMission.getIsInterrupted();
+        return mAutoMission == null ? false :  mAutoMission.getIsInterrupted();
     }
 
     public void interrupt() {

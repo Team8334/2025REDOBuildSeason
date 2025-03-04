@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoMissionChooser {
     enum DesiredMission {
+        //these are the options you will see in smart dashboard.
         exampleMission,
         // general missions that use alliance to determine the actual missions
         ScoringL1Mission,
@@ -46,7 +47,6 @@ public class AutoMissionChooser {
         missionChooser.addOption("Leave Community", DesiredMission.MoveAcrossLineMission);
         missionChooser.addOption("Scoring L1", DesiredMission.ScoringL1Mission);
         missionChooser.addOption("Scoring L4", DesiredMission.ScoringL4Mission);
-        missionChooser.addOption("Testing", DesiredMission.Testing);
 
         SmartDashboard.putNumber("Auto Delay (seconds)", 0);
 

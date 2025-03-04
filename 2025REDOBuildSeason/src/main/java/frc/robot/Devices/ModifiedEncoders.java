@@ -2,6 +2,7 @@ package frc.robot.Devices;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Data.PortMap;
 import edu.wpi.first.math.MathUtil;
 
@@ -17,67 +18,47 @@ public class ModifiedEncoders {
     private static double expectedZero = 0;
     private double ratio = 1.0;
 
-    double saveEncoder;
-    int cycle = 0;
+    private double saveEncoder;
+    private int cycle = 0;
     
 
     public ModifiedEncoders(int channel){
-        //dutyCycleEncoder = new DutyCycleEncoder(channel);
         dutyCycleEncoder = new DutyCycleEncoder(channel, fullRange, expectedZero);
-        saveEncoder = dutyCycleEncoder.get();
+        saveEncoder = 0;
+        cycle = 0;
+    }
+
+    public void zeroCycle(){
+        cycle = 0;
     }
 
     public Boolean isConnected(){
-        //boolean connected = dutyCycleEncoder.isConnected();
-        //return connected;
-        if(dutyCycleEncoder != null){
-            return (dutyCycleEncoder.isConnected());
-        }
-        else{
-            return false;
-        }
+        return dutyCycleEncoder != null ? dutyCycleEncoder.isConnected() : false;
     }
     
     public int getFrequency(){
-        //int frequency = dutyCycleEncoder.getFrequency();
-        //return frequency;
-
-        if(dutyCycleEncoder != null){
-            return (dutyCycleEncoder.getFrequency());
-        }
-        else{
-            return 0;
-        }
+        return dutyCycleEncoder != null ? dutyCycleEncoder.getFrequency() : 0;
     }
     
     public double get(){
-        //double output = dutyCycleEncoder.get();
-        //return output;
-
-        if(dutyCycleEncoder != null){
-            return (dutyCycleEncoder.get());
-        }
-        else{
-            return 0;
-        }
+        return dutyCycleEncoder != null ? dutyCycleEncoder.get() : 0;
     }
 
-    public double extendedCycle(){
-        if(saveEncoder - dutyCycleEncoder.get() >= 180){
-            return cycle += 1;
+    public double getExtendedCyclePosition(){
+        double currentValue = dutyCycleEncoder.get();
+        if((saveEncoder - currentValue) >= 0.5){
+            cycle += 1;
         }
-        if(saveEncoder - dutyCycleEncoder.get() < 180){
-            return cycle -= 1;
+        if((saveEncoder - currentValue) < -0.5){
+            cycle -= 1;
         }
-        else {
-            return cycle;
-        }
+        saveEncoder = currentValue;
 
+        SmartDashboard.putNumber("cycle", cycle);
+        return cycle + currentValue;
     }
     
     public double shiftedOutput(){
-        //return shiftedOutput;
-
         if(dutyCycleEncoder != null){
             double percentOfRange = fullRange * 0.1;
             double shiftedOutput = MathUtil.inputModulus(dutyCycleEncoder.get(), 0 - percentOfRange, fullRange - percentOfRange);
@@ -90,8 +71,7 @@ public class ModifiedEncoders {
     
     
     
-    public void setRatio(double ratio)
-    {
+    public void setRatio(double ratio){
         this.ratio = ratio;
     }
 
@@ -109,41 +89,12 @@ public class ModifiedEncoders {
            
         }
     }
-    
-    public double getRate(){
-        if(encoder != null){
-            return encoder.getRaw();
-        }
-        else{
-            return 0;
-        }
-    }
-
-    public double getRelativeDistance(){
-        if (encoder != null){
-            return encoder.getDistance();
-        }
-        else{
-            return 0;
-        }
-    }
 
     public double getAbsoluteDistance(){
-        if(dutyCycleEncoder != null)
-        {
-            return dutyCycleEncoder.get();
-        }
-        else{
-            return 8;
-        }
+        return dutyCycleEncoder != null ? dutyCycleEncoder.get() : 0;
     }
 
     public double getAbsolutePosition(){
-        if(dutyCycleEncoder != null){
-            return (dutyCycleEncoder.get() * 360);
-        }
-        else{
-            return 0;
-        }
+        return dutyCycleEncoder != null ? (dutyCycleEncoder.get()*360) : 0;
     }
 }

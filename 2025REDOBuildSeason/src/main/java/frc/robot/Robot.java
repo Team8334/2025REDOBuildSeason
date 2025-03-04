@@ -24,6 +24,7 @@ import au.grapplerobotics.CanBridge;
 import frc.robot.Teleop;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Subsystem.SubsystemManager;
+import frc.robot.Data.States;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -32,25 +33,23 @@ import frc.robot.Subsystem.SubsystemManager;
 public class Robot extends TimedRobot {
   Teleop teleop;
   FrontLimelight frontLimelight;
-  
+  Elevator elevator;
+  ScoringControl scoringControl;
+
+  States state;
 
   private AutoMissionExecutor autoMissionExecutor = new AutoMissionExecutor();
   private AutoMissionChooser autoMissionChooser = new AutoMissionChooser();
 
-  // private static final String kDefaultAuto = "Default";
-  // private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
 
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   public void robotInit() {
-    //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    // m_chooser.addOption("My Auto");
-    //CanBridge.runTCP();
+    CanBridge.runTCP();
 
     SmartDashboard.putData("Auto choices", m_chooser);
     Gyro.getInstance();
@@ -59,11 +58,15 @@ public class Robot extends TimedRobot {
 
     frontLimelight = frontLimelight.getInstance();
 
-    //ScoringControl.getInstance();
+    scoringControl = ScoringControl.getInstance();
 
-   // Elevator.getInstance();
+    elevator = Elevator.getInstance();
 
     SubsystemManager.initializeSubsystems();
+
+    elevator.elevatorZero();
+
+    scoringControl.setState(States.PASSIVE);
   }
 
   /**
@@ -77,7 +80,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     SubsystemManager.updateSubsystems();
-    frontLimelight.log();
+    
   }
 
   /**
@@ -102,9 +105,7 @@ public class Robot extends TimedRobot {
   }
 
     m_autoSelected = m_chooser.getSelected();
-    System.out.println("Auto selected: " + m_autoSelected);
   }
-
 
   /** This function is called periodically during autonomous. */
   @Override

@@ -72,19 +72,16 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         return "Limelight" + limelightID;
     }
 
-    public void setPipeline(int pipeline)
-    {
+    public void setPipeline(int pipeline){
         this.pipeline = pipeline;
         table.getEntry("pipeline").setNumber(pipeline);
     }
 
-    public int getPipeline()
-    {
+    public int getPipeline(){
         return pipeline;
     }
 
-    public int getId() //finds April Tag ID.
-    {
+    public int getId(){ //finds April Tag ID.
         return (int)LimelightHelpers.getFiducialID(tableName);
     }
 
@@ -100,13 +97,11 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         return area;
     }
 
-    public void setAlliance(String alliance)
-    {
+    public void setAlliance(String alliance){
         this.alliance = alliance;
     }
 
-    public String findTagName()
-    {
+    public String findTagName(){
         switch (getId())
         {
             case 12, 13 -> {
@@ -148,12 +143,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     }
     
     public boolean isOperational(){
-        if(limelightName == null){
-            return false;
-        }
-        else{
-            return true;
-        }
+        return limelightName != null;
     }
 
     public void limelightUpdate() {
@@ -163,7 +153,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         l = tl.getDouble(0.0);
     }
 
-    public void logtoSmartDashboard() {
+    public void logToSmartDashboard() {
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target X", x);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Y", y);
         SmartDashboard.putNumber("Limelight" + limelightID +"/Target Area", area);
@@ -173,6 +163,4 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         SmartDashboard.putNumberArray("Limelight" + limelightID +"/Target Pose", targetPose);
         SmartDashboard.putString("Alliance", alliance);
     }
-
-    
 }

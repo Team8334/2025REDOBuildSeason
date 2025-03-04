@@ -10,7 +10,6 @@ import frc.robot.Auto.Actions.ParallelAction;
 import frc.robot.Auto.Actions.TurnDegreesAction;
 import frc.robot.Auto.Actions.WaitAction;
 
-
 /*
  * This mission is an example mission
  * Has examples of a normal action and a parallel action
