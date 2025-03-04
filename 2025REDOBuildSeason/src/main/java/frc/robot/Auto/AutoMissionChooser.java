@@ -2,8 +2,10 @@ package frc.robot.Auto;
 
 import frc.robot.Auto.Missions.*;
 import frc.robot.Auto.Missions.BlueMissions.BlueScoreL2;
+import frc.robot.Auto.Missions.BlueMissions.BlueScoreL3;
 import frc.robot.Auto.Missions.BlueMissions.BlueScoreL4;
 import frc.robot.Auto.Missions.RedMissions.RedScoreL2;
+import frc.robot.Auto.Missions.RedMissions.RedScoreL3;
 import frc.robot.Auto.Missions.RedMissions.RedScoreL4;
 
 import java.util.Optional;
@@ -20,15 +22,18 @@ public class AutoMissionChooser {
     enum DesiredMission {
         exampleMission,
         // general missions that use alliance to determine the actual missions
-        ScoringL1Mission,
+        ScoringL2Mission,
+        ScoringL3Mission,
         ScoringL4Mission,
         Testing,
         // actual missions
         MoveAcrossLineMission,
         doNothing,
         RedScoreL2,
+        RedScoreL3,
         RedScoreL4,
         BlueScoreL2,
+        BlueScoreL3,
         BlueScoreL4,
 
     }
@@ -49,7 +54,8 @@ public class AutoMissionChooser {
         // add more here as needed, is what is seen when choosing a mission
         missionChooser.addOption("Do Nothing", DesiredMission.doNothing);
         missionChooser.addOption("Leave Community", DesiredMission.MoveAcrossLineMission);
-        missionChooser.addOption("Scoring L2", DesiredMission.ScoringL1Mission);
+        missionChooser.addOption("Scoring L2", DesiredMission.ScoringL2Mission);
+        missionChooser.addOption("Scoring L4", DesiredMission.ScoringL3Mission);
         missionChooser.addOption("Scoring L4", DesiredMission.ScoringL4Mission);
         missionChooser.addOption("Testing", DesiredMission.Testing);
 
@@ -102,13 +108,24 @@ public class AutoMissionChooser {
             // testing mission
             case Testing:
                 return Optional.of(new Testing());
-            // if scoring in L1, and does mission according to alliance
-            case ScoringL1Mission:
+            // if scoring in L2, and does mission according to alliance
+            case ScoringL2Mission:
                 if (alliance == "Red") {
                     return Optional.of(new RedScoreL2());
                 }
                 else if (alliance == "Blue") {
                     return Optional.of(new BlueScoreL2());
+                }
+                else {
+                    return Optional.of(new DoNothingMission());
+                }
+            // if scoring in L3, and does mission according to alliance
+            case ScoringL3Mission:
+                if (alliance == "Red"){
+                    return Optional.of(new RedScoreL3());
+                }
+                else if (alliance == "Blue"){
+                    return Optional.of(new BlueScoreL3());
                 }
                 else {
                     return Optional.of(new DoNothingMission());
