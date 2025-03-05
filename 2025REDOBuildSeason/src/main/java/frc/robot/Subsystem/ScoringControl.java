@@ -3,14 +3,12 @@ package frc.robot.Subsystem;
 import frc.robot.Data.PortMap;
 
 import frc.robot.Devices.NEOSparkMaxMotor;
-import au.grapplerobotics.LaserCan;
-import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
-import au.grapplerobotics.ConfigurationFailedException;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Data.EncoderValues;
 import frc.robot.Data.States;
+import frc.robot.Devices.LazerCan;
 
 public class ScoringControl implements Subsystem {
 
@@ -21,12 +19,11 @@ public class ScoringControl implements Subsystem {
 
     Timer timer;
     Elevator elevator;
+    LazerCan lazerCan;
 
     private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
     private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
 
-    private LaserCan lc = new LaserCan(PortMap.LASER_CAN);
-    public int laserDetectedDistance;
     public double coralDetectThreshold = 5; //in mm
 
     private double effectorUpper;
@@ -46,29 +43,13 @@ public class ScoringControl implements Subsystem {
     }
 
     public ScoringControl(){
+        lazerCan = new LazerCan(PortMap.LASER_CAN);
         SubsystemManager.registerSubsystem(this);
     }
 
     public void EffectorRun(){
         effectorMotorLower.set(effectorUpper);
         effectorMotorUpper.set(effectorLower);
-    }
-
-    public void laserConfig(){
-        try {
-            lc.setRangingMode(LaserCan.RangingMode.SHORT);
-            lc.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 16, 16));
-            lc.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
-          } 
-        catch (ConfigurationFailedException e) {
-            System.out.println("Configuration failed! " + e);
-        }
-    }
-
-    public double laserDistance(){
-        LaserCan.Measurement measurement = lc.getMeasurement();
-        measurement.distance_mm = laserDetectedDistance;
-        return laserDetectedDistance;
     }
 
     public void setState(States state){
@@ -122,7 +103,7 @@ public class ScoringControl implements Subsystem {
     public void update() {
         EffectorStateProcessing();
         EffectorRun();
-        SmartDashboard.putNumber("Laser Detected Distance", laserDetectedDistance);
+        SmartDashboard.putNumber("Laser Detected Distance", lazerCan.laserDistance());
     }
 
     @Override
