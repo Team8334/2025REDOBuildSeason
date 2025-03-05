@@ -12,6 +12,8 @@ import frc.robot.Subsystem.ScoringControl;
 import frc.robot.Subsystem.Targeting;
 import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.Alignment;
+import frc.robot.Subsystem.Elevator;
+import frc.robot.Data.States;
 
 public class Teleop {
 
@@ -21,6 +23,7 @@ public class Teleop {
     Mecanum mecanum;
     Alignment alignment;
     ScoringControl scoringControl;
+    Elevator elevator;
 
     private double controllerLeftX;
     private double controllerLeftY;
@@ -33,11 +36,13 @@ public class Teleop {
     public boolean OperatorWants = false;
     public boolean ElevatorIsUp;
     public double EffectorSpeed = -0.2;
+    public double factorOfReduction;
 
     private boolean aButtonPressed;
     private boolean rightBumperPressed;
     private boolean leftBumperPressed;
     private boolean bButtonPressed;
+    private boolean xButtonPressed;
 
     public Teleop() {
         driverController = new Controller(PortMap.DRIVER_CONTROLLER);
@@ -47,7 +52,8 @@ public class Teleop {
     
         mecanum = Mecanum.getInstance();
         alignment = Alignment.getInstance();
-        scoringControl = ScoringControl.getInstance();
+        //scoringControl = ScoringControl.getInstance();
+        //elevator = Elevator.getInstance();
 
         operatorController = new Controller(PortMap.OPERATOR_CONTROLLER);
         if (!operatorController.isOperational()) {
@@ -69,6 +75,7 @@ public class Teleop {
         rightBumperPressed = driverController.getRightBumperButton();
         leftBumperPressed = driverController.getLeftBumperButton();
         bButtonPressed = driverController.getBButton();
+        xButtonPressed = driverController.getXButton();
 
         double forward;
         double strafe;
@@ -80,7 +87,7 @@ public class Teleop {
                     driveState = "Manually Driving";
                 }
                 if(Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2){
-                    if(aButtonPressed || rightBumperPressed || leftBumperPressed || bButtonPressed){
+                    if(aButtonPressed || rightBumperPressed || leftBumperPressed || bButtonPressed || xButtonPressed){
                         driveState = "Automatically Driving";
                     }
                 }
@@ -109,17 +116,27 @@ public class Teleop {
                 if(Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2){
                     driveState = "Idle";
                 }
+                if(factorOfReduction > 0){
+                    forward = forward/factorOfReduction;
+                    strafe = strafe/factorOfReduction;
+                    rotation = rotation/factorOfReduction;
+                }
+                    
                 mecanum.driveWithSpeed(forward, strafe, rotation);
+                
             }
             break;
             case "Automatically Driving": {
                 if(Math.abs(controllerLeftY) >= 0.2 || Math.abs(controllerLeftX) >= 0.2 || Math.abs(controllerRightX) >= 0.2){
                     driveState = "Manually Driving";
                 }
-                if(aButtonPressed){
-                    alignment.align("Reef");
+                if(xButtonPressed){
+                    alignment.alignX("Reef");
                 }
-                if(bButtonPressed){
+                else if(aButtonPressed){
+                    alignment.alignAngle("Reef");
+                }
+                else if(bButtonPressed){
                     alignment.driveTo("Reef");
                 }
                 else if(rightBumperPressed){
@@ -132,40 +149,38 @@ public class Teleop {
                     driveState = "Idle";
                 }
             }
+
+            
             break;
         }
         SmartDashboard.putString("Drive State", driveState);
     }
 
     public void manipulatorControl() {
-        scoringControl.setManualEffectorSpeed(operatorController.getRightY() * EffectorSpeed);
+        scoringControl.setManualEffectorSpeed(operatorController.getRightY());//re-test this. if this comment is in, assume the effector to be untested.
 
         if (operatorController.getAButton()) {
-            scoringControl.OperatorWantsCoral();
+            factorOfReduction = 0;
+            scoringControl.setState(States.RAMP);
         }
+        
         if (operatorController.getBButton()) {
-            scoringControl.eject();
-        }
-
-        // if (operatorController.getAButton() && !IsDriveFast) {
-        // scoringControl.ScoreL1();
-        // System.out.println("L1");
-        // }
-
-        if (operatorController.getBButton() && !IsDriveFast) {
-            scoringControl.ScoreL2();
+            scoringControl.setState(States.SCOREL2);
+            factorOfReduction = 12;
             System.out.println("L2");
         }
 
-        if (operatorController.getXButton() && !IsDriveFast) {
-            scoringControl.ScoreL3();
+        if (operatorController.getXButton()) {
+            scoringControl.setState(States.SCOREL3);
+            factorOfReduction = 15;
             System.out.println("L3");
         }
 
-        if (operatorController.getYButton() && !IsDriveFast) {
-            scoringControl.ScoreL4();
+        if (operatorController.getYButton()) {
+            scoringControl.setState(States.SCOREL4);
+            factorOfReduction = 18;
             System.out.println("L4");
         }
     }
-
 }
+

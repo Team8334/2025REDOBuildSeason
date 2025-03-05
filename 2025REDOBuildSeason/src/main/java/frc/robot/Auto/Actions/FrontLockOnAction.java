@@ -39,7 +39,7 @@ public class FrontLockOnAction implements Actions
         mecanum = Mecanum.getInstance();
 
         forward = targeting.frontFollow(target, 25);
-        strafe = targeting.frontLockOn(target, 0);
+        strafe = targeting.frontLockOnX(target, 0);
         rotation = targeting.frontAngleAlign(target);
 
         frontLimelight.setPipeline(0);
@@ -65,15 +65,18 @@ public class FrontLockOnAction implements Actions
     {
         if ((frontLimelight.findTagName() != "Unknown") && driveTo && frontLimelight.getPipeline() == 0 && timer.get() <= 2)
         {
-            mecanum.driveWithSpeed(0, strafe, rotation);
+            mecanum.driveWithSpeed(0, 0, rotation);
         }
         if((frontLimelight.findTagName() != "Unknown") && driveTo && frontLimelight.getPipeline() == 0 && timer.get() > 2)
         {
-            mecanum.driveWithSpeed(forward, 0, 0);
+            mecanum.driveWithSpeed(forward, strafe, 0);
         }
-        else if ((frontLimelight.findTagName() != "Unknown") && !driveTo && frontLimelight.getPipeline() == 0)
+        if ((frontLimelight.findTagName() != "Unknown") && !driveTo && frontLimelight.getPipeline() == 0 && timer.get() <= 2)
         {
             mecanum.driveWithSpeed(0.0, 0, rotation);
+        }
+        if((frontLimelight.findTagName() != "Unknown") && !driveTo && frontLimelight.getPipeline() == 0 && timer.get() < 2){
+            mecanum.driveWithSpeed(0,strafe,0);
         }
         else
         {
