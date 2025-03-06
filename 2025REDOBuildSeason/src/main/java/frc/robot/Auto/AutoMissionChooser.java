@@ -1,12 +1,12 @@
 package frc.robot.Auto;
 
 import frc.robot.Auto.Missions.*;
-import frc.robot.Auto.Missions.BlueMissions.BlueScoreL2;
-import frc.robot.Auto.Missions.BlueMissions.BlueScoreL3;
-import frc.robot.Auto.Missions.BlueMissions.BlueScoreL4;
-import frc.robot.Auto.Missions.RedMissions.RedScoreL2;
-import frc.robot.Auto.Missions.RedMissions.RedScoreL3;
-import frc.robot.Auto.Missions.RedMissions.RedScoreL4;
+import frc.robot.Auto.Missions.BlueMissions.BlueHGStartPosition1;
+import frc.robot.Auto.Missions.BlueMissions.BlueScoreStartPosition3;
+import frc.robot.Auto.Missions.BlueMissions.BlueScoreStartPosition2;
+import frc.robot.Auto.Missions.RedMissions.RedScoreStartPosition1;
+import frc.robot.Auto.Missions.RedMissions.RedScoreStartPosition3;
+import frc.robot.Auto.Missions.RedMissions.RedScoreStartPosition2;
 
 import java.util.Optional;
 
@@ -22,19 +22,19 @@ public class AutoMissionChooser {
     enum DesiredMission {
         exampleMission,
         // general missions that use alliance to determine the actual missions
-        ScoringL2Mission,
-        ScoringL3Mission,
-        ScoringL4Mission,
+        StartingPosition1,
+        StartingPosition2,
+        StartingPosition3,
         Testing,
         // actual missions
         MoveAcrossLineMission,
         doNothing,
-        RedScoreL2,
-        RedScoreL3,
-        RedScoreL4,
-        BlueScoreL2,
-        BlueScoreL3,
-        BlueScoreL4,
+        RedScoreStartPosition1,
+        RedScoreStartPosition2,
+        RedScoreStartPosition3,
+        BlueHGStartPosition1,
+        BlueStartPosition2,
+        BlueStartPosition3,
 
     }
 
@@ -54,9 +54,9 @@ public class AutoMissionChooser {
         // add more here as needed, is what is seen when choosing a mission
         missionChooser.addOption("Do Nothing", DesiredMission.doNothing);
         missionChooser.addOption("Leave Community", DesiredMission.MoveAcrossLineMission);
-        missionChooser.addOption("Scoring L2", DesiredMission.ScoringL2Mission);
-        missionChooser.addOption("Scoring L4", DesiredMission.ScoringL3Mission);
-        missionChooser.addOption("Scoring L4", DesiredMission.ScoringL4Mission);
+        missionChooser.addOption("Starting Position 1", DesiredMission.StartingPosition1);
+        missionChooser.addOption("Starting Position 2", DesiredMission.StartingPosition2);
+        missionChooser.addOption("Starting Position 3", DesiredMission.StartingPosition3);
         missionChooser.addOption("Testing", DesiredMission.Testing);
 
         SmartDashboard.putNumber("Auto Delay (seconds)", 0);
@@ -90,7 +90,6 @@ public class AutoMissionChooser {
 
         if (cachedDesiredMission != desiredMission) {
             System.out.println("Auto selection changed, updating creator: desiredMission->" + desiredMission.name());
-            System.out.println("String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral");
             autoMission = getAutoMissionForParams(desiredMission);
         }
 
@@ -109,34 +108,34 @@ public class AutoMissionChooser {
             case Testing:
                 return Optional.of(new Testing());
             // if scoring in L2, and does mission according to alliance
-            case ScoringL2Mission:
+            case StartingPosition1:
                 if (alliance == "Red") {
-                    return Optional.of(new RedScoreL2());
+                    return Optional.of(new RedScoreStartPosition1());
                 }
                 else if (alliance == "Blue") {
-                    return Optional.of(new BlueScoreL2());
+                    return Optional.of(new BlueHGStartPosition1());
                 }
                 else {
                     return Optional.of(new DoNothingMission());
                 }
             // if scoring in L3, and does mission according to alliance
-            case ScoringL3Mission:
+            case StartingPosition2:
                 if (alliance == "Red"){
-                    return Optional.of(new RedScoreL3());
+                    return Optional.of(new RedScoreStartPosition2());
                 }
                 else if (alliance == "Blue"){
-                    return Optional.of(new BlueScoreL3());
+                    return Optional.of(new BlueScoreStartPosition2());
                 }
                 else {
                     return Optional.of(new DoNothingMission());
                 }
             // if scoring in L4, and does mission according alliance
-            case ScoringL4Mission:
+            case StartingPosition3:
                 if (alliance == "Red") {
-                    return Optional.of(new RedScoreL4());
+                    return Optional.of(new RedScoreStartPosition3());
                 }
                 else if (alliance == "Blue") {
-                    return Optional.of(new BlueScoreL4());
+                    return Optional.of(new BlueScoreStartPosition3());
                 }
                 else {
                     return Optional.of(new DoNothingMission());

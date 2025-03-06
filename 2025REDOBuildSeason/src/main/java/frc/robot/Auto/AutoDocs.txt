@@ -11,6 +11,10 @@ Blue April Tag IDs:
 
 Red April Tag IDs:
 
+Blue Coral Station April Tag IDs:
+
+Red Coral Station April Tag IDs:
+
 String options for MoveElevatorAction: 
     passive, 
     ramp, 
