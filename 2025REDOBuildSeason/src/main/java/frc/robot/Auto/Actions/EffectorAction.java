@@ -43,6 +43,5 @@ public class EffectorAction implements Actions{
     public void done(){
         timer.stop();
         scoringControl.setManualEffectorSpeed(0);
-        System.out.println("Scoring done");
     }
 }
