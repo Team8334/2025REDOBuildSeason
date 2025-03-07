@@ -33,6 +33,8 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     double[] targetPose;
     double[] robotPose;
     Rotation2d targetRotation;
+    Rotation2d robotRotation;
+    double robotRotationDegrees;
     int alliancePipeline;
 
     private NetworkTable table;
@@ -52,17 +54,11 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         this.limelightID = limelightID;
         this.tableName = tableName;
 
-        limelightTarget_Fiducial = new LimelightTarget_Fiducial();
-
         table = NetworkTableInstance.getDefault().getTable(tableName);
         tx = table.getEntry("tx");
         ty = table.getEntry("ty");
         ta = table.getEntry("ta");
         tl = table.getEntry("tl");
-
-        targetPose = LimelightHelpers.getTargetPose_RobotSpace(limelightName);
-        robotPose = LimelightHelpers.getBotPose_TargetSpace(limelightName);
-        targetRotation = limelightTarget_Fiducial.getTargetPose_RobotSpace2D().getRotation();
         
         table.getEntry("ledMode").setNumber(1); //0=default; 1=off; 2=blinking; 3 = on
     }
@@ -90,7 +86,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     }
 
     public double getTargetRotation(){
-        return targetRotation.getDegrees();
+        return robotRotationDegrees;
     }
 
     public double getArea(){
@@ -151,6 +147,11 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         y = ty.getDouble(0.0);
         area = ta.getDouble(0.0);
         l = tl.getDouble(0.0);
+        limelightTarget_Fiducial = new LimelightTarget_Fiducial();
+        targetPose = LimelightHelpers.getTargetPose_RobotSpace(limelightName);
+        robotPose = LimelightHelpers.getBotPose_TargetSpace(limelightName);
+        targetRotation = LimelightHelpers.getTargetPose_RobotSpace2D().getRotation();
+        robotRotationDegrees = targetRotation.getDegrees();
     }
 
     public void logToSmartDashboard() {
@@ -161,6 +162,7 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         SmartDashboard.putString("Limelight" + limelightID +"/Target Name", findTagName());
         SmartDashboard.putNumberArray("Limelight" + limelightID +"/Robot Pose Target Space", robotPose);
         SmartDashboard.putNumberArray("Limelight" + limelightID +"/Target Pose", targetPose);
+        SmartDashboard.putNumber("Limelight" + limelightID +"/Angle", robotRotationDegrees);
         SmartDashboard.putString("Alliance", alliance);
     }
 }

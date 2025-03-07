@@ -23,18 +23,19 @@ public class Targeting implements Subsystem // This class contains functions for
         return instance;
     }
 
-    private PIDController xPID = new PIDController(.15, 0, 0.005);
+    private PIDController xPID = new PIDController(.1, 0, 0.000);
     private PIDController areaPID = new PIDController(1, 0, 0);
-    private PIDController rotationPID = new PIDController(.1, 0, 0.005);
+    private PIDController rotationPID = new PIDController(.4, 0, 0.000);
 
     private Gyro gyro = Gyro.getInstance();
 
-    double currentAngle = (gyro.getAngleDegrees()*(Math.PI/180));
-    double desiredAngle;
+    double currentAngle;
     int pipeline;
 
     Limelight limelight;
     FrontLimelight frontLimelight;
+    double xCorrection;
+    double angleCorrection;
 
     String alliance;
     String frontLockOnState = "Not locking on to target";
@@ -43,6 +44,7 @@ public class Targeting implements Subsystem // This class contains functions for
 
     public Targeting()
     {
+        SubsystemManager.registerSubsystem(this);
         frontLimelight = FrontLimelight.getInstance();
         try
         {
@@ -66,10 +68,10 @@ public class Targeting implements Subsystem // This class contains functions for
     public double frontLockOnX(String target, double desiredX) //0 as Desired X for aligning with the middle
     {
         frontTags = frontLimelight.findTagName();
+        xCorrection = xPID.calculate(frontLimelight.getX(), desiredX);
         if (frontTags == target){
             frontLockOnState = "Locking on to target";
-            return (xPID.calculate(frontLimelight.getX(), desiredX));//25 is an arbitrary speed divisor. Increase/decrease as needed.
-            System.out.println(xPID.calculate(frontLimelight.getX(), desiredX));
+            return xCorrection;//25 is an arbitrary speed divisor. Increase/decrease as needed.
         }
         else{
             frontLockOnState = "Cannot see target";
@@ -78,11 +80,12 @@ public class Targeting implements Subsystem // This class contains functions for
     }
 
     public double frontAngleAlign(String target){
-        desiredAngle = ((Math.abs(frontLimelight.getTargetRotation()-180))*(Math.PI/180));
+        currentAngle = ((frontLimelight.getTargetRotation())*(Math.PI/180));
         frontTags = frontLimelight.findTagName();
+        angleCorrection = rotationPID.calculate(currentAngle, 0);
         if (frontTags == target){
             frontLockOnState = "Locking on to target";
-            return (rotationPID.calculate(currentAngle, desiredAngle));
+            return angleCorrection;
         }
         else {
             frontLockOnState = "Cannot see target";
@@ -114,8 +117,10 @@ public class Targeting implements Subsystem // This class contains functions for
 
     public void update()
     {
-        SmartDashboard.putNumber("Current Angle", currentAngle);
-        SmartDashboard.putNumber("Desired Angle", desiredAngle);
+        SmartDashboard.putNumber("Targeting/Targeting Current Angle", currentAngle);
+        SmartDashboard.putNumber("Targeting/Targeting Current X", frontLimelight.getX());
+        SmartDashboard.putNumber("Targeting/X Correction", xCorrection);
+        SmartDashboard.putNumber("Targeting/Angle Correction", angleCorrection);
     }
 
     public void initialize(){
