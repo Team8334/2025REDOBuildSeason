@@ -15,8 +15,6 @@ import frc.robot.Auto.Actions.WaitAction;
 public class MoveAcrossLineMission extends MissionBase{
     @Override
     protected void routine() throws AutoMissionEndedException {
-       
-        //runAction(new WaitAction(AutoMissionChooser.delay)); // MAY OR MAY NOT BE NEEDED
         runAction(new DriveForTimeAction(-0.3, 3)); // lengths can be adjusted as needed
 
     }

@@ -60,28 +60,6 @@ public class Mecanum implements Subsystem {
             gyro = Gyro.getInstance();
     }
 
-    /*
-     * currently not functional
-     */
-    public void drive(double forward, double strafe, double rotation) {
-        // Example chassis speeds: 1 meter per second forward, 3 meters
-        // per second to the left, and rotation at 1.5 radians per second
-        // counterclockwise.
-        ChassisSpeeds speeds = new ChassisSpeeds(forward, strafe, rotation);
-        // Convert to wheel speeds
-        MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(speeds);
-        // Get the individual wheel speeds
-        frontLeft = wheelSpeeds.frontLeftMetersPerSecond;
-        frontRight = wheelSpeeds.frontRightMetersPerSecond;
-        rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
-        rearRight = wheelSpeeds.rearRightMetersPerSecond;
-
-        frontLeftMotor.set(frontLeft);
-        frontRightMotor.set(frontRight);
-        rearLeftMotor.set(rearLeft);
-        rearRightMotor.set(rearRight);
-    }
-
     private double rotationControl(double rotationInput){
         currentAngleVelocity = (gyro.getAngleVelocityDegrees()*(Math.PI/180));
         double currentAngle = (gyro.getAngleDegrees()*(Math.PI/180));
@@ -154,9 +132,6 @@ public class Mecanum implements Subsystem {
         return "mecanum";
     }
     public boolean moving() {
-        if(frontRight >= PortMap.MOVING_THRESHOLD || frontLeft >= PortMap.MOVING_THRESHOLD || rearLeft >= PortMap.MOVING_THRESHOLD || rearRight >= PortMap.MOVING_THRESHOLD) {
-            return true;
-        }
-        return false;
+        return frontRight >= PortMap.MOVING_THRESHOLD || frontLeft >= PortMap.MOVING_THRESHOLD || rearLeft >= PortMap.MOVING_THRESHOLD || rearRight >= PortMap.MOVING_THRESHOLD;
     }
 }

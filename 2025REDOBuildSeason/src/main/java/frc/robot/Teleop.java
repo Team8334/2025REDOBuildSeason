@@ -9,6 +9,7 @@ import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.ScoringControl;
 import frc.robot.Subsystem.Elevator;
+import frc.robot.Data.States;
 
 public class Teleop {
 
@@ -18,6 +19,7 @@ public class Teleop {
     Mecanum mecanum;
     Elevator elevator;
     ScoringControl scoringControl;
+    States state;
 
     private double controllerLeftX;
     private double controllerLeftY;
@@ -83,33 +85,28 @@ public class Teleop {
         }
     }
     public void manipulatorControl() {
-        if(operatorController.getRightY()>=0.2){
-        EffectorSpeed = operatorController.getRightY();
-        }
-        else {
-            EffectorSpeed = 0;
-        }
+        scoringControl.setManualEffectorSpeed(operatorController.getRightY());//re-test this. if this comment is in, assume the effector to be untested.
 
         if (operatorController.getAButton()) {
             factorOfReduction = 0;
-            scoringControl.moveToRamp();
+            scoringControl.setState(States.RAMP);
         }
         
         if (operatorController.getBButton()) {
-            scoringControl.scoreL2();
-            factorOfReduction = 14;
+            scoringControl.setState(States.SCOREL2);
+            factorOfReduction = 12;
             System.out.println("L2");
         }
 
         if (operatorController.getXButton()) {
-            scoringControl.scoreL3();
-            factorOfReduction = 18;
+            scoringControl.setState(state.SCOREL3);
+            factorOfReduction = 15;
             System.out.println("L3");
         }
 
         if (operatorController.getYButton()) {
-            scoringControl.scoreL4();
-            factorOfReduction = 22;
+            scoringControl.setState(state.SCOREL4);
+            factorOfReduction = 18;
             System.out.println("L4");
         }
     }

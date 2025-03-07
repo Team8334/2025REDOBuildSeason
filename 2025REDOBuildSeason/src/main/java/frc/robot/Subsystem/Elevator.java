@@ -30,8 +30,8 @@ public class Elevator implements Subsystem {
     public static final double kElevatorkV = 1.19; //volt per velocity 
     public static final double kElevatorkA = 0.06; // volt per acceleration 
 
-    public static final double kElevatorDrumRadius = Units.inchesToMeters(1.0); // change this to actual
-    public static final double kElevatorEncoderDistPerPulse = 2.0 * Math.PI * kElevatorDrumRadius / 4096; // place holder for encoder. this is for the sim
+    public static final double kElevatorDrumRadius = Units.inchesToMeters(1.0);
+    public static final double kElevatorEncoderDistPerPulse = 2.0 * Math.PI * kElevatorDrumRadius / 4096;
 
     private ModifiedEncoders encoder;
     private NEOSparkMaxMotor elevatorMotorOne;
@@ -40,9 +40,8 @@ public class Elevator implements Subsystem {
 
     private double elevatorOne;
     private double elevatorTwo;
-    public double elevatorSpeed = .15; //adjust this
 
-    private final ProfiledPIDController m_controller = new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(4.2, 6));
+    private final ProfiledPIDController m_controller = new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(3, 6));
     ElevatorFeedforward m_feedforward = new ElevatorFeedforward(kElevatorkS, kElevatorkG, kElevatorkV, kElevatorkA);
 
     private Mechanism2d m_mech2d;
@@ -96,8 +95,6 @@ public class Elevator implements Subsystem {
         elevatorMotorTwo.setVoltage((feedforwardOutput + pidOutput)*-1);
         SmartDashboard.putNumber("Elevator/motorOneVoltage", feedforwardOutput+pidOutput);
         SmartDashboard.putNumber("Elevator/goal", goal);
-        //elevatorOne = elevatorSpeed;
-        //elevatorTwo = -elevatorSpeed; //determine which side needs to be negative
     }
     
     public void stop() {
@@ -111,7 +108,6 @@ public class Elevator implements Subsystem {
         m_mech2dRoot = m_mech2d.getRoot("Elevator Root", 10, 0);
         m_elevatorMech2d = new MechanismLigament2d("Elevator", -1* encoder.get(), 90);
         SmartDashboard.putData("Elevator Sim", m_mech2d);
-        //m_elevatorSim.setInput(m_motor.getSpeed()* RobotController.getBatteryVoltage());
     }
     
     @Override

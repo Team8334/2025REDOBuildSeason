@@ -36,6 +36,7 @@ public class Controller extends XboxController implements Devices {
         if (!debounceButtons.containsKey(button.value)) {
             debounceButtons.put(button.value, false);
         }
+        
         if (this.getRawButton(button.value) && debounceButtons.get(button.value))
         {
             debounceButtons.put(button.value, false);

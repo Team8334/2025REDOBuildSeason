@@ -21,7 +21,7 @@ public abstract class MissionBase {
     protected abstract void routine() throws AutoMissionEndedException;
 
     public void setStartPose() {
-        //Drive.getInstance().setHeading(mStartPose.getRotation()); //if one day track position
+        
     }
 
     public void run() {
