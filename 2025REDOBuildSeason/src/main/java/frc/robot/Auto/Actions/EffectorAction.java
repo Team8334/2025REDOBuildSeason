@@ -2,7 +2,7 @@ package frc.robot.Auto.Actions;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import frc.robot.Data.EncoderValues;
 import frc.robot.Subsystem.ScoringControl;
 
 /* 
@@ -13,12 +13,14 @@ import frc.robot.Subsystem.ScoringControl;
 public class EffectorAction implements Actions{
     
     private double seconds;
+    private double speed;
     Timer timer;
-    private ScoringControl score = null;
+    private ScoringControl scoringControl = null;
 
-    public EffectorAction(double seconds){
+    public EffectorAction(double speed, double seconds){
         this.seconds = seconds;
-        score = ScoringControl.getInstance();
+        this.speed = speed;
+        scoringControl = ScoringControl.getInstance();
     }
 
     @Override
@@ -29,7 +31,7 @@ public class EffectorAction implements Actions{
 
     @Override
     public void update(){
-        score.EffectorStateProcessing(); // NEED TO ADD DOUBLE SECONDS AND SCORING STATE TO SCORINGCONTROL?
+        scoringControl.setManualEffectorSpeed(this.speed);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class EffectorAction implements Actions{
     @Override
     public void done(){
         timer.stop();
-        score.EffectorStateProcessing();
-        System.out.println("Scoring in L1 done");
+        scoringControl.setManualEffectorSpeed(0);
+        System.out.println("Scoring done");
     }
 }

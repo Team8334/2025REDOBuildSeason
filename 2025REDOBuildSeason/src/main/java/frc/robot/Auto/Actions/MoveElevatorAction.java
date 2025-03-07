@@ -1,18 +1,23 @@
 package frc.robot.Auto.Actions;
 
-//imports important things
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Data.EncoderValues;
+import frc.robot.Subsystem.Elevator;
+import frc.robot.Subsystem.ScoringControl;
+import frc.robot.Data.States;
 
 public class MoveElevatorAction implements Actions{
     
     private double seconds;
-    private double speed;
+    private ScoringControl scoringControl = null;
     Timer timer;
+    States state;
 
-    public MoveElevatorAction (double seconds, double speed){// add another one for stage?
+    public MoveElevatorAction (double seconds, States state){
         this.seconds = seconds;
-        this.speed = speed;
+        this.state = state;
+        scoringControl = ScoringControl.getInstance();
     }
     
     @Override
@@ -23,7 +28,7 @@ public class MoveElevatorAction implements Actions{
 
     @Override
     public void update(){
-
+        scoringControl.setState(state);
     }
     
     @Override

@@ -20,7 +20,6 @@ import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.SubsystemManager;
 import frc.robot.Subsystem.ScoringControl;
 import au.grapplerobotics.CanBridge;
-
 import frc.robot.Teleop;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Subsystem.SubsystemManager;
@@ -52,9 +51,12 @@ public class Robot extends TimedRobot {
     CanBridge.runTCP();
 
     SmartDashboard.putData("Auto choices", m_chooser);
-    Gyro.getInstance();
     teleop = new Teleop();
+    
+    Gyro.getInstance();
     Mecanum.getInstance();
+    ScoringControl.getInstance();
+    Elevator.getInstance();
 
     frontLimelight = frontLimelight.getInstance();
 

@@ -35,8 +35,8 @@ public class TurnDegreesAction implements Actions{
     }
     
     @Override
-    public void start(){
-        //gyro.reset();
+    public void start()
+    {
         currentDegrees = gyro.getAngleDegrees();
         targetDegrees = (desiredDegrees + currentDegrees); // this is how much in total degrees we need to turn
         timer = new Timer();
@@ -52,7 +52,7 @@ public class TurnDegreesAction implements Actions{
         
         turn = (targetDegrees - currentDegrees)/ 180; //the power of the turn, divided to make power less
         
-        mDrive.drive(0, 0, turn); // no forward, no strafe, only rotation
+        mDrive.driveWithSpeed(0, 0, turn); // no forward, no strafe, only rotation
         System.out.println("gyro yaw:" + gyro.getAngleDegrees());
         SmartDashboard.putNumber("turnDegreesAction/speed " , turn);
     }
@@ -67,6 +67,6 @@ public class TurnDegreesAction implements Actions{
     public void done(){
         SmartDashboard.putString( "Current Action", "TurnDegreesAction Ended");
         SmartDashboard.putNumber("turnDegreesAction/speed" , turn);
-        mDrive.drive(0, 0, 0);
+        mDrive.driveWithSpeed(0, 0, 0);
     }
 }

@@ -1,0 +1,23 @@
+Auto Documentation
+
+Forward: negative number
+Backward: positive number
+
+Right turn: positive number
+Left turn: negative number
+Add 5 degrees to the original number of degrees
+
+Blue April Tag IDs:
+
+Red April Tag IDs:
+
+String options for MoveElevatorAction: 
+    passive, 
+    ramp, 
+    Score L1, 
+    Score L2, 
+    Score L3, 
+    Score L4, 
+    ejecting coral
+
+0.1 is a good and tested speed for the end effector, at least on L4

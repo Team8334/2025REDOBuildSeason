@@ -17,8 +17,12 @@ package frc.robot.Data;
         public static final int ELEVATOR_MOTOR_TWO = 6; // check this
     
         //values for following motors and sensors are currently unknown. delete this comment once you get the real values.
-        public static final int EFFECTOR_MOTOR_LOWER = 9; //9, 27 on test robot
-        public static final int EFFECTOR_MOTOR_UPPER = 10;
+        public static final int EFFECTOR_MOTOR_LOWER = 9; //9 on competition bot, 27 on test bot
+        public static final int EFFECTOR_MOTOR_UPPER = 10; //10 on compeition bot, 27 on test bot
         public static final int LASER_CAN = 12;
+
+        // Drive base encoders
+        public static final double LEFTENCODER_A = 0; // do not have definite value
+        public static final double LEFTENCODER_B = 0; // do not have definite value
             
         }
