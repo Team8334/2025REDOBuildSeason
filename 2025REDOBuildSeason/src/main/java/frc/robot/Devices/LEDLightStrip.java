@@ -1,46 +1,49 @@
 package frc.robot.Devices;
 
+import frc.robot.Data.ButtonMap;
+import frc.robot.Data.PortMap;
 import frc.robot.Devices.NEOSparkMaxMotor;
+
+import com.studica.frc.AHRS;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-//    https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
-//go here for info on the colors of the LED light strip.
+// https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
+// go here for info on the colors of the LED light strip.
 
 public class LEDLightStrip {
-    private static LEDLightStrip instance = null;
-    
-    private NEOSparkMaxMotor ledLightStrip;
-    
-    private double color = 0;
-    public enum Color
+  private static LEDLightStrip instance = null;
+  private NEOSparkMaxMotor ledLightStrip;
+
+  public double blueViolet = 0.89;
+  private double white = 0.93;
+
+  public static LEDLightStrip getInstance() {
+    if (instance == null) 
     {
-      RED (0),
-      GREEN (1),
-      BLUE (2);
-      
-      public int color;
-      private Color(int color) //constructor
-      {
-          this.color = color;
-      }
+      instance = new LEDLightStrip();
     }
+    return instance;
+  }
+
+  public LEDLightStrip()
+  {
+    this.ledLightStrip = new NEOSparkMaxMotor(PortMap.LED_LIGHT_STRIP);
+    SmartDashboard.putNumber("LED color", 0);
+  }
+
+  public void normalColor() {
+    ledLightStrip.set(blueViolet); // supposed to be Blue Violet
+    System.out.println("Color: blue violet");
+  }
+
+  public void coralColor() {
+    ledLightStrip.set(white); // supposed to be White
+    System.out.println("Color: white");
+  }
   
-    // public static LEDLightStrip getInstance()
-    // {
-    //   if (instance == null)
-    //   {
-    //     instance = new LEDLightStrip();
-    //   }
-    //   return instance;
-    // }
-    
-    public void set(double color)
-    {
-      ledLightStrip.set(color);
-    }
-  
-      public void set(Color color)
-    {
-      ledLightStrip.set(color.color);
-    }
+  // @Override
+  // public void update(){
+  //   System.out.println(ledLightStrip);
+  // }
 }

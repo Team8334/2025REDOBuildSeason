@@ -16,6 +16,7 @@ import frc.robot.Auto.AutoMissionExecutor;
 import frc.robot.Auto.Missions.MissionBase;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Devices.Gyro;
+import frc.robot.Devices.LEDLightStrip;
 import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.SubsystemManager;
 import frc.robot.Subsystem.ScoringControl;
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
   FrontLimelight frontLimelight;
   Elevator elevator;
   ScoringControl scoringControl;
+  LEDLightStrip ledLightStrip;
 
   States state;
 
@@ -55,12 +57,12 @@ public class Robot extends TimedRobot {
     Gyro.getInstance();
     teleop = new Teleop();
     Mecanum.getInstance();
+    ledLightStrip.getInstance();
 
     frontLimelight = frontLimelight.getInstance();
-
     scoringControl = ScoringControl.getInstance();
-
     elevator = Elevator.getInstance();
+
 
     SubsystemManager.initializeSubsystems();
 

@@ -20,5 +20,7 @@ package frc.robot.Data;
         public static final int EFFECTOR_MOTOR_LOWER = 9; //9, 27 on test robot
         public static final int EFFECTOR_MOTOR_UPPER = 10;
         public static final int LASER_CAN = 12;
+
+        public static final int LED_LIGHT_STRIP = 9;
             
         }
