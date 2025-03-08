@@ -3,15 +3,20 @@ package frc.robot.Devices;
 import frc.robot.Interfaces.Vision;
 import frc.robot.Interfaces.Devices;
 import frc.robot.Data.ExternalLibraries.LimelightHelpers;
+import frc.robot.Data.ExternalLibraries.LimelightHelpers.LimelightResults;
+import frc.robot.Data.ExternalLibraries.LimelightHelpers.LimelightTarget_Fiducial;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.math.util.Units;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Limelight extends LimelightHelpers implements Vision, Devices{
+public class Limelight implements Vision, Devices {
 
     int pipeline;
     int targetID;
@@ -19,12 +24,15 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
 
     double goalHeightMeters;
 
-    String limelightName;
+    // String limelightName; // Removed: Not needed, use tableName
+
+    String tableName; // Now this is the primary name
 
     NetworkTableEntry tx;
     NetworkTableEntry ty;
     NetworkTableEntry ta;
     NetworkTableEntry tl;
+    NetworkTableEntry ledMode;
 
     double x;
     double y;
@@ -32,24 +40,23 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
     double l;
     double[] targetPose;
     double[] robotPose;
-    Rotation2d targetRotation;
-    Rotation2d robotRotation;
-    double robotRotationDegrees;
+    double targetRotationRadians;
     int alliancePipeline;
+    Rotation3d targetRotation3d;
+
+    String limelightName;
 
     private NetworkTable table;
-    private String tableName;
-    private LimelightTarget_Fiducial limelightTarget_Fiducial;
 
     // how many degrees back is your limelight rotated from perfectly vertical? NEED VALUE FOR ROBOT
-    protected double limelightMountAngleDegrees = 0; 
+    protected double limelightMountAngleDegrees = 0;
 
     // distance from the center of the Limelight lens to the floor NEED VALUE FOR ROBOT
-    protected double limelightLensHeightMeters = 0.2; 
+    protected double limelightLensHeightMeters = 0.2;
 
-	private String alliance = "Red";
-    
-    public Limelight(String limelightName, int port, String tableName, int limelightID){
+    private String alliance = "Red";
+
+    public Limelight(String limelightName, int port, String tableName, int limelightID) {
         this.limelightName = limelightName;
         this.limelightID = limelightID;
         this.tableName = tableName;
@@ -59,87 +66,87 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         ty = table.getEntry("ty");
         ta = table.getEntry("ta");
         tl = table.getEntry("tl");
-        
-        table.getEntry("ledMode").setNumber(1); //0=default; 1=off; 2=blinking; 3 = on
+        ledMode = table.getEntry("ledMode");
+
+        ledMode.setDouble(0); // 0=default; 1=off; 2=blinking; 3 = on - MUST BE DOUBLE
     }
-    
-    
+
     public String getName() {
         return "Limelight" + limelightID;
     }
 
-    public void setPipeline(int pipeline){
+    public void setPipeline(int pipeline) {
         this.pipeline = pipeline;
-        table.getEntry("pipeline").setNumber(pipeline);
+        table.getEntry("pipeline").setDouble(pipeline); //MUST BE DOUBLE
+        //LimelightHelpers.setPipelineIndex(tableName, pipeline); //If not using the local instances
     }
 
-    public int getPipeline(){
+    public int getPipeline() {
         return pipeline;
     }
 
-    public int getId(){ //finds April Tag ID.
-        return (int)LimelightHelpers.getFiducialID(tableName);
+    public int getId() { // finds April Tag ID.
+        return (int) LimelightHelpers.getFiducialID(tableName);
     }
 
-    public double getX(){
+    public double getX() {
         return x;
     }
 
-    public double getTargetRotation(){
-        return robotRotationDegrees;
+    public double getTargetRotation() {
+        return targetRotationRadians;
     }
 
-    public double getArea(){
+    public double getArea() {
         return area;
     }
 
-    public void setAlliance(String alliance){
+    public void setAlliance(String alliance) {
         this.alliance = alliance;
     }
 
-    public String findTagName(){
-        switch (getId())
-        {
-            case 12, 13 -> {
-                goalHeightMeters = 1.35; 
+    public String findTagName() {
+        switch (getId()) {
+            case 12, 13: {
+                goalHeightMeters = 1.35;
                 return alliance.equals("Blue") ? "Coral Station" : "Opponent's Coral Station";
             }
-            case 4, 14 -> {
-                goalHeightMeters = 1.78; 
-                return alliance.equals("Blue") ? "Barge" : "Opponent's Barge"; //Note: This is above the MIDDLE CAGE
+            case 4, 14: {
+                goalHeightMeters = 1.78;
+                return alliance.equals("Blue") ? "Barge" : "Opponent's Barge"; // Note: This is above the MIDDLE CAGE
             }
-            case 3 -> {
-                goalHeightMeters = 1.17; 
+            case 3: {
+                goalHeightMeters = 1.17;
                 return alliance.equals("Blue") ? "Processor" : "Opponent's Processor";
             }
-            case 17, 18, 19, 20, 21, 22 -> {
-                goalHeightMeters = 0.17; 
+            case 17, 18, 19, 20, 21, 22: {
+                goalHeightMeters = 0.17;
                 return alliance.equals("Blue") ? "Reef" : "Opponent's Reef";
             }
-            case 5, 15 -> {
-                goalHeightMeters = 1.78; 
-                return alliance.equals("Red") ? "Barge" : "Opponent's Barge"; //Note: This is above the MIDDLE CAGE
+            case 5, 15: {
+                goalHeightMeters = 1.78;
+                return alliance.equals("Red") ? "Barge" : "Opponent's Barge"; // Note: This is above the MIDDLE CAGE
             }
-            case 16 -> {
-                goalHeightMeters = 1.17; 
+            case 16: {
+                goalHeightMeters = 1.17;
                 return alliance.equals("Red") ? "Processor" : "Opponent's Processor";
             }
-            case 6, 7, 8, 9, 10, 11 -> {
-                goalHeightMeters = 0.17; 
+            case 6, 7, 8, 9, 10, 11: {
+                goalHeightMeters = 0.17;
                 return alliance.equals("Red") ? "Reef" : "Opponent's Reef";
             }
-            case 1, 2 -> {
-                goalHeightMeters = 1.35; 
+            case 1, 2: {
+                goalHeightMeters = 1.35;
                 return alliance.equals("Red") ? "Coral Station" : "Opponent's Coral Station";
             }
-            default -> {
+            default: {
                 return "Unknown";
             }
         }
     }
-    
-    public boolean isOperational(){
-        return limelightName != null;
+
+    public boolean isOperational() {
+        return tableName != null; // Use tableName for operational check
     }
 
     public void limelightUpdate() {
@@ -147,22 +154,33 @@ public class Limelight extends LimelightHelpers implements Vision, Devices{
         y = ty.getDouble(0.0);
         area = ta.getDouble(0.0);
         l = tl.getDouble(0.0);
-        limelightTarget_Fiducial = new LimelightTarget_Fiducial();
         targetPose = LimelightHelpers.getTargetPose_RobotSpace(limelightName);
-        robotPose = LimelightHelpers.getBotPose_TargetSpace(limelightName);
-        targetRotation = LimelightHelpers.getTargetPose_RobotSpace2D().getRotation();
-        robotRotationDegrees = targetRotation.getDegrees();
+        robotPose = LimelightHelpers.getBotPose_TargetSpace(tableName);
+        targetRotation3d = LimelightHelpers.getTargetPose3d_RobotSpace(limelightName).getRotation();
+        targetRotationRadians = targetRotation3d.getZ()*10;
+
+        // Check if any fiducial targets are present
+        /*if (results.targets_Fiducials != null && results.targets_Fiducials.length > 0) {
+            // Get the *first* fiducial target (assuming you're only tracking one at a time)
+            LimelightTarget_Fiducial target = results.targets_Fiducials[0];
+            //targetRotationDegrees = Units.radiansToDegrees(target.getTargetPose_RobotSpace().getRotation().getZ());
+            System.out.println("Target Found");
+        } 
+        else {
+            System.out.println("No Target"); // Helpful for debugging
+            //targetRotationDegrees = 0; // Or some default value
+        }*/
     }
 
     public void logToSmartDashboard() {
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Target X", x);
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Target Y", y);
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Target Area", area);
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Latency", l);
-        SmartDashboard.putString("Limelight" + limelightID +"/Target Name", findTagName());
-        SmartDashboard.putNumberArray("Limelight" + limelightID +"/Robot Pose Target Space", robotPose);
-        SmartDashboard.putNumberArray("Limelight" + limelightID +"/Target Pose", targetPose);
-        SmartDashboard.putNumber("Limelight" + limelightID +"/Angle", robotRotationDegrees);
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Target X", x);
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Target Y", y);
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Target Area", area);
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Latency", l);
+        SmartDashboard.putString("Limelight" + limelightID + "/Target Name", findTagName());
+        SmartDashboard.putNumberArray("Limelight" + limelightID + "/Robot Pose Target Space", robotPose);
+        SmartDashboard.putNumberArray("Limelight" + limelightID + "/Target Pose", targetPose);
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Angle", targetRotationRadians);
         SmartDashboard.putString("Alliance", alliance);
     }
 }

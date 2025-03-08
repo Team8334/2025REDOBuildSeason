@@ -53,7 +53,7 @@ public class Alignment implements Subsystem{
 
     public void alignX(String target){
         if(x != 0){
-            mecanum.driveWithSpeed(0, targeting.frontLockOnX(target, 0), 0);
+            mecanum.driveWithSpeed(0, targeting.frontLockOnX(target, 0), targeting.frontAngleAlign(target));
         }
         else{
             mecanum.driveWithSpeed(0, 0, 0);
