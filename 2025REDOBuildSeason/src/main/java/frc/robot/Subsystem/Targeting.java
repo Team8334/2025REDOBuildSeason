@@ -23,9 +23,9 @@ public class Targeting implements Subsystem // This class contains functions for
         return instance;
     }
 
-    private PIDController xPID = new PIDController(.5, 0, 0.000);
-    private PIDController areaPID = new PIDController(1, 0, 0);
-    private PIDController rotationPID = new PIDController(.8, 0, 0.000);
+    private PIDController xPID = new PIDController(.0135, 0, 0); //2.3
+    private PIDController areaPID = new PIDController(.028, 0, 0);
+    private PIDController rotationPID = new PIDController(25, 0, 0);
 
     private Gyro gyro = Gyro.getInstance();
 
@@ -69,7 +69,7 @@ public class Targeting implements Subsystem // This class contains functions for
     {
         frontTags = frontLimelight.findTagName();
         xCorrection = xPID.calculate(frontLimelight.getX(), desiredX);
-        if (frontTags == target && Math.abs(frontLimelight.getX()) < .05){
+        if (frontTags == target){
             frontLockOnState = "Locking on to target";
             return xCorrection;//25 is an arbitrary speed divisor. Increase/decrease as needed.
         }
@@ -100,7 +100,7 @@ public class Targeting implements Subsystem // This class contains functions for
         frontTags = frontLimelight.findTagName();
         if (frontTags == target){
             frontFollowState = "Following target";
-            return -(areaPID.calculate(frontLimelight.getArea(), desiredArea) / 50);//50 is an arbitrary speed divisor. Increase/decrease as needed.
+            return -(areaPID.calculate(frontLimelight.getArea(), desiredArea));//50 is an arbitrary speed divisor. Increase/decrease as needed.
         }
         else{
             frontFollowState = "Cannot see target";

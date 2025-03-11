@@ -157,19 +157,7 @@ public class Limelight implements Vision, Devices {
         targetPose = LimelightHelpers.getTargetPose_RobotSpace(limelightName);
         robotPose = LimelightHelpers.getBotPose_TargetSpace(tableName);
         targetRotation3d = LimelightHelpers.getTargetPose3d_RobotSpace(limelightName).getRotation();
-        targetRotationRadians = targetRotation3d.getZ()*10;
-
-        // Check if any fiducial targets are present
-        /*if (results.targets_Fiducials != null && results.targets_Fiducials.length > 0) {
-            // Get the *first* fiducial target (assuming you're only tracking one at a time)
-            LimelightTarget_Fiducial target = results.targets_Fiducials[0];
-            //targetRotationDegrees = Units.radiansToDegrees(target.getTargetPose_RobotSpace().getRotation().getZ());
-            System.out.println("Target Found");
-        } 
-        else {
-            System.out.println("No Target"); // Helpful for debugging
-            //targetRotationDegrees = 0; // Or some default value
-        }*/
+        targetRotationRadians = targetRotation3d.getZ()+.01;//subtract constant for accurate measurement
     }
 
     public void logToSmartDashboard() {

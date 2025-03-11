@@ -57,7 +57,7 @@ public class Alignment implements Subsystem{
         }
         else{
             mecanum.driveWithSpeed(0, 0, 0);
-            System.out.println("Alignment complete");
+            System.out.println("x = 0");
         }
         
     }
@@ -67,8 +67,8 @@ public class Alignment implements Subsystem{
     }
 
     public void driveTo(String target){
-        if(area < 25){
-            mecanum.driveWithSpeed(targeting.frontFollow(target, 25), 0, 0);
+        if(area < 45){
+            mecanum.driveWithSpeed(targeting.frontFollow(target, 25), targeting.frontLockOnX(target, 0), targeting.frontAngleAlign(target));
         }
         else{
             mecanum.driveWithSpeed(0, 0, 0);

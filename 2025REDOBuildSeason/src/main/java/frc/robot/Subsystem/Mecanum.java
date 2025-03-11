@@ -67,7 +67,7 @@ public class Mecanum implements Subsystem {
         if (Math.abs(currentAngleVelocity) >= 0.15 && Math.abs(rotationInput) >= 0) {
             desiredAngle = currentAngle;
         }
-        if(Math.abs(rotationInput) <= .2){
+        if(Math.abs(rotationInput) <= .01){
             double correction = speedControlPID.calculate(currentAngle, desiredAngle);
             SmartDashboard.putNumber(getName()+"/correction", correction);
             SmartDashboard.putNumber(getName()+"/desiredAngle", desiredAngle);
