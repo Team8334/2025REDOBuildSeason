@@ -6,11 +6,11 @@ import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
 
 import frc.robot.Data.PortMap;
 
-public class LazerCan {
+public class Lazer {
      private LaserCan lc; 
      public int laserDetectedDistance;
 
-     public LazerCan(int LazerCanID){
+     public Lazer(int LazerCanID){
             lc = new LaserCan(LazerCanID);
             laserConfig();
      }
