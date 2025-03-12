@@ -22,17 +22,19 @@ public class ScoringControl implements Subsystem {
     Timer timer;
     Elevator elevator;
 
-    private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
-    private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
+    private NEOSparkMaxMotor rampLeftMotor; 
+    private NEOSparkMaxMotor rampRightMotor;
+    private NEOSparkMaxMotor effectorMotor;
 
     private LaserCan lc = new LaserCan(PortMap.LASER_CAN);
     public int laserDetectedDistance;
     public double coralDetectThreshold = 5; //in mm
 
-    private double effectorUpper;
     private double effectorLower;
 
-    States state;
+    States elevatorState;
+    States effectorState;
+
 
     public String monitoringState;
 
@@ -50,8 +52,9 @@ public class ScoringControl implements Subsystem {
     }
 
     public void EffectorRun(){
-        effectorMotorLower.set(effectorUpper);
-        effectorMotorUpper.set(effectorLower);
+        rampLeftMotor.set(rampRight);
+        rampRightMotor.set(rampLeft);
+        effectorMotor.set(effector);
     }
 
     public void laserConfig(){
@@ -71,21 +74,24 @@ public class ScoringControl implements Subsystem {
         return laserDetectedDistance;
     }
 
-    public void setState(States state){
-        this.state = state;
+    public void setElevatorState(States elevatorState){
+        this.elevatorState = elevatorState;
     }
 
-    public void setManualEffectorSpeed(double speed){
-        effectorUpper = speed;
-        effectorLower = speed;
+    public void setEffectorState(States effectorState){
+        this.effectorState = effectorState;
     }
 
-    public void EffectorStateProcessing(){
-        switch (state)
-        {
+   // public void setManualEffectorSpeed(double speed){
+   //     rampLeft = (speed/4);
+   //     rampRight = (speed/-4);
+   //     effector = (speed/-5);
+   // }
+
+    public void ElevatorStateProcessing(){
+        switch (elevatorState){
+
             case PASSIVE:
-                    effectorUpper = 0.0;
-                    effectorLower = 0.0;
                     elevator.stop();
                     monitoringState = "Passive";
                 break;
@@ -118,16 +124,67 @@ public class ScoringControl implements Subsystem {
         SmartDashboard.putString("scoringState", monitoringState);
     }
 
+    public void EffectorStateProcessing(){
+        switch (effectorState){
+
+            case NOTHING:
+                effector = 0.0;
+                rampLeft = 0.0;
+                rampRight = 0.0;
+                 
+                break;
+
+            case WAITINGINRAMP:
+                effector = 0.0;
+                rampLeft = 0.1;
+                rampRight = 0.1;
+
+                break;
+
+            case PASSING:
+                effector = 0.1;
+                rampLeft = 0.1;
+                rampRight = 0.1;
+
+                break;
+
+            case WAITINGINEFFECTOR:
+                effector = 0.0;
+                rampLeft = 0.0;
+                rampRight = 0.0;
+
+                break;
+
+            case SCORING:
+                effector = 0.1;
+                rampLeft = 0.0;
+                rampRight = 0.0;
+
+                break;
+
+            case DEALGAEFYING:
+                effector = 0.1;
+                rampLeft = 0.0;
+                rampRight = 0.0;
+
+                break;
+        }
+    }
+
     @Override
     public void update() {
+        ElevatorStateProcessing();
         EffectorStateProcessing();
-        EffectorRun();
+        //EffectorRun();
         SmartDashboard.putNumber("Laser Detected Distance", laserDetectedDistance);
     }
 
     @Override
     public void initialize() {
         elevator = Elevator.getInstance();
+        rampLeftMotor = new NEOSparkMaxMotor(PortMap.RAMP_LEFT);
+        rampRightMotor = new NEOSparkMaxMotor(PortMap.RAMP_RIGHT);
+        effectorMotor = new NEOSparkMaxMotor(PortMap.EFFECTOR);
     }
 
     @Override

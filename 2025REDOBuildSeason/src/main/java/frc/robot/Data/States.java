@@ -6,5 +6,11 @@ public enum States {
     SCOREL1,
     SCOREL2,
     SCOREL3,
-    SCOREL4;
+    SCOREL4,
+    NOTHING,
+    WAITINGINRAMP,
+    PASSING,
+    WAITINGINEFFECTOR,
+    SCORING,
+    DEALGAEFYING;
 }

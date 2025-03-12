@@ -85,27 +85,30 @@ public class Teleop {
         }
     }
     public void manipulatorControl() {
-        scoringControl.setManualEffectorSpeed(operatorController.getRightY());//re-test this. if this comment is in, assume the effector to be untested.
+        
+        if (operatorController.getRightBumperButton()) {
+            scoringControl.setEffectorState(States.PASSING);
+        }
 
         if (operatorController.getAButton()) {
             factorOfReduction = 0;
-            scoringControl.setState(States.RAMP);
+            scoringControl.setElevatorState(States.RAMP);
         }
         
         if (operatorController.getBButton()) {
-            scoringControl.setState(States.SCOREL2);
+            scoringControl.setElevatorState(States.SCOREL2);
             factorOfReduction = 12;
             System.out.println("L2");
         }
 
         if (operatorController.getXButton()) {
-            scoringControl.setState(state.SCOREL3);
+            scoringControl.setElevatorState(state.SCOREL3);
             factorOfReduction = 15;
             System.out.println("L3");
         }
 
         if (operatorController.getYButton()) {
-            scoringControl.setState(state.SCOREL4);
+            scoringControl.setElevatorState(state.SCOREL4);
             factorOfReduction = 18;
             System.out.println("L4");
         }

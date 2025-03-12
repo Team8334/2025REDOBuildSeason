@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
 
     elevator.elevatorZero();
 
-    scoringControl.setState(States.PASSIVE);
+    scoringControl.setElevatorState(States.PASSIVE);
   }
 
   /**

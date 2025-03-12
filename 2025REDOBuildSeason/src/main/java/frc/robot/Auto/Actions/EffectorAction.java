@@ -31,7 +31,7 @@ public class EffectorAction implements Actions{
 
     @Override
     public void update(){
-        scoringControl.setManualEffectorSpeed(this.speed);
+        //scoringControl.setManualEffectorSpeed(this.speed);
     }
 
     @Override
@@ -42,6 +42,6 @@ public class EffectorAction implements Actions{
     @Override
     public void done(){
         timer.stop();
-        scoringControl.setManualEffectorSpeed(0);
+       // scoringControl.setManualEffectorSpeed(0);
     }
 }
