@@ -32,8 +32,8 @@ public class Alignment implements Subsystem{
     }
 
     public void alignLeft(String target){
-        if(x > -25){
-            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, -25),0.0);
+        if(x > -14){
+            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, -14),0.0);
         }
         else{
             mecanum.driveWithSpeed(0,0,0);
@@ -42,8 +42,8 @@ public class Alignment implements Subsystem{
     }
 
     public void alignRight(String target){
-        if(x < 25){
-            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, 25),0.0);
+        if(x < 14){
+            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, 14),0.0);
         }
         else{
             mecanum.driveWithSpeed(0,0,0);
@@ -67,8 +67,8 @@ public class Alignment implements Subsystem{
     }
 
     public void driveTo(String target){
-        if(area < 45){
-            mecanum.driveWithSpeed(targeting.frontFollow(target, 25), targeting.frontLockOnX(target, 0), targeting.frontAngleAlign(target));
+        if(area < 11){
+            mecanum.driveWithSpeed(targeting.frontFollow(target, 11), targeting.frontLockOnX(target, 0), targeting.frontAngleAlign(target));
         }
         else{
             mecanum.driveWithSpeed(0, 0, 0);
