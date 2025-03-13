@@ -23,7 +23,7 @@ public class DriveForDistanceAction implements Actions{
     {
         mecanum = Mecanum.getInstance();
         //position = PositionEstimation.getInstance();
-        seconds = seconds;
+        this.seconds = seconds;
         desiredDistance = distance;
     }
 
@@ -32,7 +32,6 @@ public class DriveForDistanceAction implements Actions{
     {
         timer = new Timer();
         timer.start();
-        //currentDistance = position.getDistance();
         targetDistance = (currentDistance + desiredDistance);
         SmartDashboard.putString("Current Action", "DriveForDistanceAction Started");
     }
@@ -40,12 +39,11 @@ public class DriveForDistanceAction implements Actions{
     @Override
     public void update()
     {
-        //currentDistance = position.getDistance();
         forward = (targetDistance - currentDistance) / 128;
         mecanum.driveWithSpeed(forward, 0, 0);
-        SmartDashboard.putNumber("targetDistance", targetDistance);
-        SmartDashboard.putNumber("currentDistance", currentDistance);
-        SmartDashboard.putNumber("forward", forward);
+        SmartDashboard.putNumber("targetDistance: ", targetDistance);
+        SmartDashboard.putNumber("currentDistance: ", currentDistance);
+        SmartDashboard.putNumber("forward: ", forward);
 
     }
 

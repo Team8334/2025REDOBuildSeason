@@ -1,10 +1,7 @@
-
 package frc.robot.Auto.Actions;
 
-//imports a timer
 import edu.wpi.first.wpilibj.Timer;
-
-//imports Mecanum Drive
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem.Mecanum;
 
 /* This action moves the robot forward for a certain number
@@ -45,6 +42,7 @@ public class DriveForTimeAction implements Actions {
     @Override
     public void done() {
         timer.stop();
+        SmartDashboard.putString("Current Action", "DriveForTimeAction Ended");
         mDrive.driveWithSpeed(0, 0,0);
     }
 }

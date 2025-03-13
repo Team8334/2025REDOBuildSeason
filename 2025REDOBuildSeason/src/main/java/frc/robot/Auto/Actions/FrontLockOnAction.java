@@ -26,9 +26,6 @@ public class FrontLockOnAction implements Actions
     double seconds;
     double neededArea;
 
-    /**
-     * Run code once when the action is started, for setup
-     */
     public FrontLockOnAction(String target, boolean driveTo, double seconds)
     {
         this.driveTo = driveTo;
@@ -53,11 +50,6 @@ public class FrontLockOnAction implements Actions
         SmartDashboard.putString("Current Action", "FrontLockOnAction Started");
     }
 
-    /**
-     * Called by runAction in AutoModeBase iteratively until isFinished returns
-     * true. Iterative logic lives in this
-     * method
-     */
     @Override
     public void update()
     {
@@ -78,13 +70,6 @@ public class FrontLockOnAction implements Actions
         SmartDashboard.putNumber("rotation", rotation);
     }
 
-    /**
-     * Returns whether or not the code has finished executaprilTagLockOnementing
-     * this interface, this method is used by
-     * the runAction method every cycle to know when to stop running the action
-     *
-     * @return boolean
-     */
     @Override
     public boolean isFinished()
     {
@@ -98,9 +83,6 @@ public class FrontLockOnAction implements Actions
         }
     }
 
-    /**
-     * Run code once when the action finishes, usually for clean up
-     */
     @Override
     public void done()
     {

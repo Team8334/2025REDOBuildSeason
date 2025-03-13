@@ -1,22 +1,16 @@
 package frc.robot.Auto.Actions;
 
-//imports important things
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Data.EncoderValues;
-import frc.robot.Subsystem.Elevator;
 import frc.robot.Subsystem.ScoringControl;
 
-//import frc.robot.Subsystem.Elevator;//CHANGE ACCORDING TO REAL NAME
-
 /* This action should move the elevator up or down
- * 
+ * to the different stages
  */
 public class MoveElevatorAction implements Actions{
     
     private double seconds;
     private String state;
-    //private Elevator elevator;
     private ScoringControl scoringControl = null;
     Timer timer;
 
@@ -50,5 +44,6 @@ public class MoveElevatorAction implements Actions{
     public void done(){
         timer.stop();
         this.state = "passive";
+        SmartDashboard.putString("Current Action", "MoveElevatorAction Ended");
     }
 }
