@@ -24,7 +24,7 @@ public class ScoringControl implements Subsystem {
     private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
     private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
 
-    public double coralDetectThreshold = 30; //in mm
+    public double coralDetectThreshold = 40; //in mm
 
     private double effectorUpper;
     private double effectorLower;
