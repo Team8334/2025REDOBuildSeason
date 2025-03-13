@@ -23,8 +23,8 @@ public class Targeting implements Subsystem // This class contains functions for
         return instance;
     }
 
-    private PIDController xPID = new PIDController(.0135, 0, 0); //2.3
-    private PIDController areaPID = new PIDController(.028, 0, 0);
+    private PIDController xPID = new PIDController(.015, 0, 0); //2.3
+    private PIDController areaPID = new PIDController(.024, 0, 0);
     private PIDController rotationPID = new PIDController(25, 0, 0);
 
     private Gyro gyro = Gyro.getInstance();
