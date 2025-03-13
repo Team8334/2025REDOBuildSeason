@@ -14,7 +14,7 @@ import frc.robot.Auto.Actions.EffectorAction;
 
 /*
  * This mission is an example mission
- * Has examples of a normal action and a parallel action
+ * Has examples of a lot of actions
  */
 
 public class ExampleMission extends MissionBase {

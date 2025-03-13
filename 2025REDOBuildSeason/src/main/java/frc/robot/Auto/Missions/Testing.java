@@ -11,6 +11,7 @@ import frc.robot.Auto.Actions.TurnDegreesAction;
 import frc.robot.Auto.Actions.WaitAction;
 import frc.robot.Auto.Actions.MoveElevatorAction;
 import frc.robot.Auto.Actions.EffectorAction;
+import frc.robot.Auto.Actions.FrontLockOnAction;
 
 public class Testing extends MissionBase{
     
@@ -18,7 +19,7 @@ public class Testing extends MissionBase{
     protected void routine() throws AutoMissionEndedException {
        
     // Testing actions
-    
+        runAction(new FrontLockOnAction(null, mActive, mUpdateRate)); // do we do this with a drive action?
     // Working actions
         //runAction(new MoveElevatorAction(2, "Score L2"));
         //runAction(new EffectorAction(0.2, 2));

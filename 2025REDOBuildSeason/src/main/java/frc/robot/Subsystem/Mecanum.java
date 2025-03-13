@@ -74,7 +74,7 @@ public class Mecanum implements Subsystem {
         frontLeft = wheelSpeeds.frontLeftMetersPerSecond;
         frontRight = wheelSpeeds.frontRightMetersPerSecond;
         rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
-        rearRight = wheelSpeeds.rearRightMetersPerSecond;
+        rearRight = wheelSpeeds.rearRightMetersPerSecond;                                                                                                                                                                                                                                                                                       // Hola. things are going down out of your control.
 
         
         frontLeftMotor.set(frontLeft);

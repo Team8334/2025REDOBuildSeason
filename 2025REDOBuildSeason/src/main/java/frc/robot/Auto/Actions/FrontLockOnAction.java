@@ -36,7 +36,7 @@ public class FrontLockOnAction implements Actions
 
         forward = targeting.frontFollow(target);
         rotation = targeting.frontLockOn(target);
-
+                                        
         limelight.setPipeline(0);
 
         this.seconds = seconds;

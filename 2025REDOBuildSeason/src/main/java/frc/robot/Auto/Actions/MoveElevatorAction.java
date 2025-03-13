@@ -24,7 +24,7 @@ public class MoveElevatorAction implements Actions{
     public void start(){
         timer = new Timer();
         timer.start();
-        //SmartDashboard.putString("Elevator State: ", state);
+        //SmartDashboard.putString("Elevator State: ", state);                                                                                                                                                                                                              // things are taking a turn for the worst
     }
 
     @Override
