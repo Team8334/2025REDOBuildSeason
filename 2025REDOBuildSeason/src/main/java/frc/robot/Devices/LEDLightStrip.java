@@ -41,9 +41,4 @@ public class LEDLightStrip {
     ledLightStrip.set(white); // supposed to be White
     System.out.println("Color: white");
   }
-  
-  // @Override
-  // public void update(){
-  //   System.out.println(ledLightStrip);
-  // }
 }
