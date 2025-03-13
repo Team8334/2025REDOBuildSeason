@@ -51,22 +51,22 @@ public class Robot extends TimedRobot {
     CanBridge.runTCP();
 
     SmartDashboard.putData("Auto choices", m_chooser);
-    teleop = new Teleop();
     
     Gyro.getInstance();
     Mecanum.getInstance();
     ScoringControl.getInstance();
-    Elevator.getInstance();
+   // Elevator.getInstance();
 
-    frontLimelight = frontLimelight.getInstance();
+    //frontLimelight = frontLimelight.getInstance();
 
     scoringControl = ScoringControl.getInstance();
 
-    elevator = Elevator.getInstance();
+   // elevator = Elevator.getInstance();
 
     SubsystemManager.initializeSubsystems();
+    teleop = new Teleop();
 
-    elevator.elevatorZero();
+    //elevator.elevatorZero();
 
     scoringControl.setState(States.PASSIVE);
   }

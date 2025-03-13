@@ -25,8 +25,8 @@ public class ScoringControl implements Subsystem {
     Elevator elevator;
     Lazer lazer;
 
-    private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
-    private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
+    //private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
+    //private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
 
     public double coralDetectThreshold = 5; //in mm
 
@@ -47,13 +47,13 @@ public class ScoringControl implements Subsystem {
     }
 
     public ScoringControl(){
-        lazer = new Lazer(PortMap.LASER_CAN);
+        
         SubsystemManager.registerSubsystem(this);
     }
 
     public void EffectorRun(){
-        effectorMotorLower.set(effectorUpper);
-        effectorMotorUpper.set(effectorLower);
+        //effectorMotorLower.set(effectorUpper);
+        //effectorMotorUpper.set(effectorLower);
     }
 
     public void setState(States state){
@@ -71,7 +71,7 @@ public class ScoringControl implements Subsystem {
             case PASSIVE:
                     effectorUpper = 0.0;
                     effectorLower = 0.0;
-                    elevator.stop();
+                    //elevator.stop();
                     monitoringState = "Passive";
                 break;
 
@@ -105,14 +105,15 @@ public class ScoringControl implements Subsystem {
 
     @Override
     public void update() {
-        EffectorStateProcessing();
-        EffectorRun();
+        //EffectorStateProcessing();
+        //EffectorRun();
         SmartDashboard.putNumber("Laser Detected Distance", lazer.laserDistance());
     }
 
     @Override
     public void initialize() {
-        elevator = Elevator.getInstance();
+        lazer = new Lazer(PortMap.LASER_CAN);
+        //elevator = Elevator.getInstance();
     }
 
     @Override

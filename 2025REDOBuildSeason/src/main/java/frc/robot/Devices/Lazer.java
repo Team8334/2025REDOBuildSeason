@@ -13,6 +13,7 @@ public class Lazer {
      public Lazer(int LazerCanID){
             lc = new LaserCan(LazerCanID);
             laserConfig();
+            System.out.println("laserCan is being conficgured" + LazerCanID);
      }
      public void laserConfig(){
         try {
@@ -28,7 +29,7 @@ public class Lazer {
     public double laserDistance(){
         LaserCan.Measurement measurement = lc.getMeasurement();
         if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT){
-            measurement.distance_mm = laserDetectedDistance;
+            laserDetectedDistance = measurement.distance_mm;
             System.out.println("The target is " + measurement.distance_mm + "mm away!");
         } else{
             laserDetectedDistance = 999999;

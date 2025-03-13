@@ -46,7 +46,7 @@ public class Teleop {
 
         mecanum = Mecanum.getInstance();
         scoringControl = ScoringControl.getInstance();
-        elevator = Elevator.getInstance();
+        //elevator = Elevator.getInstance();
     }
 
     public void teleopPeriodic() {
