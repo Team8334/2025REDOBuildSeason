@@ -2,6 +2,8 @@ package frc.robot;
 
 import frc.robot.Devices.Controller;
 
+import static edu.wpi.first.units.Units.Horsepower;
+
 import java.lang.annotation.ElementType;
 
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -32,6 +34,7 @@ public class Teleop {
     public boolean ElevatorIsUp;
     public double EffectorSpeed = -0.2;
     public double factorOfReduction;
+    public boolean algaeMode = false;
 
     public Teleop() {
         driverController = new Controller(PortMap.DRIVER_CONTROLLER);
@@ -85,33 +88,57 @@ public class Teleop {
         }
     }
     public void manipulatorControl() {
-        
-        if (operatorController.getRightBumperButton()) {
-            scoringControl.setEffectorState(States.PASSING);
+
+        if (operatorController.getLeftTriggerAxis()>0.6){
+            algaeMode = true;
+            scoringControl.setEffectorState(States.HOLDINGALGAE);
+        }
+        else{
+            algaeMode = false;
         }
 
-        if (operatorController.getAButton()) {
-            factorOfReduction = 0;
+        if (operatorController.getLeftBumperButton() && algaeMode){
+            scoringControl.setEffectorState(States.DEALGAEFYING);
+        }
+
+        if (operatorController.getRightBumperButton() && algaeMode){
+            scoringControl.setEffectorState(States.YEETINGALGAE);
+        }
+
+        if (operatorController.getAButton() && algaeMode){
+            scoringControl.setElevatorState(States.LOWERALGAE);
+        }
+
+        if (operatorController.getYButton() && algaeMode){
+            scoringControl.setElevatorState(States.UPPERALGAE);
+        }
+
+        if (operatorController.getXButton() && !algaeMode){
             scoringControl.setElevatorState(States.RAMP);
         }
-        
-        if (operatorController.getBButton()) {
+
+        if (operatorController.getAButton() && !algaeMode){
             scoringControl.setElevatorState(States.SCOREL2);
-            factorOfReduction = 12;
-            System.out.println("L2");
         }
 
-        if (operatorController.getXButton()) {
-            scoringControl.setElevatorState(state.SCOREL3);
-            factorOfReduction = 15;
-            System.out.println("L3");
+        if (operatorController.getBButton() && !algaeMode){
+            scoringControl.setElevatorState(States.SCOREL3);
         }
 
-        if (operatorController.getYButton()) {
-            scoringControl.setElevatorState(state.SCOREL4);
-            factorOfReduction = 18;
-            System.out.println("L4");
+        if (operatorController.getYButton() && !algaeMode){
+            scoringControl.setElevatorState(States.SCOREL4);
         }
+
+        if (operatorController.getLeftBumperButton() && !algaeMode && scoringControl.pieceDetected){
+            scoringControl.setEffectorState(States.SCORING);
+        }
+
+        if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState==States.RAMP){
+            if (!scoringControl.pieceDetected) {
+                scoringControl.setEffectorState(States.PASSING);
+            }
+        }
+        
     }
 
 }

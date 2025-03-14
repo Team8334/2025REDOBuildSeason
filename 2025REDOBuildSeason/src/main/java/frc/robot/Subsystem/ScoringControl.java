@@ -3,9 +3,6 @@ package frc.robot.Subsystem;
 import frc.robot.Data.PortMap;
 
 import frc.robot.Devices.NEOSparkMaxMotor;
-import au.grapplerobotics.LaserCan;
-import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
-import au.grapplerobotics.ConfigurationFailedException;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem.Elevator;
@@ -26,19 +23,21 @@ public class ScoringControl implements Subsystem {
     private NEOSparkMaxMotor rampRightMotor;
     private NEOSparkMaxMotor effectorMotor;
 
-    private LaserCan lc = new LaserCan(PortMap.LASER_CAN);
-    public int laserDetectedDistance;
-    public double coralDetectThreshold = 5; //in mm
+    public double rampRight;
+    public double rampLeft;
+    public double effector;
 
-    private double effectorLower;
+    public boolean pieceDetected;
 
-    States elevatorState;
-    States effectorState;
+    public States elevatorState;
+    public States effectorState;
 
 
     public String monitoringState;
 
     public boolean elevatorIsSafe;
+    public boolean timerStart;
+    public double passingDelay;
 
     public static ScoringControl getInstance() {
         if (instance == null) {
@@ -55,23 +54,6 @@ public class ScoringControl implements Subsystem {
         rampLeftMotor.set(rampRight);
         rampRightMotor.set(rampLeft);
         effectorMotor.set(effector);
-    }
-
-    public void laserConfig(){
-        try {
-            lc.setRangingMode(LaserCan.RangingMode.SHORT);
-            lc.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 16, 16));
-            lc.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
-          } 
-        catch (ConfigurationFailedException e) {
-            System.out.println("Configuration failed! " + e);
-        }
-    }
-
-    public double laserDistance(){
-        LaserCan.Measurement measurement = lc.getMeasurement();
-        measurement.distance_mm = laserDetectedDistance;
-        return laserDetectedDistance;
     }
 
     public void setElevatorState(States elevatorState){
@@ -118,6 +100,16 @@ public class ScoringControl implements Subsystem {
 
             case SCOREL4:
                    elevator.reachGoal(EncoderValues.ELEVATOR_L4);
+
+                break;
+
+            case LOWERALGAE:
+                   elevator.reachGoal(EncoderValues.ELEVATOR_LOWER_ALGAE);
+
+                break;
+
+            case UPPERALGAE:
+                   elevator.reachGoal(EncoderValues.ELEVATOR_UPPER_ALGAE);
                 break;
 
         }
@@ -146,6 +138,15 @@ public class ScoringControl implements Subsystem {
                 rampLeft = 0.1;
                 rampRight = 0.1;
 
+                if (!timerStart && pieceDetected){
+                    timerStart = true;
+                    timer.start();
+                }
+                if (timerStart && pieceDetected && timer.get() > passingDelay){
+                    timerStart = false;
+                    setEffectorState(States.WAITINGINEFFECTOR);
+                }
+                
                 break;
 
             case WAITINGINEFFECTOR:
@@ -156,14 +157,33 @@ public class ScoringControl implements Subsystem {
                 break;
 
             case SCORING:
+                if (pieceDetected) {
+                    effector = 0.1;
+                    rampLeft = 0.0;
+                    rampRight = 0.0;
+                }
+                else{
+                    setEffectorState(States.NOTHING);
+                }
+
+                break;
+
+            case DEALGAEFYING:
                 effector = 0.1;
                 rampLeft = 0.0;
                 rampRight = 0.0;
 
                 break;
 
-            case DEALGAEFYING:
-                effector = 0.1;
+            case YEETINGALGAE:
+                effector = -0.2;
+                rampLeft = 0.0;
+                rampRight = 0.0;
+
+                break;
+            
+            case HOLDINGALGAE:
+                effector = 0.08;
                 rampLeft = 0.0;
                 rampRight = 0.0;
 
@@ -175,8 +195,9 @@ public class ScoringControl implements Subsystem {
     public void update() {
         ElevatorStateProcessing();
         EffectorStateProcessing();
-        //EffectorRun();
-        SmartDashboard.putNumber("Laser Detected Distance", laserDetectedDistance);
+        effectorMotor.set(effector);
+        rampRightMotor.set(rampRight);
+        rampLeftMotor.set(rampLeft);
     }
 
     @Override

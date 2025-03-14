@@ -51,7 +51,6 @@ public class Robot extends TimedRobot {
     CanBridge.runTCP();
 
     SmartDashboard.putData("Auto choices", m_chooser);
-    teleop = new Teleop();
     
     Gyro.getInstance();
     Mecanum.getInstance();
@@ -69,6 +68,9 @@ public class Robot extends TimedRobot {
     elevator.elevatorZero();
 
     scoringControl.setElevatorState(States.PASSIVE);
+    scoringControl.setEffectorState(States.NOTHING);
+
+    teleop = new Teleop();
   }
 
   /**
