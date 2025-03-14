@@ -40,6 +40,7 @@ public class ScoringControl implements Subsystem {
 
 
     public String monitoringState;
+    public String monitoringEffectorState;
 
     public boolean elevatorIsSafe;
     public boolean timerStart;
@@ -119,7 +120,7 @@ public class ScoringControl implements Subsystem {
                 break;
 
         }
-        SmartDashboard.putString("scoringState", monitoringState);
+        SmartDashboard.putString("elevatorScoringState", monitoringState);
     }
 
     public void EffectorStateProcessing(){
@@ -129,14 +130,14 @@ public class ScoringControl implements Subsystem {
                 effector = 0.0;
                 rampLeft = 0.0;
                 rampRight = 0.0;
-                 
+                monitoringEffectorState = "nothing";
                 break;
 
             case WAITINGINRAMP:
                 effector = 0.0;
                 rampLeft = 0.1;
                 rampRight = 0.1;
-
+                monitoringEffectorState = "waiting in ramp";
                 break;
 
             case PASSING:
@@ -152,14 +153,14 @@ public class ScoringControl implements Subsystem {
                     timerStart = false;
                     setEffectorState(States.WAITINGINEFFECTOR);
                 }
-                
+                monitoringEffectorState = "passing";
                 break;
 
             case WAITINGINEFFECTOR:
                 effector = 0.0;
                 rampLeft = 0.0;
                 rampRight = 0.0;
-
+                monitoringEffectorState = "waiting in effector";
                 break;
 
             case SCORING:
@@ -171,30 +172,32 @@ public class ScoringControl implements Subsystem {
                 else{
                     setEffectorState(States.NOTHING);
                 }
-
+                monitoringEffectorState = "scoring";
                 break;
 
             case DEALGAEFYING:
                 effector = 0.1;
                 rampLeft = 0.0;
                 rampRight = 0.0;
-
+                monitoringEffectorState = "De-algaefying";
                 break;
 
             case YEETINGALGAE:
                 effector = -0.2;
                 rampLeft = 0.0;
                 rampRight = 0.0;
-
+                monitoringEffectorState = "yeet";
                 break;
             
             case HOLDINGALGAE:
                 effector = 0.08;
                 rampLeft = 0.0;
                 rampRight = 0.0;
-
+                monitoringEffectorState = "hold";
                 break;
+                
         }
+        SmartDashboard.putString("effectorState", monitoringEffectorState);
     }
     
     public boolean coralDetect(){
