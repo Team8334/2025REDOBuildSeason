@@ -8,6 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Data.EncoderValues;
 import frc.robot.Data.States;
+import frc.robot.Devices.NEOSparkMaxMotor;
+import frc.robot.Devices.Laser;
+
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ScoringControl implements Subsystem {
 
@@ -18,6 +23,7 @@ public class ScoringControl implements Subsystem {
 
     Timer timer;
     Elevator elevator;
+    Laser laser;
 
     private NEOSparkMaxMotor rampLeftMotor; 
     private NEOSparkMaxMotor rampRightMotor;
@@ -26,8 +32,8 @@ public class ScoringControl implements Subsystem {
     public double rampRight;
     public double rampLeft;
     public double effector;
-
-    public boolean pieceDetected;
+    public double CORAL_DETECT_THRESHOLD = 40; //in mm
+    public double PASSING_DELAY;
 
     public States elevatorState;
     public States effectorState;
@@ -37,7 +43,7 @@ public class ScoringControl implements Subsystem {
 
     public boolean elevatorIsSafe;
     public boolean timerStart;
-    public double passingDelay;
+    public boolean pieceDetected;
 
     public static ScoringControl getInstance() {
         if (instance == null) {
@@ -142,7 +148,7 @@ public class ScoringControl implements Subsystem {
                     timerStart = true;
                     timer.start();
                 }
-                if (timerStart && pieceDetected && timer.get() > passingDelay){
+                if (timerStart && pieceDetected && timer.get() >= PASSING_DELAY){
                     timerStart = false;
                     setEffectorState(States.WAITINGINEFFECTOR);
                 }
@@ -190,18 +196,29 @@ public class ScoringControl implements Subsystem {
                 break;
         }
     }
+    
+    public boolean coralDetect(){
+        if(laser.laserDistance() > CORAL_DETECT_THRESHOLD){
+            return pieceDetected = true;
+        }else{
+            return pieceDetected = false;
+        }
+    }
 
     @Override
     public void update() {
+        coralDetect();
         ElevatorStateProcessing();
         EffectorStateProcessing();
         effectorMotor.set(effector);
         rampRightMotor.set(rampRight);
         rampLeftMotor.set(rampLeft);
+        SmartDashboard.putNumber("Laser Detected Distance", laser.laserDistance());
     }
 
     @Override
     public void initialize() {
+        laser = new Laser(PortMap.LASER_CAN);
         elevator = Elevator.getInstance();
         rampLeftMotor = new NEOSparkMaxMotor(PortMap.RAMP_LEFT);
         rampRightMotor = new NEOSparkMaxMotor(PortMap.RAMP_RIGHT);
