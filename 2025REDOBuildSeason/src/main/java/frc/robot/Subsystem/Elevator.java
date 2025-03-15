@@ -70,6 +70,10 @@ public class Elevator implements Subsystem {
         encoder.zeroCycle();
     }
 
+    public double getExtendedCyclePosition(){
+        return (encoder.getExtendedCyclePosition()*-1);
+    }
+
     public void safetyCheck(){
         
     }
@@ -85,7 +89,7 @@ public class Elevator implements Subsystem {
         SmartDashboard.putNumber("Elevator/Frequency", encoder.getFrequency());
         SmartDashboard.putNumber("Elevator/Output",-1* encoder.getExtendedCyclePosition());
         SmartDashboard.putNumber("Elevator/ShiftedOutput", encoder.shiftedOutput());
-    }
+            }
 
     public void reachGoal(double goal) {
         m_controller.setGoal(goal);

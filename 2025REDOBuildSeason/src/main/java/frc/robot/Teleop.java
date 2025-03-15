@@ -50,23 +50,22 @@ public class Teleop {
     public Teleop() {
         driverController = new Controller(PortMap.DRIVER_CONTROLLER);
         if (!driverController.isOperational()) {
-            System.out.println("404 Controller not found :(");
         }
     
         mecanum = Mecanum.getInstance();
         alignment = Alignment.getInstance();
-        //scoringControl = ScoringControl.getInstance();
-        //elevator = Elevator.getInstance();
+        
+        scoringControl = ScoringControl.getInstance();
+        elevator = Elevator.getInstance();
 
         operatorController = new Controller(PortMap.OPERATOR_CONTROLLER);
         if (!operatorController.isOperational()) {
-            System.out.println("404 Controller not found :(");
         }
     }
 
     public void teleopPeriodic() {
         driveBaseControl();
-        //manipulatorControl();
+        manipulatorControl();
     }
 
     public void driveBaseControl() {
@@ -98,6 +97,8 @@ public class Teleop {
             }
             break;
             case "Manually Driving": {
+                factorOfReduction = (elevator.getExtendedCyclePosition()>1?elevator.getExtendedCyclePosition():1);
+
                 if(Math.abs(controllerLeftY) >= 0.2){
                     forward = (controllerLeftY);
                 }
@@ -220,7 +221,7 @@ public class Teleop {
         }
 
         SmartDashboard.putBoolean("algaeMode", algaeMode);
-
+        
     }
 }
 
