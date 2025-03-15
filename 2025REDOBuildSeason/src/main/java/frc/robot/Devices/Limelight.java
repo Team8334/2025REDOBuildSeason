@@ -161,7 +161,7 @@ public class Limelight implements Vision, Devices {
         targetPose3d = LimelightHelpers.getTargetPose3d_RobotSpace(limelightName);
         targetPoseX = targetPose3d.getX(); //only negative for MasterS
         targetRotation3d = LimelightHelpers.getTargetPose3d_RobotSpace(limelightName).getRotation();
-        targetRotationRadians = targetRotation3d.getZ()-.0295;//subtract constant for accurate measurement. 0.0295 for Michela, .008 for MasterS
+        targetRotationRadians = targetRotation3d.getZ()-.0295;//subtract constant for accurate measurement. ? for Michela, .008 for MasterS
     }
 
     public void logToSmartDashboard() {

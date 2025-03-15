@@ -26,6 +26,7 @@ public class AutoMissionChooser {
         RedScoreL4,
         BlueScoreL1,
         BlueScoreL4,
+        AlignLeftMission
 
     }
 
@@ -47,6 +48,7 @@ public class AutoMissionChooser {
         missionChooser.addOption("Leave Community", DesiredMission.MoveAcrossLineMission);
         missionChooser.addOption("Scoring L1", DesiredMission.ScoringL1Mission);
         missionChooser.addOption("Scoring L4", DesiredMission.ScoringL4Mission);
+        missionChooser.addOption("Align Left", DesiredMission.AlignLeftMission);
 
         SmartDashboard.putNumber("Auto Delay (seconds)", 0);
 
@@ -118,6 +120,8 @@ public class AutoMissionChooser {
                 else {
                     return Optional.of(new DoNothingMission());
                 }
+            case AlignLeftMission:
+                return Optional.of(new AlignLeftMission());
             // if no auto mission is found
             default:
                 System.err.println("No valid autonomous mission found for" + mission);

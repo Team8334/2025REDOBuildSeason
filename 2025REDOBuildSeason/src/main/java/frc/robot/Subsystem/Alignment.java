@@ -32,20 +32,20 @@ public class Alignment implements Subsystem{
     }
 
     public void alignLeft(String target){
-        if(x > -23){
-            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, -23, -(areaConstant)),0.0);
+        if(x > -19 && x != 0){
+            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, -25, 0),0.0);
         }
         else{
-            mecanum.driveWithSpeed(0.4,0,0);
+            mecanum.driveWithSpeed(-0.5,0,0);
         }
     }
 
     public void alignRight(String target){ //desired seems to be 23 for Michela
-        if(x < 23){
-            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, 23, areaConstant),0.0);
+        if(x < 19 && x != 0){
+            mecanum.driveWithSpeed(0, targeting.frontLockOnX(target, 25, 0),0.0);
         }
         else{
-            mecanum.driveWithSpeed(0.4,0,0);
+            mecanum.driveWithSpeed(-.5,0,0);
         }
     }
 
@@ -65,7 +65,7 @@ public class Alignment implements Subsystem{
     }
 
     public void driveTo(String target){
-        if(area > 8 && Math.abs(x) <= 5 && Math.abs(limelight.getTargetRotation()) <= 0.004){
+        if(area > 8 && Math.abs(x) <= 0.5 && Math.abs(limelight.getTargetRotation()) <= 0.001){
             mecanum.driveWithSpeed(0, 0, 0);
             System.out.println("Alignment complete");
         }

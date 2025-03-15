@@ -23,7 +23,7 @@ public class Targeting implements Subsystem // This class contains functions for
         return instance;
     }
 
-    private PIDController xPID = new PIDController(.0145, 0, 0); 
+    private PIDController xPID = new PIDController(.0135, 0, 0); 
     private PIDController areaPID = new PIDController(.035, 0, 0);
     private PIDController rotationPID = new PIDController(24, 0, 0);
 
