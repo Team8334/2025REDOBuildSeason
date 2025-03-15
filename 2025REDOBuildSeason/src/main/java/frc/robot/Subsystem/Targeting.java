@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import frc.robot.Devices.Limelight;
 import frc.robot.Subsystem.FrontLimelight;
+import frc.robot.Devices.Gyro;
 
 public class Targeting implements Subsystem // This class contains functions for finding and
                                             // locking onto elements of the field using
@@ -22,11 +23,19 @@ public class Targeting implements Subsystem // This class contains functions for
         return instance;
     }
 
-    private PIDController xPID = new PIDController(1, 0, 0);
-    private PIDController areaPID = new PIDController(1, 0, 0);
+    private PIDController xPID = new PIDController(.0135, 0, 0); 
+    private PIDController areaPID = new PIDController(.035, 0, 0);
+    private PIDController rotationPID = new PIDController(24, 0, 0);
+
+    private Gyro gyro = Gyro.getInstance();
+
+    double currentAngle;
+    int pipeline;
 
     Limelight limelight;
     FrontLimelight frontLimelight;
+    double xCorrection;
+    double angleCorrection;
 
     String alliance;
     String frontLockOnState = "Not locking on to target";
@@ -35,6 +44,7 @@ public class Targeting implements Subsystem // This class contains functions for
 
     public Targeting()
     {
+        SubsystemManager.registerSubsystem(this);
         frontLimelight = FrontLimelight.getInstance();
         try
         {
@@ -46,36 +56,53 @@ public class Targeting implements Subsystem // This class contains functions for
             System.out.println("Exception occurred: " + e.getMessage());
         }
         frontLimelight.setAlliance(alliance);
+        if(alliance == "Red"){
+            pipeline = 0;
+        }
+        else{
+            pipeline = 1;
+        }
+        frontLimelight.setPipeline(pipeline);
     }
 
-    public double frontLockOn(String target)
+    public double frontLockOnX(String target, double desiredX, double alignmentConstant) //0 as Desired X for aligning with the middle, 0 as alignmentConstant unless aligning with something
     {
-        frontLimelight.setPipeline(0);
         frontTags = frontLimelight.findTagName();
-        if (frontTags == target)
-        {
+        xCorrection = xPID.calculate(frontLimelight.getX()+alignmentConstant, desiredX);
+        if (frontTags == target){
             frontLockOnState = "Locking on to target";
-            return (xPID.calculate(frontLimelight.getX(), 0) / 150.0);//150 is an arbitrary speed divisor. Increase/decrease as needed.
+            return xCorrection;
         }
-        else
-        {
+        else{
             frontLockOnState = "Cannot see target";
             return 0.0;
         }
     }
 
-    public double frontFollow(String target) // Setting "forward" in Mecanum.drive or Mecanum.driveWithSpeed as this function will cause the robot to follow the target. 
-                           // USE AT OWN RISK. Feel free to increase the speed divisor value to make it even slower.
-    {
-        frontLimelight.setPipeline(0);
+    public double frontAngleAlign(String target){
+        currentAngle = frontLimelight.getTargetRotation();
         frontTags = frontLimelight.findTagName();
-        if (frontTags == target)
-        {
-            frontFollowState = "Following target";
-            return (areaPID.calculate(frontLimelight.getArea(), 25) / 50);//50 is an arbitrary speed divisor. Increase/decrease as needed.
+        angleCorrection = rotationPID.calculate(currentAngle, 0);
+        if (frontTags == target && frontLimelight.getX() < 15 && frontLimelight.getX() > -15){
+            frontLockOnState = "Locking on to target";
+            
+            return angleCorrection;
         }
-        else
-        {
+        else {
+            frontLockOnState = "Cannot see target";
+            return 0.0;
+        }
+    }
+
+    public double frontFollow(String target, double desiredArea) // Setting "forward" in Mecanum.drive or Mecanum.driveWithSpeed as this function will cause the robot to follow the target. 
+                           // USE AT OWN RISK. Feel free to increase the speed divisor value to make it even slower. 25 is a good area for going towards something
+    {
+        frontTags = frontLimelight.findTagName();
+        if (frontTags == target){
+            frontFollowState = "Following target";
+            return -(areaPID.calculate(frontLimelight.getArea(), desiredArea));//50 is an arbitrary speed divisor. Increase/decrease as needed.
+        }
+        else{
             frontFollowState = "Cannot see target";
             return 0.0;
         }
@@ -91,7 +118,10 @@ public class Targeting implements Subsystem // This class contains functions for
 
     public void update()
     {
-
+        SmartDashboard.putNumber("Targeting/Targeting Current Angle", currentAngle);
+        SmartDashboard.putNumber("Targeting/Targeting Current X", frontLimelight.getX());
+        SmartDashboard.putNumber("Targeting/X Correction", xCorrection);
+        SmartDashboard.putNumber("Targeting/Angle Correction", angleCorrection);
     }
 
     public void initialize(){

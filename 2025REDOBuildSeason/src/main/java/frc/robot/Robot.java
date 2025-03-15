@@ -59,13 +59,13 @@ public class Robot extends TimedRobot {
 
     frontLimelight = frontLimelight.getInstance();
 
-    scoringControl = ScoringControl.getInstance();
+    //scoringControl = ScoringControl.getInstance();
 
-    elevator = Elevator.getInstance();
+    //elevator = Elevator.getInstance();
 
     SubsystemManager.initializeSubsystems();
 
-    elevator.elevatorZero();
+    //elevator.elevatorZero();
 
     scoringControl.setElevatorState(States.PASSIVE);
     scoringControl.setEffectorState(States.NOTHING);
