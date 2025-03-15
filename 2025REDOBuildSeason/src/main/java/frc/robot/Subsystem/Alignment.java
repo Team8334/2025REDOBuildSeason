@@ -92,7 +92,7 @@ public class Alignment implements Subsystem{
     public void update(){
         x = limelight.getX();
         area = limelight.getArea();
-        areaConstant = limelight.getArea()/20;
-        SmartDashboard.putNumber("x", x);
+        areaConstant = limelight.getArea()/3;
+        SmartDashboard.putNumber("Area constant", areaConstant);
     }
 }
