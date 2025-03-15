@@ -131,7 +131,7 @@ public class Teleop {
                     driveState = "Manually Driving";
                 }
                 if(xButtonPressed){
-                    alignment.alignX("Reef");
+                    alignment.alignXAngle("Reef");
                 }
                 else if(aButtonPressed){
                     alignment.alignAngle("Reef");

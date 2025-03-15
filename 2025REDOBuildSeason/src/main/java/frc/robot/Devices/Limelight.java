@@ -40,6 +40,8 @@ public class Limelight implements Vision, Devices {
     double l;
     double[] targetPose;
     double[] robotPose;
+    Pose3d targetPose3d;
+    double targetPoseX;
     double targetRotationRadians;
     int alliancePipeline;
     Rotation3d targetRotation3d;
@@ -150,14 +152,16 @@ public class Limelight implements Vision, Devices {
     }
 
     public void limelightUpdate() {
-        x = tx.getDouble(0.0);
+        x = tx.getDouble(0.0); //only negative for MasterS
         y = ty.getDouble(0.0);
         area = ta.getDouble(0.0);
         l = tl.getDouble(0.0);
         targetPose = LimelightHelpers.getTargetPose_RobotSpace(limelightName);
         robotPose = LimelightHelpers.getBotPose_TargetSpace(tableName);
+        targetPose3d = LimelightHelpers.getTargetPose3d_RobotSpace(limelightName);
+        targetPoseX = targetPose3d.getX(); //only negative for MasterS
         targetRotation3d = LimelightHelpers.getTargetPose3d_RobotSpace(limelightName).getRotation();
-        targetRotationRadians = targetRotation3d.getZ()+.01;//subtract constant for accurate measurement
+        targetRotationRadians = targetRotation3d.getZ()-.0295;//subtract constant for accurate measurement. 0.0295 for Michela, .008 for MasterS
     }
 
     public void logToSmartDashboard() {
@@ -166,7 +170,7 @@ public class Limelight implements Vision, Devices {
         SmartDashboard.putNumber("Limelight" + limelightID + "/Target Area", area);
         SmartDashboard.putNumber("Limelight" + limelightID + "/Latency", l);
         SmartDashboard.putString("Limelight" + limelightID + "/Target Name", findTagName());
-        SmartDashboard.putNumberArray("Limelight" + limelightID + "/Robot Pose Target Space", robotPose);
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Target X Robot Space", targetPoseX);
         SmartDashboard.putNumberArray("Limelight" + limelightID + "/Target Pose", targetPose);
         SmartDashboard.putNumber("Limelight" + limelightID + "/Angle", targetRotationRadians);
         SmartDashboard.putString("Alliance", alliance);

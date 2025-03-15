@@ -14,7 +14,7 @@ public class Alignment implements Subsystem{
     private Targeting targeting;
     private double x;
     private double area;
-    private double angle;
+    private double areaConstant;
 
     public Alignment(){
         SubsystemManager.registerSubsystem(this);
@@ -32,28 +32,26 @@ public class Alignment implements Subsystem{
     }
 
     public void alignLeft(String target){
-        if(x > -14){
-            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, -14),0.0);
+        if(x > -23){
+            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, -23, -(areaConstant)),0.0);
         }
         else{
-            mecanum.driveWithSpeed(0,0,0);
-            System.out.println("Alignment complete");
+            mecanum.driveWithSpeed(0.4,0,0);
         }
     }
 
-    public void alignRight(String target){
-        if(x < 14){
-            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, 14),0.0);
+    public void alignRight(String target){ //desired seems to be 23 for Michela
+        if(x < 23){
+            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, 23, areaConstant),0.0);
         }
         else{
-            mecanum.driveWithSpeed(0,0,0);
-            System.out.println("Alignment complete");
+            mecanum.driveWithSpeed(0.4,0,0);
         }
     }
 
-    public void alignX(String target){
+    public void alignXAngle(String target){
         if(x != 0){
-            mecanum.driveWithSpeed(0, targeting.frontLockOnX(target, 0), targeting.frontAngleAlign(target));
+            mecanum.driveWithSpeed(0, targeting.frontLockOnX(target, 0, 0), targeting.frontAngleAlign(target));
         }
         else{
             mecanum.driveWithSpeed(0, 0, 0);
@@ -67,12 +65,12 @@ public class Alignment implements Subsystem{
     }
 
     public void driveTo(String target){
-        if(area < 11){
-            mecanum.driveWithSpeed(targeting.frontFollow(target, 11), targeting.frontLockOnX(target, 0), targeting.frontAngleAlign(target));
-        }
-        else{
+        if(area > 8 && Math.abs(x) <= 5 && Math.abs(limelight.getTargetRotation()) <= 0.004){
             mecanum.driveWithSpeed(0, 0, 0);
             System.out.println("Alignment complete");
+        }
+        else{
+            mecanum.driveWithSpeed(targeting.frontFollow(target, 8), targeting.frontLockOnX(target, 0, 0), targeting.frontAngleAlign(target));
         }
     }
 
@@ -94,6 +92,7 @@ public class Alignment implements Subsystem{
     public void update(){
         x = limelight.getX();
         area = limelight.getArea();
+        areaConstant = limelight.getArea()/20;
         SmartDashboard.putNumber("x", x);
     }
 }
