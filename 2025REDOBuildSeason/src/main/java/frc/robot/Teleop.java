@@ -7,6 +7,7 @@ import static edu.wpi.first.units.Units.Horsepower;
 import java.lang.annotation.ElementType;
 
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.ScoringControl;
@@ -34,7 +35,7 @@ public class Teleop {
     public boolean ElevatorIsUp;
     public double EffectorSpeed = -0.2;
     public double factorOfReduction;
-    public boolean algaeMode = false;
+    public boolean algaeMode;
 
     public Teleop() {
         driverController = new Controller(PortMap.DRIVER_CONTROLLER);
@@ -89,12 +90,26 @@ public class Teleop {
     }
     public void manipulatorControl() {
 
+        scoringControl.setManualEffectorSpeed(operatorController.getRightY());
+
         if (operatorController.getLeftTriggerAxis()>0.6){
             algaeMode = true;
             scoringControl.setEffectorState(States.HOLDINGALGAE);
         }
         else{
             algaeMode = false;
+            if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState!=States.RAMP){
+                scoringControl.setEffectorState(States.SCORING);
+            }
+    
+            else if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState==States.RAMP){
+                if (true) {
+                    scoringControl.setEffectorState(States.PASSING);
+                }
+
+            } else{
+                scoringControl.setEffectorState(States.NOTHING);
+            }
         }
 
         if (operatorController.getLeftBumperButton() && algaeMode){
@@ -109,8 +124,12 @@ public class Teleop {
             scoringControl.setElevatorState(States.LOWERALGAE);
         }
 
-        if (operatorController.getYButton() && algaeMode){
+        if (operatorController.getBButton() && algaeMode){
             scoringControl.setElevatorState(States.UPPERALGAE);
+        }
+
+        if (operatorController.getYButton() && algaeMode){
+            scoringControl.setElevatorState(States.BARGE);
         }
 
         if (operatorController.getXButton() && !algaeMode){
@@ -129,16 +148,8 @@ public class Teleop {
             scoringControl.setElevatorState(States.SCOREL4);
         }
 
-        if (operatorController.getLeftBumperButton() && !algaeMode && scoringControl.pieceDetected){
-            scoringControl.setEffectorState(States.SCORING);
-        }
+        SmartDashboard.putBoolean("algaeMode", algaeMode);
 
-        if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState==States.RAMP){
-            if (!scoringControl.pieceDetected) {
-                scoringControl.setEffectorState(States.PASSING);
-            }
-        }
-        
     }
 
 }

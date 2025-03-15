@@ -32,8 +32,8 @@ public class ScoringControl implements Subsystem {
     public double rampRight;
     public double rampLeft;
     public double effector;
-    public double CORAL_DETECT_THRESHOLD = 40; //in mm
-    public double PASSING_DELAY = 10;
+    public double CORAL_DETECT_THRESHOLD = 5; //in mm
+    public double PASSING_DELAY = 45;
 
     public States elevatorState;
     public States effectorState;
@@ -71,52 +71,55 @@ public class ScoringControl implements Subsystem {
         this.effectorState = effectorState;
     }
 
-   // public void setManualEffectorSpeed(double speed){
-   //     rampLeft = (speed/4);
-   //     rampRight = (speed/-4);
-   //     effector = (speed/-5);
-   // }
-
+    public void setManualEffectorSpeed(double speed){
+       effector = (speed/-2);
+    }
     public void ElevatorStateProcessing(){
         switch (elevatorState){
 
             case PASSIVE:
-                    elevator.stop();
-                    monitoringState = "Passive";
+                elevator.stop();
+                monitoringState = "Passive";
                 break;
 
             case RAMP:
-                    elevator.reachGoal(EncoderValues.ELEVATOR_RAMP);
-                    
+                elevator.reachGoal(EncoderValues.ELEVATOR_RAMP);
+                monitoringState = "Ramp";
                 break;
 
             case SCOREL1:
-                    elevator.reachGoal(EncoderValues.ELEVATOR_L1);
-                
+                elevator.reachGoal(EncoderValues.ELEVATOR_L1);
+                monitoringState = "Score L1";
                 break;
             
             case SCOREL2:
-                    elevator.reachGoal(EncoderValues.ELEVATOR_L2);
-
+                elevator.reachGoal(EncoderValues.ELEVATOR_L2);
+                monitoringState = "Score L2";
                 break;
 
             case SCOREL3:
-                    elevator.reachGoal(EncoderValues.ELEVATOR_L3);
-                    
+                elevator.reachGoal(EncoderValues.ELEVATOR_L3);
+                monitoringState = "Score L3";
                 break;
 
             case SCOREL4:
-                   elevator.reachGoal(EncoderValues.ELEVATOR_L4);
-
+                elevator.reachGoal(EncoderValues.ELEVATOR_L4);
+                monitoringState = "Score L4";
                 break;
 
             case LOWERALGAE:
-                   elevator.reachGoal(EncoderValues.ELEVATOR_LOWER_ALGAE);
-
+                elevator.reachGoal(EncoderValues.ELEVATOR_LOWER_ALGAE);
+                monitoringState = "Lower Algae";
                 break;
 
             case UPPERALGAE:
-                   elevator.reachGoal(EncoderValues.ELEVATOR_UPPER_ALGAE);
+                elevator.reachGoal(EncoderValues.ELEVATOR_UPPER_ALGAE);
+                monitoringState = "Upper Algae";
+                break;
+        
+            case BARGE:
+                elevator.reachGoal(EncoderValues.ELEVATOR_BARGE);
+                monitoringState = "Barge";
                 break;
 
         }
@@ -141,18 +144,20 @@ public class ScoringControl implements Subsystem {
                 break;
 
             case PASSING:
-                effector = 0.1;
-                rampLeft = 0.1;
-                rampRight = 0.1;
+                effector = 0.3;
+                rampLeft = 0.3; //do not run fast. 0.7 broke the robot.
+                rampRight = -0.3; // do not run fast. 0.7 broke the robot.
 
-                if (!timerStart && pieceDetected){
-                    timerStart = true;
-                    timer.start();
-                }
-                if (timerStart && pieceDetected && timer.get() >= PASSING_DELAY){
-                    timerStart = false;
-                    setEffectorState(States.WAITINGINEFFECTOR);
-                }
+               // if (!timerStart && pieceDetected){
+               //     timerStart = true;
+               //     timer.reset();
+               //     timer.start();
+               // }
+               // if (timerStart && pieceDetected && timer.get() >= PASSING_DELAY){
+               //     timerStart = false;
+               //     timer.stop();
+               //     setEffectorState(States.WAITINGINEFFECTOR);
+               // }
                 monitoringEffectorState = "passing";
                 break;
 
@@ -164,33 +169,37 @@ public class ScoringControl implements Subsystem {
                 break;
 
             case SCORING:
-                if (pieceDetected) {
-                    effector = 0.1;
-                    rampLeft = 0.0;
-                    rampRight = 0.0;
-                }
-                else{
-                    setEffectorState(States.NOTHING);
-                }
+               // if (pieceDetected) {
+               //     effector = 0.1;
+               //     rampLeft = 0.0;
+               //     rampRight = 0.0;
+               // }
+               // else{
+               //     setEffectorState(States.NOTHING);
+               // }
+
+               effector = 0.5;
+               rampLeft = 0.0;
+               rampRight = 0.0;
                 monitoringEffectorState = "scoring";
                 break;
 
             case DEALGAEFYING:
-                effector = 0.1;
+                effector = 0.3;
                 rampLeft = 0.0;
                 rampRight = 0.0;
                 monitoringEffectorState = "De-algaefying";
                 break;
 
             case YEETINGALGAE:
-                effector = -0.2;
+                effector = -0.4;
                 rampLeft = 0.0;
                 rampRight = 0.0;
                 monitoringEffectorState = "yeet";
                 break;
             
             case HOLDINGALGAE:
-                effector = 0.08;
+                effector = 0.34;
                 rampLeft = 0.0;
                 rampRight = 0.0;
                 monitoringEffectorState = "hold";
@@ -201,7 +210,7 @@ public class ScoringControl implements Subsystem {
     }
     
     public boolean coralDetect(){
-        if(laser.laserDistance() > CORAL_DETECT_THRESHOLD){
+        if(laser.laserDistance() < CORAL_DETECT_THRESHOLD && laser.laserDistance() !=0){
             return pieceDetected = true;
         }else{
             return pieceDetected = false;
@@ -226,6 +235,7 @@ public class ScoringControl implements Subsystem {
         rampLeftMotor = new NEOSparkMaxMotor(PortMap.RAMP_LEFT);
         rampRightMotor = new NEOSparkMaxMotor(PortMap.RAMP_RIGHT);
         effectorMotor = new NEOSparkMaxMotor(PortMap.EFFECTOR);
+        timer= new Timer();
     }
 
     @Override

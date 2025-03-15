@@ -41,7 +41,7 @@ public class Elevator implements Subsystem {
     private double elevatorOne;
     private double elevatorTwo;
 
-    private final ProfiledPIDController m_controller = new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(3, 6));
+    private final ProfiledPIDController m_controller = new ProfiledPIDController(kElevatorKp, kElevatorKi, kElevatorKd, new TrapezoidProfile.Constraints(6, 10));
     ElevatorFeedforward m_feedforward = new ElevatorFeedforward(kElevatorkS, kElevatorkG, kElevatorkV, kElevatorkA);
 
     private Mechanism2d m_mech2d;
