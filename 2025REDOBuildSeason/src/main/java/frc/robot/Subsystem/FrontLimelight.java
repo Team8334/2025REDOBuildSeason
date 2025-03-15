@@ -29,6 +29,7 @@ public class FrontLimelight extends Limelight implements Subsystem{
 
     public void update(){
         limelightUpdate();
+        logToSmartDashboard();
     };
 
     public void initialize(){
@@ -36,7 +37,7 @@ public class FrontLimelight extends Limelight implements Subsystem{
     };
 
     public void log(){
-        logToSmartDashboard();
+        
     };
 
     public boolean isEnabled(){
