@@ -71,6 +71,10 @@ public class Elevator implements Subsystem {
         encoder.zeroCycle();
     }
 
+    public double getExtendedCyclePosition(){
+        return (encoder.getExtendedCyclePosition()*-1);
+    }
+
     public void safetyCheck(){
         
     }
