@@ -30,6 +30,6 @@ public class ExampleMission extends MissionBase {
         runAction(new DriveForTimeAction (.5, 0));;
         runAction(new ParallelAction(new DriveForTimeAction( 0, 0) , new TurnDegreesAction(20, 1)));
         runAction(new MoveElevatorAction(2, state.SCOREL3));
-        runAction(new EffectorAction(0.5,1));
+       // runAction(new EffectorAction(0.5,1));
     }
 }

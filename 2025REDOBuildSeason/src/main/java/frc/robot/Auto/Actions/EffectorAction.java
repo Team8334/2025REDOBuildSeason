@@ -3,6 +3,7 @@ package frc.robot.Auto.Actions;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Data.EncoderValues;
 import frc.robot.Subsystem.ScoringControl;
+import frc.robot.Data.States;
 
 /* 
  * This action should activate the end effacator for a certain
@@ -14,11 +15,12 @@ public class EffectorAction implements Actions{
     private double seconds;
     private double speed;
     Timer timer;
+    States state;
     private ScoringControl scoringControl = null;
 
-    public EffectorAction(double speed, double seconds){
+    public EffectorAction(States state, double seconds){
         this.seconds = seconds;
-        this.speed = speed;
+        this.state = state;
         scoringControl = ScoringControl.getInstance();
     }
 
@@ -30,17 +32,16 @@ public class EffectorAction implements Actions{
 
     @Override
     public void update(){
-        //scoringControl.setManualEffectorSpeed(this.speed);
+        scoringControl.setEffectorState(state);
     }
 
     @Override
     public boolean isFinished(){
-        return timer.get() >= seconds; 
+        return timer.get() >= seconds;
     }
 
     @Override
     public void done(){
         timer.stop();
-       // scoringControl.setManualEffectorSpeed(0);
     }
 }

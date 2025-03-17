@@ -7,6 +7,8 @@ import frc.robot.Auto.Missions.MissionBase;
 
 import frc.robot.Auto.Actions.DriveForTimeAction;
 import frc.robot.Auto.Actions.EffectorAction;
+import frc.robot.Auto.Actions.FrontAlignAction;
+import frc.robot.Auto.Actions.FrontLockOnAction;
 import frc.robot.Auto.Actions.MoveElevatorAction;
 import frc.robot.Auto.Actions.TurnDegreesAction;
 import frc.robot.Auto.Actions.WaitAction;
@@ -22,14 +24,17 @@ public class RedScoreL4 extends MissionBase{
     @Override
     protected void routine() throws AutoMissionEndedException {
        
-        //runAction(new WaitAction(AutoMissionChooser.delay)); // MAY NOT BE NEEDED
-        //runAction(new DriveForTimeAction(-0.5,  4));
-        //runAction(new TurnDegreesAction(30, 1));// add 5 degrees because michalangelo has consistently com up 5 degrees short of the needed turn
-        
-        // String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral
-        runAction(new MoveElevatorAction(2, state.SCOREL4)); // May be needed depending on how robot starts
-        runAction(new EffectorAction(0.12,1));
-        //runAction(new DriveForTimeAction(0.5, 0.2));
-        runAction(new MoveElevatorAction(2, state.RAMP));
+        runAction (new FrontLockOnAction("Reef",true,10));//pls change number
+        runAction (new FrontAlignAction("Reef","left",10)); //pls change number
+        runAction (new MoveElevatorAction(0.5, States.SCOREL2));
+       // runAction (new EffectorAction(0.2, 0.2));
+        runAction (new DriveForTimeAction(0.1, 0.2));
+        runAction (new MoveElevatorAction(0.5, States.RAMP));
+
+        //de-algaefying
+        runAction (new FrontLockOnAction("Reef", true, 2));
+        runAction(new DriveForTimeAction(0.2, 0.2));
+        runAction(new MoveElevatorAction(1.25, States.LOWERALGAE));
+        //runAction(new EffectorAction(-0.1, 0.75));
     }
 }

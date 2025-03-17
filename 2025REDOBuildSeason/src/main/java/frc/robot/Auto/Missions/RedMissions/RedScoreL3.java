@@ -27,7 +27,7 @@ public class RedScoreL3 extends MissionBase{
         
         // String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral
         runAction(new MoveElevatorAction(1, state.SCOREL3));
-        runAction(new EffectorAction(0.5,1));
+        //runAction(new EffectorAction(0.5,1));
         runAction(new MoveElevatorAction(2, state.RAMP));
     }
 }

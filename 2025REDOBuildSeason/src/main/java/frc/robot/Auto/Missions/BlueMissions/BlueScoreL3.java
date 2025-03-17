@@ -25,7 +25,7 @@ public class BlueScoreL3 extends MissionBase{
         //runAction(new TurnDegreesAction(65, 1));// add 5 degrees because michalangelo has consistently com up 5 degrees short of the needed turn
         // String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral
         runAction(new MoveElevatorAction(1, state.SCOREL3));
-        runAction(new EffectorAction(0.5,1));
+        //runAction(new EffectorAction(0.5,1));
         runAction(new MoveElevatorAction(2, state.RAMP));
     }
 }
