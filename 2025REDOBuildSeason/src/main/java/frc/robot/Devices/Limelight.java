@@ -2,6 +2,7 @@ package frc.robot.Devices;
 
 import frc.robot.Interfaces.Vision;
 import frc.robot.Interfaces.Devices;
+import frc.robot.Data.Debug;
 import frc.robot.Data.ExternalLibraries.LimelightHelpers;
 import frc.robot.Data.ExternalLibraries.LimelightHelpers.LimelightResults;
 import frc.robot.Data.ExternalLibraries.LimelightHelpers.LimelightTarget_Fiducial;
@@ -165,6 +166,8 @@ public class Limelight implements Vision, Devices {
     }
 
     public void logToSmartDashboard() {
+
+        if(Debug.debug){
         SmartDashboard.putNumber("Limelight" + limelightID + "/Target X", x);
         SmartDashboard.putNumber("Limelight" + limelightID + "/Target Y", y);
         SmartDashboard.putNumber("Limelight" + limelightID + "/Target Area", area);
@@ -174,5 +177,6 @@ public class Limelight implements Vision, Devices {
         SmartDashboard.putNumberArray("Limelight" + limelightID + "/Target Pose", targetPose);
         SmartDashboard.putNumber("Limelight" + limelightID + "/Angle", targetRotationRadians);
         SmartDashboard.putString("Alliance", alliance);
+        }
     }
 }

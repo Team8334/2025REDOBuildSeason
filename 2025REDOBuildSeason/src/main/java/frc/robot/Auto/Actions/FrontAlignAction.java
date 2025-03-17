@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.Mecanum;
+import frc.robot.Data.Debug;
 import frc.robot.Subsystem.Alignment;
 
 public class FrontAlignAction implements Actions
@@ -40,7 +41,10 @@ public class FrontAlignAction implements Actions
     {
         timer = new Timer();
         timer.start();
+
+        if(Debug.debug){
         SmartDashboard.putString("Current Action", "FrontLockOnAction Started");
+        }
     }
 
     /**

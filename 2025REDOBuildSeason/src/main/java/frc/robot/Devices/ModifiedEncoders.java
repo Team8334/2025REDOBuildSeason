@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Data.PortMap;
+import frc.robot.Data.Debug;
 
 import com.studica.frc.AHRS;
 
@@ -73,7 +74,9 @@ public class ModifiedEncoders {
         }
         saveEncoder = currentValue;
 
+        if(Debug.debug){
         SmartDashboard.putNumber("cycle", cycle);
+        }
         return cycle + currentValue;
     }
     

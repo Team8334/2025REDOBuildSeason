@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Data.Debug;
 
 /* This action can run two actions on the robot at once
  */
@@ -30,7 +31,10 @@ public class ParallelAction implements Actions {
     @Override
     public void start() {
         actionsToExecute.forEach(Actions::start);
+
+        if(Debug.debug){
         SmartDashboard.putString( "Current Action System", "ParallelAction Started");
+        }
     }
 
     @Override
@@ -48,7 +52,11 @@ public class ParallelAction implements Actions {
 
     @Override
     public void done() {
+
+        if(Debug.debug){
         SmartDashboard.putString( "Current Action System", "ParallelAction Ended");
+        }
+        
         actionsToExecute.forEach(Actions::done);
     }
 }

@@ -1,5 +1,6 @@
 package frc.robot.Subsystem;
 
+import frc.robot.Data.Debug;
 import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.Targeting;
@@ -93,6 +94,9 @@ public class Alignment implements Subsystem{
         x = limelight.getX();
         area = limelight.getArea();
         areaConstant = limelight.getArea()/3;
+
+        if(Debug.debug){
         SmartDashboard.putNumber("Area constant", areaConstant);
+        }
     }
 }

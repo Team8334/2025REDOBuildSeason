@@ -1,5 +1,6 @@
 package frc.robot.Subsystem;
 
+import frc.robot.Data.Debug;
 import frc.robot.Data.EncoderValues;
 import frc.robot.Devices.ModifiedEncoders;
 import frc.robot.Data.PortMap;
@@ -81,10 +82,12 @@ public class Elevator implements Subsystem {
     @Override
     public void update() 
     {
+        if(Debug.debug){
         SmartDashboard.putBoolean("Elevator/Connected", encoder.isConnected());
         SmartDashboard.putNumber("Elevator/Frequency", encoder.getFrequency());
         SmartDashboard.putNumber("Elevator/Output",-1* encoder.getExtendedCyclePosition());
         SmartDashboard.putNumber("Elevator/ShiftedOutput", encoder.shiftedOutput());
+        }
     }
 
     public void reachGoal(double goal) {
@@ -93,8 +96,11 @@ public class Elevator implements Subsystem {
         double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
         elevatorMotorOne.setVoltage(feedforwardOutput + pidOutput);
         elevatorMotorTwo.setVoltage((feedforwardOutput + pidOutput)*-1);
+
+        if(Debug.debug){
         SmartDashboard.putNumber("Elevator/motorOneVoltage", feedforwardOutput+pidOutput);
         SmartDashboard.putNumber("Elevator/goal", goal);
+        }
     }
     
     public void stop() {
@@ -107,7 +113,10 @@ public class Elevator implements Subsystem {
         m_mech2d = new Mechanism2d(20, 50);
         m_mech2dRoot = m_mech2d.getRoot("Elevator Root", 10, 0);
         m_elevatorMech2d = new MechanismLigament2d("Elevator", -1* encoder.get(), 90);
+
+        if(Debug.debug){
         SmartDashboard.putData("Elevator Sim", m_mech2d);
+        }
     }
     
     @Override

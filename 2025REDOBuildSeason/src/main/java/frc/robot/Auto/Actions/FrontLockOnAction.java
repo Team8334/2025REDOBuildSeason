@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem.Mecanum;
+import frc.robot.Data.Debug;
 import frc.robot.Subsystem.Alignment;
 import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.Mecanum;
@@ -41,7 +42,10 @@ public class FrontLockOnAction implements Actions
     {
         timer = new Timer();
         timer.start();
+
+        if(Debug.debug){
         SmartDashboard.putString("Current Action", "FrontLockOnAction Started");
+        }
     }
 
     /**

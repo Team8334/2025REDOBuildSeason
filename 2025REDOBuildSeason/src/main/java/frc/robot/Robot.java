@@ -24,6 +24,7 @@ import frc.robot.Teleop;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Subsystem.SubsystemManager;
 import frc.robot.Data.States;
+import frc.robot.Data.Debug;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating

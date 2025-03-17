@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import frc.robot.Devices.Limelight;
 import frc.robot.Subsystem.FrontLimelight;
+import frc.robot.Data.Debug;
 import frc.robot.Devices.Gyro;
 
 public class Targeting implements Subsystem // This class contains functions for finding and
@@ -110,18 +111,22 @@ public class Targeting implements Subsystem // This class contains functions for
 
     public void log()
     {
+        if(Debug.debug){
         SmartDashboard.putString("AprilTag in sight (Front)", frontLimelight.findTagName());
         SmartDashboard.putString("Front Limelight Lock On", frontLockOnState);
         SmartDashboard.putString("Front Limelight Follow", frontFollowState);
         SmartDashboard.putString("Current alliance", alliance);
+        }
     }
 
     public void update()
     {
+        if(Debug.debug){
         SmartDashboard.putNumber("Targeting/Targeting Current Angle", currentAngle);
         SmartDashboard.putNumber("Targeting/Targeting Current X", frontLimelight.getX());
         SmartDashboard.putNumber("Targeting/X Correction", xCorrection);
         SmartDashboard.putNumber("Targeting/Angle Correction", angleCorrection);
+        }
     }
 
     public void initialize(){

@@ -9,7 +9,9 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Data.Debug;
 
 public class NEOSparkMaxMotor {
     // REV robotics changed "CANSparkMax" to "SparkMax"
@@ -73,7 +75,10 @@ public class NEOSparkMaxMotor {
         if (isInverted){
             speed*=-1;
         }
+
+        if(Debug.debug){
         SmartDashboard.putNumber(this.getName()+"/set speed", speed);
+        }
         
         if (m_motor == null) {
             System.out.println("YOU SET THE SPEED OF A NONEXISTANT MOTOR: " + CANID);
@@ -88,9 +93,13 @@ public class NEOSparkMaxMotor {
             speed*=-1;
         }
         closedLoopController.setReference(speed, ControlType.kVelocity);
+
+        if(Debug.debug){
         SmartDashboard.putNumber(this.getName()+"/Actual Velocity", encoder.getVelocity());
         SmartDashboard.putNumber(this.getName()+"/Actual Velocity", encoder.getPosition());
         SmartDashboard.putNumber(this.getName()+"/Target Velocity", speed);
+        }
+        
     }
 
     public void setInverted(boolean isInverted){

@@ -2,6 +2,7 @@ package frc.robot.Auto.Actions;
 
 //imported subsystems that help calculate turn
 import frc.robot.Subsystem.Mecanum;
+import frc.robot.Data.Debug;
 import frc.robot.Devices.Gyro;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -45,16 +46,21 @@ public class TurnDegreesAction implements Actions{
     
     @Override
     public void update(){
+        currentDegrees = gyro.getAngleDegrees(); // gets the current degrees
+
+        if(Debug.debug){
         SmartDashboard.putNumber("targetDegrees ", targetDegrees);
         SmartDashboard.putNumber("desiredDegrees ", desiredDegrees);
-        currentDegrees = gyro.getAngleDegrees(); // gets the current degrees
         SmartDashboard.putNumber("currentDegreese ", currentDegrees);
+        }
         
         turn = (targetDegrees - currentDegrees)/ 180; //the power of the turn, divided to make power less
         
         mDrive.driveWithSpeed(0, 0, turn); // no forward, no strafe, only rotation
-        System.out.println("gyro yaw:" + gyro.getAngleDegrees());
+        
+        if(Debug.debug){
         SmartDashboard.putNumber("turnDegreesAction/speed " , turn);
+        }
     }
 
     @Override
@@ -65,8 +71,12 @@ public class TurnDegreesAction implements Actions{
     
     @Override
     public void done(){
+
+        if (Debug.debug){
         SmartDashboard.putString( "Current Action", "TurnDegreesAction Ended");
         SmartDashboard.putNumber("turnDegreesAction/speed" , turn);
+        }
+        
         mDrive.driveWithSpeed(0, 0, 0);
     }
 }

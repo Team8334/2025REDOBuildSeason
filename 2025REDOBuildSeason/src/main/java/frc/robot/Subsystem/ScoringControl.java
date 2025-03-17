@@ -6,6 +6,7 @@ import frc.robot.Devices.NEOSparkMaxMotor;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem.Elevator;
+import frc.robot.Data.Debug;
 import frc.robot.Data.EncoderValues;
 import frc.robot.Data.States;
 import frc.robot.Devices.NEOSparkMaxMotor;
@@ -123,7 +124,10 @@ public class ScoringControl implements Subsystem {
                 break;
 
         }
+
+        if(Debug.debug){
         SmartDashboard.putString("elevatorScoringState", monitoringState);
+        }
     }
 
     public void EffectorStateProcessing(){
@@ -206,7 +210,10 @@ public class ScoringControl implements Subsystem {
                 break;
                 
         }
+
+        if(Debug.debug){
         SmartDashboard.putString("effectorState", monitoringEffectorState);
+        }
     }
     
     public boolean coralDetect(){
@@ -225,7 +232,10 @@ public class ScoringControl implements Subsystem {
         effectorMotor.set(effector);
         rampRightMotor.set(rampRight);
         rampLeftMotor.set(rampLeft);
+
+        if(Debug.debug){
         SmartDashboard.putNumber("Laser Detected Distance", laser.laserDistance());
+        }
     }
 
     @Override

@@ -16,6 +16,7 @@ import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.Alignment;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Data.States;
+import frc.robot.Data.Debug;
 
 public class Teleop {
 
@@ -156,7 +157,9 @@ public class Teleop {
             
             break;
         }
+        if(Debug.debug){
         SmartDashboard.putString("Drive State", driveState);
+        }
     }
 
     public void manipulatorControl() {
@@ -219,7 +222,9 @@ public class Teleop {
             scoringControl.setElevatorState(States.SCOREL4);
         }
 
+        if(Debug.debug){
         SmartDashboard.putBoolean("algaeMode", algaeMode);
+        }
 
     }
 }

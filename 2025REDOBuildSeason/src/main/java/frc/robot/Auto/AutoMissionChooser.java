@@ -13,6 +13,7 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Data.Debug;
 
 /*
  * This lets the person choose which mission is executed
@@ -37,7 +38,6 @@ public class AutoMissionChooser {
         BlueScoreL3,
         BlueScoreL4,
         AlignLeftMission
-
     }
 
     private DesiredMission cachedDesiredMission = DesiredMission.doNothing;
@@ -80,8 +80,7 @@ public class AutoMissionChooser {
             alliance = DriverStation.getAlliance().orElseThrow(() -> new Exception("No alliance")).toString();
         }
         catch (Exception e) {
-            // Handle the exception, for example:
-            System.out.println("Exception occurred: " + e.getMessage());
+            
         }
         delay = SmartDashboard.getNumber("Auto Delay", 0);
         DesiredMission desiredMission = missionChooser.getSelected();
@@ -91,8 +90,6 @@ public class AutoMissionChooser {
         }
 
         if (cachedDesiredMission != desiredMission) {
-            System.out.println("Auto selection changed, updating creator: desiredMission->" + desiredMission.name());
-            System.out.println("String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral");
             autoMission = getAutoMissionForParams(desiredMission);
         }
 

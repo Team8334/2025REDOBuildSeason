@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Subsystem.Mecanum;
+import frc.robot.Data.Debug;
 
 public class DriveForDistanceAction implements Actions{
     private Timer timer;
@@ -31,7 +32,10 @@ public class DriveForDistanceAction implements Actions{
         timer = new Timer();
         timer.start();
         targetDistance = (currentDistance + desiredDistance);
+
+        if(Debug.debug){
         SmartDashboard.putString("Current Action", "DriveForDistanceAction Started");
+        }
     }
 
     @Override
@@ -39,9 +43,12 @@ public class DriveForDistanceAction implements Actions{
     {
         forward = (targetDistance - currentDistance) / 128;
         mecanum.driveWithSpeed(forward, 0, 0);
+
+        if(Debug.debug){
         SmartDashboard.putNumber("targetDistance", targetDistance);
         SmartDashboard.putNumber("currentDistance", currentDistance);
         SmartDashboard.putNumber("forward", forward);
+        }
 
     }
 
