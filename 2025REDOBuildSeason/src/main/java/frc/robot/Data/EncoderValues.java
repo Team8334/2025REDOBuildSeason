@@ -9,9 +9,9 @@ public class EncoderValues {
 
     public static final double ELEVATOR_RAMP = -0.32;
     public static final double ELEVATOR_L1 = 0.04; // 46cm
-    public static final double ELEVATOR_L2 = 0.47; //81cm
-    public static final double ELEVATOR_L3 = 1.88; //121 cm
-    public static final double ELEVATOR_L4 = 4.2; // 183cm
+    public static final double ELEVATOR_L2 = 0.61; //81cm
+    public static final double ELEVATOR_L3 = 2.0; //121 cm
+    public static final double ELEVATOR_L4 = 4.22; // 183cm
     public static final double ELEVATOR_BARGE = 4.28;
     public static final double ELEVATOR_LOWER_ALGAE = -0.40;
     public static final double ELEVATOR_UPPER_ALGAE = 1.11;

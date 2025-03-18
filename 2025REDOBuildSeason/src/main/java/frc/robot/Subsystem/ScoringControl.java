@@ -152,16 +152,16 @@ public class ScoringControl implements Subsystem {
                 rampLeft = 0.3; //do not run fast. 0.7 broke the robot.
                 rampRight = -0.3; // do not run fast. 0.7 broke the robot.
 
-                if (!timerStart && pieceDetected){
-                    timerStart = true;
-                    timer.reset();
-                    timer.start();
-                }
-                if (timerStart && pieceDetected && timer.get() >= PASSING_DELAY){
-                    timerStart = false;
-                    timer.stop();
-                    setEffectorState(States.WAITINGINEFFECTOR);
-                }
+                //if (!timerStart && pieceDetected){
+                //    timerStart = true;
+                //    timer.reset();
+                //    timer.start();
+                //}
+                //if (timerStart && pieceDetected && timer.get() >= PASSING_DELAY){
+                //    timerStart = false;
+                //    timer.stop();
+                //    setEffectorState(States.WAITINGINEFFECTOR);
+                //}
                 monitoringEffectorState = "passing";
                 break;
 
@@ -173,18 +173,18 @@ public class ScoringControl implements Subsystem {
                 break;
 
             case SCORING:
-                if (pieceDetected) {
-                    effector = 0.5;
-                    rampLeft = 0.0;
-                    rampRight = 0.0;
-                }
-                else{
-                    setEffectorState(States.NOTHING);
-                }
+                //if (pieceDetected) {
+                //    effector = 0.;
+                //    rampLeft = 0.0;
+                //    rampRight = 0.0;
+                //}
+                //else{
+                //    setEffectorState(States.NOTHING);
+                //}
 
-               //effector = 0.5;
-               //rampLeft = 0.0;
-               //rampRight = 0.0;
+               effector = 0.5;
+               rampLeft = 0.0;
+               rampRight = 0.0;
                 monitoringEffectorState = "scoring";
                 break;
 
