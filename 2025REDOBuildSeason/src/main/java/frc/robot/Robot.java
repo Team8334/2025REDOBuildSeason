@@ -31,7 +31,6 @@ import frc.robot.Data.Debug;
  */
 public class Robot extends TimedRobot {
   Teleop teleop;
-  FrontLimelight frontLimelight;
   Elevator elevator;
   ScoringControl scoringControl;
 
@@ -56,8 +55,6 @@ public class Robot extends TimedRobot {
     Mecanum.getInstance();
     ScoringControl.getInstance();
     Elevator.getInstance();
-
-    frontLimelight = frontLimelight.getInstance();
 
     scoringControl = ScoringControl.getInstance();
 
