@@ -34,7 +34,7 @@ public class Alignment implements Subsystem{
 
     public void alignLeft(String target){
         if(x > -19 && x != 0){
-            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, -25, 0),0.0);
+            mecanum.driveWithSpeed(0.0, targeting.frontLockOnX(target, -25, 0)*10,0.0);
         }
         else{
             mecanum.driveWithSpeed(-0.5,0,0);
@@ -43,7 +43,7 @@ public class Alignment implements Subsystem{
 
     public void alignRight(String target){ //desired seems to be 23 for Michela
         if(x < 19 && x != 0){
-            mecanum.driveWithSpeed(0, targeting.frontLockOnX(target, 25, 0),0.0);
+            mecanum.driveWithSpeed(0, targeting.frontLockOnX(target, 25, 0)*10,0.0);
         }
         else{
             mecanum.driveWithSpeed(-.5,0,0);
