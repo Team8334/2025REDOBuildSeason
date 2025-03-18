@@ -16,7 +16,6 @@ import frc.robot.Auto.AutoMissionExecutor;
 import frc.robot.Auto.Missions.MissionBase;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Devices.Gyro;
-import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.SubsystemManager;
 import frc.robot.Subsystem.ScoringControl;
 import au.grapplerobotics.CanBridge;
@@ -24,6 +23,7 @@ import frc.robot.Teleop;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Subsystem.SubsystemManager;
 import frc.robot.Data.States;
+import frc.robot.Data.Debug;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -31,7 +31,6 @@ import frc.robot.Data.States;
  */
 public class Robot extends TimedRobot {
   Teleop teleop;
-  FrontLimelight frontLimelight;
   Elevator elevator;
   ScoringControl scoringControl;
 
@@ -51,24 +50,25 @@ public class Robot extends TimedRobot {
     CanBridge.runTCP();
 
     SmartDashboard.putData("Auto choices", m_chooser);
-    teleop = new Teleop();
+    
     
     Gyro.getInstance();
     Mecanum.getInstance();
     ScoringControl.getInstance();
     Elevator.getInstance();
 
-    frontLimelight = frontLimelight.getInstance();
-
     scoringControl = ScoringControl.getInstance();
 
-    elevator = Elevator.getInstance();
+    //elevator = Elevator.getInstance();
 
     SubsystemManager.initializeSubsystems();
 
-    elevator.elevatorZero();
+    //elevator.elevatorZero();
 
-    scoringControl.setState(States.PASSIVE);
+    scoringControl.setElevatorState(States.PASSIVE);
+    scoringControl.setEffectorState(States.NOTHING);
+
+    teleop = new Teleop();
   }
 
   /**
@@ -117,7 +117,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    scoringControl.setElevatorState(States.PASSIVE);
+  }
 
   /** This function is called periodically during operator control. */
   @Override

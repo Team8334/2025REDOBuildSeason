@@ -1,7 +1,13 @@
 package frc.robot.Subsystem;
 
 import frc.robot.Data.PortMap;
+
+
+import frc.robot.Devices.NEOSparkMaxMotor;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem.Elevator;
+import frc.robot.Data.Debug;
 import frc.robot.Data.EncoderValues;
 import frc.robot.Data.States;
 import frc.robot.Devices.NEOSparkMaxMotor;
@@ -21,19 +27,25 @@ public class ScoringControl implements Subsystem {
     Elevator elevator;
     Laser laser;
 
-    private NEOSparkMaxMotor effectorMotorLower = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_LOWER);
-    private NEOSparkMaxMotor effectorMotorUpper = new NEOSparkMaxMotor(PortMap.EFFECTOR_MOTOR_UPPER);
+    private NEOSparkMaxMotor rampLeftMotor; 
+    private NEOSparkMaxMotor rampRightMotor;
+    private NEOSparkMaxMotor effectorMotor;
 
-    public double coralDetectThreshold = 40; //in mm
+    public double rampRight;
+    public double rampLeft;
+    public double effector;
+    public double CORAL_DETECT_THRESHOLD = 5; //in mm
+    public double PASSING_DELAY = 45;
 
-    private double effectorUpper;
-    private double effectorLower;
+    public States elevatorState;
+    public States effectorState;
 
-    States state;
 
     public String monitoringState;
+    public String monitoringEffectorState;
 
     public boolean elevatorIsSafe;
+    public boolean timerStart;
     public boolean pieceDetected;
 
     public static ScoringControl getInstance() {
@@ -48,59 +60,134 @@ public class ScoringControl implements Subsystem {
     }
 
     public void EffectorRun(){
-        effectorMotorLower.set(effectorUpper);
-        effectorMotorUpper.set(effectorLower);
+        rampLeftMotor.set(rampRight);
+        rampRightMotor.set(rampLeft);
+        effectorMotor.set(effector);
     }
 
-    public void setState(States state){
-        this.state = state;
+    public void setElevatorState(States elevatorState){
+        this.elevatorState = elevatorState;
+    }
+
+    public void setEffectorState(States effectorState){
+        this.effectorState = effectorState;
     }
 
     public void setManualEffectorSpeed(double speed){
-        effectorUpper = speed;
-        effectorLower = speed;
+        effector = (speed/-2);
+     }
+
+     public void ElevatorStateProcessing(){
+        switch (elevatorState){
+
+            case PASSIVE:
+                elevator.stop();
+                monitoringState = "Passive";
+                break;
+
+            case RAMP:
+                elevator.reachGoal(EncoderValues.ELEVATOR_RAMP);
+                monitoringState = "Ramp";
+                break;
+
+            case SCOREL1:
+                elevator.reachGoal(EncoderValues.ELEVATOR_L1);
+                monitoringState = "Score L1";
+                break;
+            
+            case SCOREL2:
+                elevator.reachGoal(EncoderValues.ELEVATOR_L2);
+                monitoringState = "Score L2";
+                break;
+
+            case SCOREL3:
+                elevator.reachGoal(EncoderValues.ELEVATOR_L3);
+                monitoringState = "Score L3";
+                break;
+
+            case SCOREL4:
+                elevator.reachGoal(EncoderValues.ELEVATOR_L4);
+                monitoringState = "Score L4";
+                break;
+
+            case LOWERALGAE:
+                elevator.reachGoal(EncoderValues.ELEVATOR_LOWER_ALGAE);
+                monitoringState = "Lower Algae";
+                break;
+
+            case UPPERALGAE:
+                elevator.reachGoal(EncoderValues.ELEVATOR_UPPER_ALGAE);
+                monitoringState = "Upper Algae";
+                break;
+        
+            case BARGE:
+                elevator.reachGoal(EncoderValues.ELEVATOR_BARGE);
+                monitoringState = "Barge";
+                break;
+
+        }
+
+        if(Debug.debug){
+        SmartDashboard.putString("elevatorScoringState", monitoringState);
+        }
     }
 
     public void EffectorStateProcessing(){
-        switch (state)
+        switch (elevatorState)
         {
             case PASSIVE:
-                    effectorUpper = 0.0;
-                    effectorLower = 0.0;
-                    elevator.stop();
-                    monitoringState = "Passive";
+                elevator.stop();
+                monitoringState = "Passive";
                 break;
 
             case RAMP:
                     elevator.reachGoal(EncoderValues.ELEVATOR_RAMP);
-                    
+                    monitoringState = "Ramp";
                 break;
 
             case SCOREL1:
                     elevator.reachGoal(EncoderValues.ELEVATOR_L1);
-                
+                    monitoringState = "Score L1";
                 break;
             
             case SCOREL2:
                     elevator.reachGoal(EncoderValues.ELEVATOR_L2);
-
+                    monitoringState = "Score L2";
                 break;
 
             case SCOREL3:
                     elevator.reachGoal(EncoderValues.ELEVATOR_L3);
-                    
+                    monitoringState = "Score L3";
                 break;
 
             case SCOREL4:
                    elevator.reachGoal(EncoderValues.ELEVATOR_L4);
+                   monitoringState = "Score L4";
                 break;
 
+                case LOWERALGAE:
+                elevator.reachGoal(EncoderValues.ELEVATOR_LOWER_ALGAE);
+                monitoringState = "Lower Algae";
+                break;
+
+            case UPPERALGAE:
+                elevator.reachGoal(EncoderValues.ELEVATOR_UPPER_ALGAE);
+                monitoringState = "Upper Algae";
+                break;
+        
+            case BARGE:
+                elevator.reachGoal(EncoderValues.ELEVATOR_BARGE);
+                monitoringState = "Barge";
+                break;
         }
-        SmartDashboard.putString("scoringState", monitoringState);
+        
+        if(Debug.debug){
+            SmartDashboard.putString("elevatorScoringState", monitoringState);
+        }    
     }
 
     public boolean coralDetect(){
-        if(laser.laserDistance() > coralDetectThreshold){
+        if(laser.laserDistance() < CORAL_DETECT_THRESHOLD && laser.laserDistance() !=0){
             return pieceDetected = true;
         }else{
             return pieceDetected = false;
@@ -109,15 +196,26 @@ public class ScoringControl implements Subsystem {
 
     @Override
     public void update() {
+        coralDetect();
+        ElevatorStateProcessing();
         EffectorStateProcessing();
-        EffectorRun();
+        effectorMotor.set(effector);
+        rampRightMotor.set(rampRight);
+        rampLeftMotor.set(rampLeft);
+
+        if(Debug.debug){
         SmartDashboard.putNumber("Laser Detected Distance", laser.laserDistance());
+        }
     }
 
     @Override
     public void initialize() {
         laser = new Laser(PortMap.LASER_CAN);
         elevator = Elevator.getInstance();
+        rampLeftMotor = new NEOSparkMaxMotor(PortMap.RAMP_LEFT);
+        rampRightMotor = new NEOSparkMaxMotor(PortMap.RAMP_RIGHT);
+        effectorMotor = new NEOSparkMaxMotor(PortMap.EFFECTOR);
+        timer= new Timer();
     }
 
     @Override

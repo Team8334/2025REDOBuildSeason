@@ -22,14 +22,11 @@ public class RedScoreL4 extends MissionBase{
     @Override
     protected void routine() throws AutoMissionEndedException {
        
-        //runAction(new WaitAction(AutoMissionChooser.delay)); // MAY NOT BE NEEDED
-        //runAction(new DriveForTimeAction(-0.5,  4));
-        //runAction(new TurnDegreesAction(30, 1));// add 5 degrees because michalangelo has consistently com up 5 degrees short of the needed turn
-        
-        // String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral
-        runAction(new MoveElevatorAction(2, state.SCOREL4)); // May be needed depending on how robot starts
-        runAction(new EffectorAction(0.12,1));
-        //runAction(new DriveForTimeAction(0.5, 0.2));
-        runAction(new MoveElevatorAction(2, state.RAMP));
+        runAction (new DriveForTimeAction(-0.4, 2.2));
+        runAction (new MoveElevatorAction(1.5, States.SCOREL4));
+        runAction (new EffectorAction(0.2, States.SCORING));
+        runAction (new DriveForTimeAction(0.1, 0.3));
+        runAction (new MoveElevatorAction(1.5, States.RAMP));
+        runAction (new EffectorAction(0.2, States.NOTHING));
     }
 }

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Data.EncoderValues;
 import frc.robot.Subsystem.ScoringControl;
+import frc.robot.Data.States;
 
 /* 
  * This action should activate the end effacator for a certain
@@ -15,11 +16,12 @@ public class EffectorAction implements Actions{
     private double seconds;
     private double speed;
     Timer timer;
+    States state;
     private ScoringControl scoringControl = null;
 
-    public EffectorAction(double speed, double seconds){
+    public EffectorAction(double speed,  States state){
         this.seconds = seconds;
-        this.speed = speed;
+        this.state = state;
         scoringControl = ScoringControl.getInstance();
     }
 
@@ -31,7 +33,7 @@ public class EffectorAction implements Actions{
 
     @Override
     public void update(){
-        scoringControl.setManualEffectorSpeed(this.speed);
+        scoringControl.setEffectorState(state);
     }
 
     @Override
@@ -42,6 +44,5 @@ public class EffectorAction implements Actions{
     @Override
     public void done(){
         timer.stop();
-        scoringControl.setManualEffectorSpeed(0);
     }
 }

@@ -1,5 +1,6 @@
 package frc.robot.Subsystem;
 
+import frc.robot.Data.Debug;
 import frc.robot.Data.PortMap;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -64,16 +65,17 @@ public class Mecanum implements Subsystem {
         currentAngleVelocity = (gyro.getAngleVelocityDegrees()*(Math.PI/180));
         double currentAngle = (gyro.getAngleDegrees()*(Math.PI/180));
         //maybe try is sftrafe over a threshold and rotationInput is over a threshold
-        if (Math.abs(currentAngleVelocity) >= 0.15 && Math.abs(rotationInput) >= 0) {
+        if (Math.abs(currentAngleVelocity) >= 0 && Math.abs(rotationInput) >= 0) {
             desiredAngle = currentAngle;
         }
-        if(Math.abs(rotationInput) <= .2){
+        if(Math.abs(rotationInput) == 0){
             double correction = speedControlPID.calculate(currentAngle, desiredAngle);
-            SmartDashboard.putNumber(getName()+"/correction", correction);
-            SmartDashboard.putNumber(getName()+"/desiredAngle", desiredAngle);
-            SmartDashboard.putNumber(getName()+"/currentAngle", currentAngle);
-            SmartDashboard.putNumber(getName()+"/currentAngleVelocity", currentAngleVelocity);
-
+            if(Debug.debug){
+                SmartDashboard.putNumber(getName()+"/correction", correction);
+                SmartDashboard.putNumber(getName()+"/desiredAngle", desiredAngle);
+                SmartDashboard.putNumber(getName()+"/currentAngle", currentAngle);
+                SmartDashboard.putNumber(getName()+"/currentAngleVelocity", currentAngleVelocity);
+                }
             return correction;
         }
         else{
@@ -90,11 +92,13 @@ public class Mecanum implements Subsystem {
         frontRight = wheelSpeeds.frontRightMetersPerSecond;
         rearLeft = wheelSpeeds.rearLeftMetersPerSecond;
         rearRight = wheelSpeeds.rearRightMetersPerSecond;
-        SmartDashboard.putNumber("Mecanum/frontLeft", frontLeft);
-        SmartDashboard.putNumber("Mecanum/frontRight", frontRight);
-        SmartDashboard.putNumber("Mecanum/rearLeft", rearLeft);
-        SmartDashboard.putNumber("Mecanum/rearRight", rearRight);
-
+        if(Debug.debug){
+            SmartDashboard.putNumber("Mecanum/frontLeft", frontLeft);
+            SmartDashboard.putNumber("Mecanum/frontRight", frontRight);
+            SmartDashboard.putNumber("Mecanum/rearLeft", rearLeft);
+            SmartDashboard.putNumber("Mecanum/rearRight", rearRight);
+            }
+            
         frontLeftMotor.setWheelRotationSpeed(frontLeft);
         frontRightMotor.setWheelRotationSpeed(frontRight);
         rearLeftMotor.setWheelRotationSpeed(rearLeft);

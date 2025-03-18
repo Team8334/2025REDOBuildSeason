@@ -1,11 +1,7 @@
 package frc.robot.Auto;
 
 import frc.robot.Auto.Missions.*;
-import frc.robot.Auto.Missions.BlueMissions.BlueScoreL2;
-import frc.robot.Auto.Missions.BlueMissions.BlueScoreL3;
 import frc.robot.Auto.Missions.BlueMissions.BlueScoreL4;
-import frc.robot.Auto.Missions.RedMissions.RedScoreL2;
-import frc.robot.Auto.Missions.RedMissions.RedScoreL3;
 import frc.robot.Auto.Missions.RedMissions.RedScoreL4;
 
 import java.util.Optional;
@@ -23,18 +19,11 @@ public class AutoMissionChooser {
         //these are the options you will see in smart dashboard.
         exampleMission,
         // general missions that use alliance to determine the actual missions
-        ScoringL2Mission,
-        ScoringL3Mission,
         ScoringL4Mission,
-        Testing,
         // actual missions
         MoveAcrossLineMission,
         doNothing,
-        RedScoreL2,
-        RedScoreL3,
         RedScoreL4,
-        BlueScoreL2,
-        BlueScoreL3,
         BlueScoreL4,
 
     }
@@ -55,8 +44,6 @@ public class AutoMissionChooser {
         // add more here as needed, is what is seen when choosing a mission
         missionChooser.addOption("Do Nothing", DesiredMission.doNothing);
         missionChooser.addOption("Leave Community", DesiredMission.MoveAcrossLineMission);
-        missionChooser.addOption("Scoring L2", DesiredMission.ScoringL2Mission);
-        missionChooser.addOption("Scoring L4", DesiredMission.ScoringL3Mission);
         missionChooser.addOption("Scoring L4", DesiredMission.ScoringL4Mission);
 
         SmartDashboard.putNumber("Auto Delay (seconds)", 0);
@@ -78,8 +65,6 @@ public class AutoMissionChooser {
             alliance = DriverStation.getAlliance().orElseThrow(() -> new Exception("No alliance")).toString();
         }
         catch (Exception e) {
-            // Handle the exception, for example:
-            System.out.println("Exception occurred: " + e.getMessage());
         }
         delay = SmartDashboard.getNumber("Auto Delay", 0);
         DesiredMission desiredMission = missionChooser.getSelected();
@@ -89,8 +74,6 @@ public class AutoMissionChooser {
         }
 
         if (cachedDesiredMission != desiredMission) {
-            System.out.println("Auto selection changed, updating creator: desiredMission->" + desiredMission.name());
-            System.out.println("String options: passive, ramp, Score L1, Score L2, Score L3, Score L4, ejecting coral");
             autoMission = getAutoMissionForParams(desiredMission);
         }
 
@@ -105,30 +88,6 @@ public class AutoMissionChooser {
             // leave community mission
             case MoveAcrossLineMission:
                 return Optional.of(new MoveAcrossLineMission());
-            // testing mission
-            // if scoring in L2, and does mission according to alliance
-            case ScoringL2Mission:
-                if (alliance == "Red") {
-                    return Optional.of(new RedScoreL2());
-                }
-                else if (alliance == "Blue") {
-                    return Optional.of(new BlueScoreL2());
-                }
-                else {
-                    return Optional.of(new DoNothingMission());
-                }
-            // if scoring in L3, and does mission according to alliance
-            case ScoringL3Mission:
-                if (alliance == "Red"){
-                    return Optional.of(new RedScoreL3());
-                }
-                else if (alliance == "Blue"){
-                    return Optional.of(new BlueScoreL3());
-                }
-                else {
-                    return Optional.of(new DoNothingMission());
-                }
-            // if scoring in L4, and does mission according alliance
             case ScoringL4Mission:
                 if (alliance == "Red") {
                     return Optional.of(new RedScoreL4());

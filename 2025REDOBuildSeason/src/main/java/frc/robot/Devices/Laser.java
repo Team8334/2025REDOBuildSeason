@@ -28,7 +28,6 @@ public class Laser {
         LaserCan.Measurement measurement = lc.getMeasurement();
         if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT){
             laserDetectedDistance = measurement.distance_mm;
-            System.out.println("The target is " + measurement.distance_mm + "mm away!");
         } else{
             laserDetectedDistance = 999999;
         }

@@ -28,7 +28,7 @@ public class MoveElevatorAction implements Actions{
 
     @Override
     public void update(){
-        scoringControl.setState(state);
+        scoringControl.setElevatorState(state);
     }
     
     @Override
