@@ -1,14 +1,8 @@
 package frc.robot.Auto;
 
 import frc.robot.Auto.Missions.*;
-import frc.robot.Auto.Missions.BlueMissions.BlueScoreL2;
-import frc.robot.Auto.Missions.BlueMissions.BlueScoreL3;
 import frc.robot.Auto.Missions.BlueMissions.BlueScoreL4;
-import frc.robot.Auto.Missions.BlueMissions.BlueScoreL4AndDeAlgaefying;
-import frc.robot.Auto.Missions.RedMissions.RedScoreL2;
-import frc.robot.Auto.Missions.RedMissions.RedScoreL3;
 import frc.robot.Auto.Missions.RedMissions.RedScoreL4;
-import frc.robot.Auto.Missions.RedMissions.RedScoreL4AndDeAlgaefying;
 
 import java.util.Optional;
 
@@ -26,22 +20,12 @@ public class AutoMissionChooser {
         //these are the options you will see in smart dashboard.
         exampleMission,
         // general missions that use alliance to determine the actual missions
-        ScoringL2Mission,
-        ScoringL3Mission,
         ScoringL4Mission,
-        ScoringL4AndDeAlgaefying,
-        Testing,
         // actual missions
         MoveAcrossLineMission,
         doNothing,
-        RedScoreL2,
-        RedScoreL3,
         RedScoreL4,
-        RedScoreL4AndDeAlgaefying,
-        BlueScoreL2,
-        BlueScoreL3,
         BlueScoreL4,
-        AlignLeftMission
     }
 
     private DesiredMission cachedDesiredMission = DesiredMission.doNothing;
@@ -60,10 +44,7 @@ public class AutoMissionChooser {
         // add more here as needed, is what is seen when choosing a mission
         missionChooser.addOption("Do Nothing", DesiredMission.doNothing);
         missionChooser.addOption("Leave Community", DesiredMission.MoveAcrossLineMission);
-        missionChooser.addOption("Scoring L2", DesiredMission.ScoringL2Mission);
-        missionChooser.addOption("Scoring L4", DesiredMission.ScoringL3Mission);
         missionChooser.addOption("Scoring L4", DesiredMission.ScoringL4Mission);
-        missionChooser.addOption("Align Left", DesiredMission.AlignLeftMission);
 
         SmartDashboard.putNumber("Auto Delay (seconds)", 0);
 
@@ -108,30 +89,7 @@ public class AutoMissionChooser {
             // leave community mission
             case MoveAcrossLineMission:
                 return Optional.of(new MoveAcrossLineMission());
-            // testing mission
-            // if scoring in L2, and does mission according to alliance
-            case ScoringL2Mission:
-                if (alliance == "Red") {
-                    return Optional.of(new RedScoreL2());
-                }
-                else if (alliance == "Blue") {
-                    return Optional.of(new BlueScoreL2());
-                }
-                else {
-                    return Optional.of(new DoNothingMission());
-                }
-            // if scoring in L3, and does mission according to alliance
-            case ScoringL3Mission:
-                if (alliance == "Red"){
-                    return Optional.of(new RedScoreL3());
-                }
-                else if (alliance == "Blue"){
-                    return Optional.of(new BlueScoreL3());
-                }
-                else {
-                    return Optional.of(new DoNothingMission());
-                }
-            // if scoring in L4, and does mission according alliance
+            // Scoring in L4, and does mission according to alliance
             case ScoringL4Mission:
                 if (alliance == "Red") {
                     return Optional.of(new RedScoreL4());
@@ -142,19 +100,6 @@ public class AutoMissionChooser {
                 else {
                     return Optional.of(new DoNothingMission());
                 }
-            case ScoringL4AndDeAlgaefying:
-                if (alliance == "Red"){
-                    return Optional.of(new RedScoreL4AndDeAlgaefying());
-                }
-                else if (alliance == "Blue") {
-                    return Optional.of(new BlueScoreL4AndDeAlgaefying());
-                }
-                else {
-                    return Optional.of(new DoNothingMission());
-                }
-            
-            case AlignLeftMission:
-                return Optional.of(new AlignLeftMission());
             // if no auto mission is found
             default:
                 System.err.println("No valid autonomous mission found for" + mission);

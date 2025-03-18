@@ -11,9 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.ScoringControl;
-import frc.robot.Subsystem.Targeting;
-import frc.robot.Subsystem.FrontLimelight;
-import frc.robot.Subsystem.Alignment;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Data.States;
 import frc.robot.Data.Debug;
@@ -24,7 +21,6 @@ public class Teleop {
     Controller operatorController;
 
     Mecanum mecanum;
-    Alignment alignment;
     ScoringControl scoringControl;
     Elevator elevator;
 
@@ -54,7 +50,6 @@ public class Teleop {
         }
     
         mecanum = Mecanum.getInstance();
-        alignment = Alignment.getInstance();
         
         scoringControl = ScoringControl.getInstance();
         elevator = Elevator.getInstance();
@@ -131,33 +126,8 @@ public class Teleop {
                 
             }
             break;
-            case "Automatically Driving": {
-                if(Math.abs(controllerLeftY) >= 0.2 || Math.abs(controllerLeftX) >= 0.2 || Math.abs(controllerRightX) >= 0.2){
-                    driveState = "Manually Driving";
-                }
-                if(xButtonPressed){
-                    alignment.alignXAngle("Reef");
-                }
-                else if(aButtonPressed){
-                    alignment.alignAngle("Reef");
-                }
-                else if(bButtonPressed){
-                    alignment.driveTo("Reef");
-                }
-                else if(rightBumperPressed){
-                    alignment.alignRight("Reef");
-                }
-                else if(leftBumperPressed){
-                    alignment.alignLeft("Reef");
-                }
-                else{
-                    driveState = "Idle";
-                }
             }
 
-            
-            break;
-        }
         if(Debug.debug){
         SmartDashboard.putString("Drive State", driveState);
         }
