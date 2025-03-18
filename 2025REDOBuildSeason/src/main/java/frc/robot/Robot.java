@@ -56,7 +56,6 @@ public class Robot extends TimedRobot {
     ScoringControl.getInstance();
     Elevator.getInstance();
 
-
     scoringControl = ScoringControl.getInstance();
 
     //elevator = Elevator.getInstance();

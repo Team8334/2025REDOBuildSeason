@@ -126,8 +126,7 @@ public class Teleop {
                 
             }
             break;
-            }
-
+        }
         if(Debug.debug){
         SmartDashboard.putString("Drive State", driveState);
         }
