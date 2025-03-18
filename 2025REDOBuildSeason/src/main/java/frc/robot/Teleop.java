@@ -81,35 +81,35 @@ public class Teleop {
 
         factorOfReduction = (elevator.getExtendedCyclePosition()>1?elevator.getExtendedCyclePosition():1);
 
-        if(Math.abs(controllerLeftY) >= 0.2){
-            forward = (controllerLeftY);
-        }
-        else{
-            forward = 0;
-        }
-        if(Math.abs(controllerLeftX) >= 0.2){
-            strafe = (controllerLeftX);
-        }
-        else{
-            strafe = 0;
-        }
-        if(Math.abs(controllerRightX) >= 0.2){
-            rotation = (controllerRightX);
-        }
-        else{
-            rotation = 0;
-        }
-        if(Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2){
-            driveState = "Idle";
-        }
-        if(factorOfReduction > 0){
-            forward = forward/factorOfReduction;
-            strafe = strafe/factorOfReduction;
-            rotation = rotation/factorOfReduction;
-        }
-            
-        mecanum.driveWithSpeed(forward, strafe, rotation);
-        
+                if(Math.abs(controllerLeftY) >= 0.2){
+                    forward = (controllerLeftY);
+                }
+                else{
+                    forward = 0;
+                }
+                if(Math.abs(controllerLeftX) >= 0.2){
+                    strafe = (controllerLeftX);
+                }
+                else{
+                    strafe = 0;
+                }
+                if(Math.abs(controllerRightX) >= 0.2){
+                    rotation = (controllerRightX);
+                }
+                else{
+                    rotation = 0;
+                }
+                if(Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2){
+                    driveState = "Idle";
+                }
+                if(factorOfReduction > 0){
+                    forward = forward/factorOfReduction;
+                    strafe = strafe/factorOfReduction;
+                    rotation = rotation/factorOfReduction;
+                }
+                    
+                mecanum.driveWithSpeed(forward, strafe, rotation);
+                
             
         if(Debug.debug){
         SmartDashboard.putString("Drive State", driveState);
