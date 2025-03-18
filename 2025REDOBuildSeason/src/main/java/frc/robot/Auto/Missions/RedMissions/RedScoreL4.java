@@ -7,8 +7,6 @@ import frc.robot.Auto.Missions.MissionBase;
 
 import frc.robot.Auto.Actions.DriveForTimeAction;
 import frc.robot.Auto.Actions.EffectorAction;
-import frc.robot.Auto.Actions.FrontAlignAction;
-import frc.robot.Auto.Actions.FrontLockOnAction;
 import frc.robot.Auto.Actions.MoveElevatorAction;
 import frc.robot.Auto.Actions.TurnDegreesAction;
 import frc.robot.Auto.Actions.WaitAction;
