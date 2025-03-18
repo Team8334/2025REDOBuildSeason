@@ -4,9 +4,11 @@ import frc.robot.Auto.Missions.*;
 import frc.robot.Auto.Missions.BlueMissions.BlueScoreL2;
 import frc.robot.Auto.Missions.BlueMissions.BlueScoreL3;
 import frc.robot.Auto.Missions.BlueMissions.BlueScoreL4;
+import frc.robot.Auto.Missions.BlueMissions.BlueScoreL4AndDeAlgaefying;
 import frc.robot.Auto.Missions.RedMissions.RedScoreL2;
 import frc.robot.Auto.Missions.RedMissions.RedScoreL3;
 import frc.robot.Auto.Missions.RedMissions.RedScoreL4;
+import frc.robot.Auto.Missions.RedMissions.RedScoreL4AndDeAlgaefying;
 
 import java.util.Optional;
 
@@ -27,6 +29,7 @@ public class AutoMissionChooser {
         ScoringL2Mission,
         ScoringL3Mission,
         ScoringL4Mission,
+        ScoringL4AndDeAlgaefying,
         Testing,
         // actual missions
         MoveAcrossLineMission,
@@ -34,6 +37,7 @@ public class AutoMissionChooser {
         RedScoreL2,
         RedScoreL3,
         RedScoreL4,
+        RedScoreL4AndDeAlgaefying,
         BlueScoreL2,
         BlueScoreL3,
         BlueScoreL4,
@@ -138,6 +142,17 @@ public class AutoMissionChooser {
                 else {
                     return Optional.of(new DoNothingMission());
                 }
+            case ScoringL4AndDeAlgaefying:
+                if (alliance == "Red"){
+                    return Optional.of(new RedScoreL4AndDeAlgaefying());
+                }
+                else if (alliance == "Blue") {
+                    return Optional.of(new BlueScoreL4AndDeAlgaefying());
+                }
+                else {
+                    return Optional.of(new DoNothingMission());
+                }
+            
             case AlignLeftMission:
                 return Optional.of(new AlignLeftMission());
             // if no auto mission is found

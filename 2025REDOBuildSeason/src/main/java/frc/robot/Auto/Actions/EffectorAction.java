@@ -18,7 +18,7 @@ public class EffectorAction implements Actions{
     States state;
     private ScoringControl scoringControl = null;
 
-    public EffectorAction(States state, double seconds){
+    public EffectorAction(double seconds, States state){
         this.seconds = seconds;
         this.state = state;
         scoringControl = ScoringControl.getInstance();
