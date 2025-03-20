@@ -185,6 +185,15 @@ public class Teleop {
             } else{
                 scoringControl.setEffectorState(States.NOTHING);
             }
+
+            if(operatorController.getLeftBumperButton() && !algaeMode){
+                if (scoringControl.elevatorState == States.RAMP){
+                    scoringControl.setEffectorState(States.RAMPREVERSE);
+                } else{
+                    scoringControl.setEffectorState(States.REVERSE);
+                }
+                
+            }
         }
 
         if (operatorController.getLeftBumperButton() && algaeMode){
