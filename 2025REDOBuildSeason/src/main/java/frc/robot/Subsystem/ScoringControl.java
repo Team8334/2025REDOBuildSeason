@@ -190,6 +190,18 @@ public class ScoringControl implements Subsystem {
                 }
                 monitoringEffectorState = "scoring";
                 break;
+            
+            case REVERSE:
+                effector = -0.3;
+                rampLeft = 0.0;
+                rampRight = 0.0;
+                monitoringEffectorState = "reverse";
+                break;
+
+            case RAMPREVERSE:
+                effector = -0.3
+                rampLeft = -0.3;
+                rampRight = 0.3;
 
             case DEALGAEFYING:
                 effector = 0.3;
