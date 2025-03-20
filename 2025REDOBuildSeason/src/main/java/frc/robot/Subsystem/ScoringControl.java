@@ -199,7 +199,7 @@ public class ScoringControl implements Subsystem {
                 break;
 
             case RAMPREVERSE:
-                effector = -0.3
+                effector = -0.3;
                 rampLeft = -0.3;
                 rampRight = 0.3;
 
