@@ -202,6 +202,7 @@ public class ScoringControl implements Subsystem {
                 effector = -0.3;
                 rampLeft = -0.3;
                 rampRight = 0.3;
+                break;
 
             case DEALGAEFYING:
                 effector = 0.3;
