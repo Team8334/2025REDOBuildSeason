@@ -21,7 +21,7 @@ public class BlueScoreL4 extends MissionBase{
     @Override
     protected void routine() throws AutoMissionEndedException {
        
-        runAction (new DriveForTimeAction(-0.4, 2.2));
+        runAction (new DriveForTimeAction(-0.3, 2.2));
         runAction (new MoveElevatorAction(1.5, States.SCOREL4));
         runAction (new EffectorAction(0.2, States.SCORING));
         runAction (new DriveForTimeAction(0.1, 0.3));
