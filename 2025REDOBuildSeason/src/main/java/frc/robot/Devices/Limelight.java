@@ -147,34 +147,38 @@ public class Limelight implements Vision, Devices {
             }
         }
     }
-
-    public double getRobotAngleDegrees() { //get the angle the robot should be at depending on the tag
-        switch (getId()) {
-            case 4, 5, 7, 14, 15, 18: {
-                return 0;
-            }
-            case 10, 21: {
-                return 180;
-            }
-            case 6, 19: {
-                return 300;
-            }
-            case 17, 8: {
-                return 60;
+    
+    public double getDesiredAngleDegrees(int targetTagID) {
+        switch (targetTagID) {
+            case 1, 9, 13, 22: {
+                return 120;
             }
             case 2, 11, 12, 20: {
                 return 240;
             }
-            case 1, 9, 13, 22: {
-                return 120;
-            }
             case 3, 16: {
                 return 270;
+            }
+            case 4, 5, 7, 14, 15, 18: {
+                return 0;
+            }
+            case 6, 19: {
+                return 300;
+            }
+            case 8, 17: {
+                return 60;
+            }
+            case 10, 21: {
+                return 180;
             }
             default: {
                 return 0;
             }
         }
+    }
+
+    public double getDesiredAngleRadians(String target){
+        return 0;
     }
 
     public boolean isOperational() {
@@ -196,16 +200,16 @@ public class Limelight implements Vision, Devices {
 
     public void logToSmartDashboard() {
 
-        // if(Debug.debug){
-        // SmartDashboard.putNumber("Limelight" + limelightID + "/Target X", x);
-        // SmartDashboard.putNumber("Limelight" + limelightID + "/Target Y", y);
-        // SmartDashboard.putNumber("Limelight" + limelightID + "/Target Area", area);
-        // SmartDashboard.putNumber("Limelight" + limelightID + "/Latency", l);
-        // SmartDashboard.putString("Limelight" + limelightID + "/Target Name", findTagName());
-        // SmartDashboard.putNumber("Limelight" + limelightID + "/Target X Robot Space", targetPoseX);
-        // SmartDashboard.putNumberArray("Limelight" + limelightID + "/Target Pose", targetPose);
-        // SmartDashboard.putNumber("Limelight" + limelightID + "/Angle", targetRotationRadians);
-        // SmartDashboard.putString("Alliance", alliance);
-        // }
+        if(Debug.debug){
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Target X", x);
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Target Y", y);
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Target Area", area);
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Latency", l);
+        SmartDashboard.putString("Limelight" + limelightID + "/Target Name", findTagName());
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Target X Robot Space", targetPoseX);
+        SmartDashboard.putNumberArray("Limelight" + limelightID + "/Target Pose", targetPose);
+        SmartDashboard.putNumber("Limelight" + limelightID + "/Angle", targetRotationRadians);
+        SmartDashboard.putString("Alliance", alliance);
+        }
     }
 }
