@@ -171,12 +171,8 @@ public class Limelight implements Vision, Devices {
             case 3, 16: {
                 return 270;
             }
-            case 1, 2: {
-                goalHeightMeters = 1.35;
-                return alliance.equals("Red") ? "Coral Station" : "Opponent's Coral Station";
-            }
             default: {
-                return "Unknown";
+                return 0;
             }
         }
     }
