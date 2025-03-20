@@ -57,13 +57,8 @@ public class Targeting implements Subsystem // This class contains functions for
             System.out.println("Exception occurred: " + e.getMessage());
         }
         frontLimelight.setAlliance(alliance);
-        if(alliance == "Red"){
-            pipeline = 0;
-        }
-        else{
-            pipeline = 1;
-        }
-        frontLimelight.setPipeline(pipeline);
+        frontLimelight.setPipeline(0);
+        rotationPID.setTolerance(0.05);
     }
 
     public double frontLockOnX(String target, double desiredX, double alignmentConstant) //0 as Desired X for aligning with the middle, 0 as alignmentConstant unless aligning with something
@@ -81,12 +76,11 @@ public class Targeting implements Subsystem // This class contains functions for
     }
 
     public double frontAngleAlign(String target){
-        currentAngle = frontLimelight.getTargetRotation();
+        currentAngle = ((gyro.getAngleDegrees())*(Math.PI/180));
         frontTags = frontLimelight.findTagName();
-        angleCorrection = rotationPID.calculate(currentAngle, 0);
+        angleCorrection = rotationPID.calculate(currentAngle, frontLimelight.getDesiredAngleRadians());
         if (frontTags == target && frontLimelight.getX() < 15 && frontLimelight.getX() > -15){
             frontLockOnState = "Locking on to target";
-            
             return angleCorrection;
         }
         else {
@@ -101,7 +95,7 @@ public class Targeting implements Subsystem // This class contains functions for
         frontTags = frontLimelight.findTagName();
         if (frontTags == target){
             frontFollowState = "Following target";
-            return -(areaPID.calculate(frontLimelight.getArea(), desiredArea));//50 is an arbitrary speed divisor. Increase/decrease as needed.
+            return -(areaPID.calculate(frontLimelight.getArea(), desiredArea));
         }
         else{
             frontFollowState = "Cannot see target";

@@ -151,25 +151,25 @@ public class Limelight implements Vision, Devices {
     public double getDesiredAngleDegrees(int targetTagID) {
         switch (targetTagID) {
             case 1, 9, 13, 22: {
-                return 120;
+                return -60;
             }
             case 2, 11, 12, 20: {
-                return 240;
-            }
-            case 3, 16: {
-                return 270;
-            }
-            case 4, 5, 7, 14, 15, 18: {
-                return 0;
-            }
-            case 6, 19: {
-                return 300;
-            }
-            case 8, 17: {
                 return 60;
             }
-            case 10, 21: {
+            case 3, 16: {
+                return 90;
+            }
+            case 4, 5, 7, 14, 15, 18: {
                 return 180;
+            }
+            case 6, 19: {
+                return 120;
+            }
+            case 8, 17: {
+                return -120;
+            }
+            case 10, 21: {
+                return 0;
             }
             default: {
                 return 0;
@@ -177,8 +177,8 @@ public class Limelight implements Vision, Devices {
         }
     }
 
-    public double getDesiredAngleRadians(String target){
-        return 0;
+    public double getDesiredAngleRadians(){
+            return (getDesiredAngleDegrees(getId()))*(Math.PI/180);
     }
 
     public boolean isOperational() {
@@ -192,10 +192,6 @@ public class Limelight implements Vision, Devices {
         l = tl.getDouble(0.0);
         targetPose = LimelightHelpers.getTargetPose_RobotSpace(limelightName);
         robotPose = LimelightHelpers.getBotPose_TargetSpace(tableName);
-        targetPose3d = LimelightHelpers.getTargetPose3d_RobotSpace(limelightName);
-        targetPoseX = targetPose3d.getX(); //only negative for MasterS
-        targetRotation3d = LimelightHelpers.getTargetPose3d_RobotSpace(limelightName).getRotation();
-        targetRotationRadians = targetRotation3d.getZ()-.0295;//subtract constant for accurate measurement. ? for Michela, .008 for MasterS
     }
 
     public void logToSmartDashboard() {
@@ -206,10 +202,8 @@ public class Limelight implements Vision, Devices {
         SmartDashboard.putNumber("Limelight" + limelightID + "/Target Area", area);
         SmartDashboard.putNumber("Limelight" + limelightID + "/Latency", l);
         SmartDashboard.putString("Limelight" + limelightID + "/Target Name", findTagName());
-        SmartDashboard.putNumber("Limelight" + limelightID + "/Target X Robot Space", targetPoseX);
+        SmartDashboard.putNumberArray("Limelight" + limelightID + "/Robot Pose", robotPose);
         SmartDashboard.putNumberArray("Limelight" + limelightID + "/Target Pose", targetPose);
-        SmartDashboard.putNumber("Limelight" + limelightID + "/Angle", targetRotationRadians);
-        SmartDashboard.putString("Alliance", alliance);
         }
     }
 }
