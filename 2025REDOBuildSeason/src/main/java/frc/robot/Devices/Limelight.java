@@ -148,6 +148,39 @@ public class Limelight implements Vision, Devices {
         }
     }
 
+    public double getRobotAngleDegrees() { //get the angle the robot should be at depending on the tag
+        switch (getId()) {
+            case 4, 5, 7, 14, 15, 18: {
+                return 0;
+            }
+            case 10, 21: {
+                return 180;
+            }
+            case 6, 19: {
+                return 300;
+            }
+            case 17, 8: {
+                return 60;
+            }
+            case 2, 11, 12, 20: {
+                return 240;
+            }
+            case 1, 9, 13, 22: {
+                return 120;
+            }
+            case 3, 16: {
+                return 270;
+            }
+            case 1, 2: {
+                goalHeightMeters = 1.35;
+                return alliance.equals("Red") ? "Coral Station" : "Opponent's Coral Station";
+            }
+            default: {
+                return "Unknown";
+            }
+        }
+    }
+
     public boolean isOperational() {
         return tableName != null; // Use tableName for operational check
     }
