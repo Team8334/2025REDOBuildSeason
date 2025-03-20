@@ -33,7 +33,7 @@ public class ScoringControl implements Subsystem {
     public double rampRight;
     public double rampLeft;
     public double effector;
-    public double CORAL_DETECT_THRESHOLD = 5; //in mm
+    public double CORAL_DETECT_THRESHOLD = 10; //in mm
     public double PASSING_DELAY = 45;
 
     public States elevatorState;
@@ -56,6 +56,7 @@ public class ScoringControl implements Subsystem {
 
     public ScoringControl(){
         SubsystemManager.registerSubsystem(this);
+        SmartDashboard.putBoolean("piece", false);
     }
 
     public void EffectorRun(){
@@ -148,9 +149,16 @@ public class ScoringControl implements Subsystem {
                 break;
 
             case PASSING:
-                effector = 0.3;
-                rampLeft = 0.3; //do not run fast. 0.7 broke the robot.
-                rampRight = -0.3; // do not run fast. 0.7 broke the robot.
+                if(pieceDetected){
+                    effector = 0.0;
+                    rampLeft = 0.0; //do not run fast. 0.7 broke the robot.
+                    rampRight = 0.0;
+                }
+                else{
+                    effector = 0.22;
+                    rampLeft = 0.3; //do not run fast. 0.7 broke the robot.
+                    rampRight = -0.3;
+                }
 
                 //if (!timerStart && pieceDetected){
                 //    timerStart = true;
@@ -173,19 +181,29 @@ public class ScoringControl implements Subsystem {
                 break;
 
             case SCORING:
-                //if (pieceDetected) {
-                //    effector = 0.;
-                //    rampLeft = 0.0;
-                //    rampRight = 0.0;
-                //}
-                //else{
-                //    setEffectorState(States.NOTHING);
-                //}
-
-               effector = 0.5;
-               rampLeft = 0.0;
-               rampRight = 0.0;
+                if(pieceDetected){
+                    effector = 0.5;
+                    rampLeft = 0.0; //do not run fast. 0.7 broke the robot.
+                    rampRight = 0.0;
+                }
+                else{
+                    effector = 0.0;
+                    rampLeft = 0.0; //do not run fast. 0.7 broke the robot.
+                    rampRight = 0.0;
+                }
                 monitoringEffectorState = "scoring";
+                break;
+
+            case REVERSE:
+                effector = -0.3;
+                rampLeft = 0.0;
+                rampRight = 0.0;
+                break;
+            
+            case RAMPREVERSE:
+                effector = -0.3;
+                rampLeft = -0.3;
+                rampRight = 0.3;
                 break;
 
             case DEALGAEFYING:
@@ -204,6 +222,9 @@ public class ScoringControl implements Subsystem {
             
             case HOLDINGALGAE:
                 effector = 0.34;
+
+
+
                 rampLeft = 0.0;
                 rampRight = 0.0;
                 monitoringEffectorState = "hold";
@@ -217,7 +238,7 @@ public class ScoringControl implements Subsystem {
     }
     
     public boolean coralDetect(){
-        if(laser.laserDistance() < CORAL_DETECT_THRESHOLD && laser.laserDistance() !=0){
+        if(laser.laserDistance() < CORAL_DETECT_THRESHOLD){
             return pieceDetected = true;
         }else{
             return pieceDetected = false;
@@ -227,6 +248,7 @@ public class ScoringControl implements Subsystem {
     @Override
     public void update() {
         coralDetect();
+        //pieceDetected = SmartDashboard.getBoolean("piece", false);
         ElevatorStateProcessing();
         EffectorStateProcessing();
         effectorMotor.set(effector);
