@@ -33,11 +33,11 @@ public class Mecanum implements Subsystem {
     private double currentAngleVelocity;
     private double desiredAngle;
 
-    private PIDController speedControlPID = new PIDController(5.5, 0, 0.00001);
+    private PIDController speedControlPID = new PIDController(.6, 0, 0.0000);
 
-    private double MAX_SPEED_CONSTANT_FORWARD = 30; //TO DO: calculate this (meters per sec)
-    private double MAX_SPEED_CONSTANT_STRAFE = 30; //Meters per sec. Should calculate this too.
-    private double MAX_SPEED_CONSTANT_ROTATION = 4*Math.PI; //Radians per sec.
+    private double MAX_SPEED_CONSTANT_FORWARD = 20; //TO DO: calculate this (meters per sec)
+    private double MAX_SPEED_CONSTANT_STRAFE = 20; //Meters per sec. Should calculate this too.
+    private double MAX_SPEED_CONSTANT_ROTATION = 6*Math.PI; //Radians per sec.
 
     // distance of wheels from center in meters
     Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381); // these are not actually measured
@@ -61,14 +61,15 @@ public class Mecanum implements Subsystem {
             gyro = Gyro.getInstance();
     }
 
-    private double rotationControl(double rotationInput){
+    private double rotationControl(double rotationInput, double strafe){
+        //return rotationInput;
         currentAngleVelocity = (gyro.getAngleVelocityDegrees()*(Math.PI/180));
         double currentAngle = (gyro.getAngleDegrees()*(Math.PI/180));
         //maybe try is sftrafe over a threshold and rotationInput is over a threshold
         if (Math.abs(currentAngleVelocity) >= 0 && Math.abs(rotationInput) > 0) {
             desiredAngle = currentAngle;
         }
-        if(Math.abs(rotationInput) == 0){
+        if(Math.abs(rotationInput) == 0 && Math.abs(strafe) != 0){
             double correction = speedControlPID.calculate(currentAngle, desiredAngle);
             if(Debug.debug){
             SmartDashboard.putNumber(getName()+"/correction", correction);
@@ -86,7 +87,7 @@ public class Mecanum implements Subsystem {
 
     public void driveWithSpeed(double forward, double strafe, double rotation){
         
-        ChassisSpeeds speeds = new ChassisSpeeds(forward*MAX_SPEED_CONSTANT_FORWARD, strafe*MAX_SPEED_CONSTANT_STRAFE, rotationControl(rotation)*MAX_SPEED_CONSTANT_ROTATION);
+        ChassisSpeeds speeds = new ChassisSpeeds(forward*MAX_SPEED_CONSTANT_FORWARD, strafe*MAX_SPEED_CONSTANT_STRAFE, rotationControl(rotation, strafe)*MAX_SPEED_CONSTANT_ROTATION);
         MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(speeds);
 
         frontLeft = wheelSpeeds.frontLeftMetersPerSecond;
