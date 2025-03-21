@@ -35,8 +35,8 @@ public class Mecanum implements Subsystem {
 
     private PIDController speedControlPID = new PIDController(5.5, 0, 0.00001);
 
-    private double MAX_SPEED_CONSTANT_FORWARD = 40; //TO DO: calculate this (meters per sec)
-    private double MAX_SPEED_CONSTANT_STRAFE = 40; //Meters per sec. Should calculate this too.
+    private double MAX_SPEED_CONSTANT_FORWARD = 30; //TO DO: calculate this (meters per sec)
+    private double MAX_SPEED_CONSTANT_STRAFE = 30; //Meters per sec. Should calculate this too.
     private double MAX_SPEED_CONSTANT_ROTATION = 4*Math.PI; //Radians per sec.
 
     // distance of wheels from center in meters
