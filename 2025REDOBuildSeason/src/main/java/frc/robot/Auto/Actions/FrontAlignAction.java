@@ -4,31 +4,30 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem.Mecanum;
-import frc.robot.Data.Debug;
-import frc.robot.Subsystem.Alignment;
 import frc.robot.Subsystem.FrontLimelight;
 import frc.robot.Subsystem.Mecanum;
+import frc.robot.Data.Debug;
+import frc.robot.Subsystem.Alignment;
 
-public class LockOnAction implements Actions
+public class FrontAlignAction implements Actions
 {
     private Mecanum mecanum;
-    private Alignment alignment;
 
+    private Alignment alignment;
     private FrontLimelight frontLimelight;
     private String target;
-    private boolean driveTo;
+    private String direction;
 
     Timer timer;
     double seconds;
-    double neededArea;
 
     /**
      * Run code once when the action is started, for setup
      */
-    public LockOnAction(String target, boolean driveTo, double seconds)
+    public FrontAlignAction(String target, String direction, double seconds)
     {
-        this.driveTo = driveTo;
         this.target = target;
+        this.direction = direction;
         alignment = Alignment.getInstance();
         frontLimelight = FrontLimelight.getInstance();
         mecanum = Mecanum.getInstance();
@@ -56,13 +55,13 @@ public class LockOnAction implements Actions
     @Override
     public void update()
     {
-        if ((frontLimelight.findTagName() != "Unknown") && driveTo && frontLimelight.getPipeline() == 0)
+        if ((frontLimelight.findTagName() != "Unknown") && direction == "Left" && frontLimelight.getPipeline() == 0)
         {
-            alignment.driveTo(target);
+            alignment.alignLeft(target);
         }
-        if((frontLimelight.findTagName() != "Unknown") && !driveTo && frontLimelight.getPipeline() == 0)
+        if((frontLimelight.findTagName() != "Unknown") && direction == "Right" && frontLimelight.getPipeline() == 0)
         {
-            alignment.alignXAngle(target);
+            alignment.alignRight(target);
         }
         else
         {
@@ -98,6 +97,4 @@ public class LockOnAction implements Actions
     {
         mecanum.driveWithSpeed(0, 0, 0);
     }
-
 }
-

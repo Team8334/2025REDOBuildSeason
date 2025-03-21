@@ -26,7 +26,7 @@ public class Targeting implements Subsystem // This class contains functions for
 
     private PIDController xPID = new PIDController(.0135, 0, 0); 
     private PIDController areaPID = new PIDController(.035, 0, 0);
-    private PIDController rotationPID = new PIDController(24, 0, 0);
+    private PIDController rotationPID = new PIDController(10, 0, 0);
 
     private Gyro gyro = Gyro.getInstance();
 
@@ -58,6 +58,7 @@ public class Targeting implements Subsystem // This class contains functions for
         }
         frontLimelight.setAlliance(alliance);
         frontLimelight.setPipeline(0);
+        xPID.setTolerance(0.3);
         rotationPID.setTolerance(0.05);
     }
 

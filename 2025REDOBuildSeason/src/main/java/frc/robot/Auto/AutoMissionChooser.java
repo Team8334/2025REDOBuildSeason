@@ -21,11 +21,14 @@ public class AutoMissionChooser {
         exampleMission,
         // general missions that use alliance to determine the actual missions
         ScoringL4Mission,
+        LimelightMission,
         // actual missions
         MoveAcrossLineMission,
         doNothing,
         RedScoreL4,
         BlueScoreL4,
+        RedLimelight,
+        BlueLimelight,
     }
 
     private DesiredMission cachedDesiredMission = DesiredMission.doNothing;
