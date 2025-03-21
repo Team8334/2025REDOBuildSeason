@@ -9,6 +9,7 @@ public enum States {
     SCOREL4,
     LOWERALGAE,
     UPPERALGAE,
+    MANUAL,
     BARGE,
     NOTHING,
     WAITINGINRAMP,

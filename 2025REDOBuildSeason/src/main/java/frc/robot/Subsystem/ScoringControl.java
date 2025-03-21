@@ -35,6 +35,7 @@ public class ScoringControl implements Subsystem {
     public double effector;
     public double CORAL_DETECT_THRESHOLD = 10; //in mm
     public double PASSING_DELAY = 45;
+    public double manualEffectorSpeed;
 
     public States elevatorState;
     public States effectorState;
@@ -130,6 +131,10 @@ public class ScoringControl implements Subsystem {
         }
     }
 
+    public void setEffectorSpeed(double manualSpeed){
+        manualEffectorSpeed = manualSpeed;
+    }
+
     public void EffectorStateProcessing(){
         switch (effectorState){
 
@@ -176,6 +181,13 @@ public class ScoringControl implements Subsystem {
                 rampLeft = 0.0;
                 rampRight = 0.0;
                 monitoringEffectorState = "waiting in effector";
+                break;
+
+            case MANUAL:
+                effector = manualEffectorSpeed;
+                rampLeft = manualEffectorSpeed;
+                rampRight = manualEffectorSpeed;
+                monitoringEffectorState = "manual";
                 break;
 
             case SCORING:

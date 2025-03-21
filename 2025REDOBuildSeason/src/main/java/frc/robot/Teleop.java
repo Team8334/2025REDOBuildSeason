@@ -184,6 +184,11 @@ public class Teleop {
             scoringControl.setElevatorState(States.SCOREL4);
         }
 
+        if(Math.abs(operatorController.getRightY()) > 0.2){
+            scoringControl.setEffectorState(States.MANUAL);
+            scoringControl.setEffectorSpeed(operatorController.getRightY()/6);
+        }
+
         if(Debug.debug){
         SmartDashboard.putBoolean("algaeMode", algaeMode);
         }
