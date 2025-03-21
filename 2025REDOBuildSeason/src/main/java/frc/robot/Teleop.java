@@ -27,7 +27,6 @@ public class Teleop {
     Alignment alignment;
     Elevator elevator;
     ScoringControl scoringControl;
-    Elevator elevator;
     States state;
 
     private double controllerLeftX;
@@ -137,7 +136,7 @@ public class Teleop {
                     driveState = "Manually Driving";
                 }
                 if(aButtonPressed){
-                    alignment.align("Reef");
+                    alignment.alignAngle("Reef");
                 }
                 if(bButtonPressed){
                     alignment.driveTo("Reef");
@@ -147,6 +146,9 @@ public class Teleop {
                 }
                 else if(leftBumperPressed){
                     alignment.alignLeft("Reef");
+                }
+                else if(xButtonPressed){
+                    alignment.alignXAngle("Reef");
                 }
                 else{
                     driveState = "Idle";
