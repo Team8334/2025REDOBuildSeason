@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Subsystem.ScoringControl;
+import frc.robot.Subsystem.Targeting;
+import frc.robot.Subsystem.FrontLimelight;
+import frc.robot.Subsystem.Alignment;
 import frc.robot.Subsystem.Elevator;
 import frc.robot.Data.States;
 import frc.robot.Data.Debug;
@@ -21,8 +24,11 @@ public class Teleop {
     Controller operatorController;
 
     Mecanum mecanum;
+    Alignment alignment;
+    Elevator elevator;
     ScoringControl scoringControl;
     Elevator elevator;
+    States state;
 
     private double controllerLeftX;
     private double controllerLeftY;
@@ -50,7 +56,8 @@ public class Teleop {
         }
     
         mecanum = Mecanum.getInstance();
-        
+
+        alignment = Alignment.getInstance();
         scoringControl = ScoringControl.getInstance();
         elevator = Elevator.getInstance();
 
@@ -78,9 +85,23 @@ public class Teleop {
         double forward;
         double strafe;
         double rotation;
-
+        
         factorOfReduction = (elevator.getExtendedCyclePosition()>1?elevator.getExtendedCyclePosition():1);
 
+        switch(driveState){
+            case "Idle": {
+                if(Math.abs(controllerLeftY) >= 0.2 || Math.abs(controllerLeftX) >= 0.2 || Math.abs(controllerRightX) >= 0.2){
+                    driveState = "Manually Driving";
+                }
+                if(Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2){
+                    if(aButtonPressed || rightBumperPressed || leftBumperPressed || bButtonPressed){
+                        driveState = "Automatically Driving";
+                    }
+                }
+                mecanum.driveWithSpeed(0, 0, 0);
+            }
+            break;
+            case "Manually Driving": {
                 if(Math.abs(controllerLeftY) >= 0.2){
                     forward = (controllerLeftY);
                 }
@@ -107,10 +128,34 @@ public class Teleop {
                     strafe = strafe/factorOfReduction;
                     rotation = rotation/factorOfReduction;
                 }
-                    
+
                 mecanum.driveWithSpeed(forward, strafe, rotation);
-                
-            
+            }
+            break;
+            case "Automatically Driving": {
+                if(Math.abs(controllerLeftY) >= 0.2 || Math.abs(controllerLeftX) >= 0.2 || Math.abs(controllerRightX) >= 0.2){
+                    driveState = "Manually Driving";
+                }
+                if(aButtonPressed){
+                    alignment.align("Reef");
+                }
+                if(bButtonPressed){
+                    alignment.driveTo("Reef");
+                }
+                else if(rightBumperPressed){
+                    alignment.alignRight("Reef");
+                }
+                else if(leftBumperPressed){
+                    alignment.alignLeft("Reef");
+                }
+                else{
+                    driveState = "Idle";
+                }
+            }
+            break;
+        }
+
+
         if(Debug.debug){
         SmartDashboard.putString("Drive State", driveState);
         }
