@@ -37,7 +37,7 @@ public class Mecanum implements Subsystem {
 
     private double MAX_SPEED_CONSTANT_FORWARD = 40; //TO DO: calculate this (meters per sec)
     private double MAX_SPEED_CONSTANT_STRAFE = 40; //Meters per sec. Should calculate this too.
-    private double MAX_SPEED_CONSTANT_ROTATION = 6*Math.PI; //Radians per sec.
+    private double MAX_SPEED_CONSTANT_ROTATION = 4*Math.PI; //Radians per sec.
 
     // distance of wheels from center in meters
     Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381); // these are not actually measured
