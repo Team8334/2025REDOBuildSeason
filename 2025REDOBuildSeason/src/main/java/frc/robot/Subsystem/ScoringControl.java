@@ -205,7 +205,7 @@ public class ScoringControl implements Subsystem {
 
             case SCORINGSLOWER:
                 if(pieceDetected){
-                    effector = 0.5;
+                    effector = 0.35;
                     rampLeft = 0.0;
                     rampRight = 0.0;
                 } else {
