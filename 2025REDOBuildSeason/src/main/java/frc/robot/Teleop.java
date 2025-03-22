@@ -125,8 +125,14 @@ public class Teleop {
             scoringControl.setEffectorState(States.HOLDINGALGAE);
         }
         else{
+
             algaeMode = false;
-            if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState!=States.RAMP){
+
+            if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState!=States.RAMP && (scoringControl.elevatorState == States.SCOREL2 || scoringControl.elevatorState == States.SCOREL3)){
+                scoringControl.setEffectorState(States.SCORINGSLOWER);
+            }
+
+            else if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState!=States.RAMP){
                 scoringControl.setEffectorState(States.SCORING);
             }
     
@@ -138,6 +144,7 @@ public class Teleop {
             } else{
                 scoringControl.setEffectorState(States.NOTHING);
             }
+            
             if(operatorController.getLeftBumperButton() && !algaeMode){
                 if (scoringControl.elevatorState == States.RAMP){
                     scoringControl.setEffectorState(States.RAMPREVERSE);

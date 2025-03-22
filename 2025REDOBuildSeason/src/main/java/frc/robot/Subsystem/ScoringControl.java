@@ -186,11 +186,24 @@ public class ScoringControl implements Subsystem {
             case MANUAL:
                 effector = manualEffectorSpeed;
                 rampLeft = manualEffectorSpeed;
-                rampRight = manualEffectorSpeed;
+                rampRight = manualEffectorSpeed*-1;
                 monitoringEffectorState = "manual";
                 break;
 
             case SCORING:
+                if(pieceDetected){
+                    effector = 0.5;
+                    rampLeft = 0.0;
+                    rampRight = 0.0;
+                } else {
+                    effector = 0.0;
+                    rampLeft = 0.0;
+                    rampRight = 0.0;
+                }
+                monitoringEffectorState = "scoring";
+                break;
+
+            case SCORINGSLOWER:
                 if(pieceDetected){
                     effector = 0.5;
                     rampLeft = 0.0;

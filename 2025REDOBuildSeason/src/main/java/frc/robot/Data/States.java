@@ -16,6 +16,7 @@ public enum States {
     PASSING,
     WAITINGINEFFECTOR,
     SCORING,
+    SCORINGSLOWER,
     REVERSE,
     RAMPREVERSE,
     DEALGAEFYING,
