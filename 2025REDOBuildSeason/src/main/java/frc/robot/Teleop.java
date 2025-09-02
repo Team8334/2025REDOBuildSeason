@@ -118,7 +118,7 @@ public class Teleop {
 
     public void manipulatorControl() {
 
-        scoringControl.setManualEffectorSpeed(operatorController.getRightY());
+        scoringControl.setManualEffectorSpeed(operatorController.getRightY()*0.4);
 
         if (operatorController.getLeftTriggerAxis()>0.6){
             algaeMode = true;

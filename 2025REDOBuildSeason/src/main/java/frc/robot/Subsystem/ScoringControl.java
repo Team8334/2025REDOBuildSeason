@@ -34,7 +34,7 @@ public class ScoringControl implements Subsystem {
     public double rampLeft;
     public double effector;
     public double CORAL_DETECT_THRESHOLD = 10; //in mm
-    public double PASSING_DELAY = 45;
+    public double PASSING_DELAY = 0.23;
     public double manualEffectorSpeed;
 
     public States elevatorState;
@@ -154,14 +154,32 @@ public class ScoringControl implements Subsystem {
 
             case PASSING:
                 if(pieceDetected){
-                    effector = 0.0;
+
                     rampLeft = 0.0;
                     rampRight = 0.0;
+
+                    if(!timerStart)
+                    {
+                        timerStart = true;
+                        timer.reset();
+                        timer.start();
+                        effector = 0.1;
+                    }
+                    else if (timer.get()<PASSING_DELAY)
+                    {
+                        effector = 0.1;
+                    }
+                    else 
+                    {
+                        effector = 0.0;
+                    }
                 }
                 else{
-                    effector =0.22;
+                    effector = 0.1;
                     rampLeft = 0.3;
                     rampRight = -0.3;
+                    timer.stop();
+                    timerStart = false;
                 }
                 //if (!timerStart && pieceDetected){
                 //    timerStart = true;
