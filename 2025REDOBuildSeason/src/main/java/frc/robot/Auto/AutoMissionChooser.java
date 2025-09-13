@@ -1,8 +1,8 @@
-package frc.robot.Auto;
+/*package frc.robot.Auto;
 
 import frc.robot.Auto.Missions.*;
-import frc.robot.Auto.Missions.BlueMissions.BlueScoreL4;
-import frc.robot.Auto.Missions.RedMissions.RedScoreL4;
+//import frc.robot.Auto.Missions.BlueMissions.BlueScoreL4;
+//import frc.robot.Auto.Missions.RedMissions.RedScoreL4;
 
 import java.util.Optional;
 
@@ -14,7 +14,7 @@ import frc.robot.Data.Debug;
 /*
  * This lets the person choose which mission is executed
  */
-
+/* 
 public class AutoMissionChooser {
     enum DesiredMission {
         //these are the options you will see in smart dashboard.
@@ -121,3 +121,4 @@ public class AutoMissionChooser {
     }
 }
 
+*/

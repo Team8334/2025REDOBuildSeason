@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
-import frc.robot.Subsystem.ScoringControl;
-import frc.robot.Subsystem.Elevator;
+//import frc.robot.Subsystem.ScoringControl;
+//import frc.robot.Subsystem.Elevator;
 import frc.robot.Data.States;
 import frc.robot.Data.Debug;
 
@@ -21,8 +21,8 @@ public class Teleop {
     Controller operatorController;
 
     Mecanum mecanum;
-    ScoringControl scoringControl;
-    Elevator elevator;
+    //ScoringControl scoringControl;
+    //Elevator elevator;
 
     private double controllerLeftX;
     private double controllerLeftY;
@@ -51,8 +51,8 @@ public class Teleop {
     
         mecanum = Mecanum.getInstance();
         
-        scoringControl = ScoringControl.getInstance();
-        elevator = Elevator.getInstance();
+        //scoringControl = ScoringControl.getInstance();
+       // elevator = Elevator.getInstance();
 
         operatorController = new Controller(PortMap.OPERATOR_CONTROLLER);
         if (!operatorController.isOperational()) {
@@ -61,7 +61,7 @@ public class Teleop {
 
     public void teleopPeriodic() {
         driveBaseControl();
-        manipulatorControl();
+        //manipulatorControl();
     }
 
     public void driveBaseControl() {
@@ -79,7 +79,7 @@ public class Teleop {
         double strafe;
         double rotation;
 
-        factorOfReduction = (elevator.getExtendedCyclePosition()>1?elevator.getExtendedCyclePosition():1);
+        factorOfReduction = 1; //(elevator.getExtendedCyclePosition()>1?elevator.getExtendedCyclePosition():1);
 
                 if(Math.abs(controllerLeftY) >= 0.2){
                     forward = (controllerLeftY);
@@ -116,9 +116,9 @@ public class Teleop {
         }
     }
 
-    public void manipulatorControl() {
+   /*  public void manipulatorControl() {
 
-        scoringControl.setManualEffectorSpeed(operatorController.getRightY()*0.4);
+     scoringControl.setManualEffectorSpeed(operatorController.getRightY()*0.4);
 
         if (operatorController.getLeftTriggerAxis()>0.6){
             algaeMode = true;
@@ -200,6 +200,6 @@ public class Teleop {
         SmartDashboard.putBoolean("algaeMode", algaeMode);
         }
 
-    }
+    } */
 }
 

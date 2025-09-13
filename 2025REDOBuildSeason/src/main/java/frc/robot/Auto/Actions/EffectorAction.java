@@ -1,4 +1,4 @@
-package frc.robot.Auto.Actions;
+/*package frc.robot.Auto.Actions;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Data.EncoderValues;
@@ -9,7 +9,7 @@ import frc.robot.Data.States;
  * This action should activate the end effacator for a certain
  * number of seconds to score, the elevator should already be at the
  * appropriate position when this happens
-*/
+*/ /* 
 public class EffectorAction implements Actions{
     
     private double seconds;
@@ -45,3 +45,4 @@ public class EffectorAction implements Actions{
         timer.stop();
     }
 }
+*/

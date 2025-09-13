@@ -1,4 +1,4 @@
-package frc.robot.Auto.Actions;
+/*package frc.robot.Auto.Actions;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Data.EncoderValues;
@@ -40,3 +40,4 @@ public class MoveElevatorAction implements Actions{
         timer.stop();
     }
 }
+*/

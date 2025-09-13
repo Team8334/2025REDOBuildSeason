@@ -1,4 +1,4 @@
-package frc.robot.Auto.Missions.BlueMissions;
+/*package frc.robot.Auto.Missions.BlueMissions;
 
 import frc.robot.Auto.AutoMissionChooser;
 import frc.robot.Auto.AutoMissionEndedException;
@@ -15,7 +15,7 @@ import frc.robot.Data.States;
  * This mission has the robot move out of the robot starting
  * zone to score a coral on L4
  */
-
+/* 
 public class BlueScoreL4 extends MissionBase{
     States state;
     @Override
@@ -29,3 +29,4 @@ public class BlueScoreL4 extends MissionBase{
         runAction (new EffectorAction(0.2, States.NOTHING));
     }
 }
+*/

@@ -1,4 +1,4 @@
-package frc.robot.Auto.Missions.RedMissions;
+/*package frc.robot.Auto.Missions.RedMissions;
 
 
 import frc.robot.Auto.AutoMissionChooser;
@@ -16,7 +16,7 @@ import frc.robot.Data.States;
  * This mission has the robot move out of the robot starting
  * zone to score a coral on L4
  */
-
+/* 
 public class RedScoreL4 extends MissionBase{
     States state;
     @Override
@@ -31,3 +31,4 @@ public class RedScoreL4 extends MissionBase{
         
     }
 }
+*/

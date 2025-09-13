@@ -11,16 +11,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Teleop;
-import frc.robot.Auto.AutoMissionChooser;
+//import frc.robot.Auto.AutoMissionChooser;
 import frc.robot.Auto.AutoMissionExecutor;
 import frc.robot.Auto.Missions.MissionBase;
 import frc.robot.Subsystem.Mecanum;
 import frc.robot.Devices.Gyro;
 import frc.robot.Subsystem.SubsystemManager;
-import frc.robot.Subsystem.ScoringControl;
+//import frc.robot.Subsystem.ScoringControl;
 import au.grapplerobotics.CanBridge;
 import frc.robot.Teleop;
-import frc.robot.Subsystem.Elevator;
+//import frc.robot.Subsystem.Elevator;
 import frc.robot.Subsystem.SubsystemManager;
 import frc.robot.Data.States;
 import frc.robot.Data.Debug;
@@ -31,13 +31,13 @@ import frc.robot.Data.Debug;
  */
 public class Robot extends TimedRobot {
   Teleop teleop;
-  Elevator elevator;
-  ScoringControl scoringControl;
+ // Elevator elevator;
+ // ScoringControl scoringControl;
 
   States state;
 
   private AutoMissionExecutor autoMissionExecutor = new AutoMissionExecutor();
-  private AutoMissionChooser autoMissionChooser = new AutoMissionChooser();
+  //private AutoMissionChooser autoMissionChooser = new AutoMissionChooser();
 
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -53,10 +53,10 @@ public class Robot extends TimedRobot {
     
     Gyro.getInstance();
     Mecanum.getInstance();
-    ScoringControl.getInstance();
-    Elevator.getInstance();
+   // ScoringControl.getInstance();
+   // Elevator.getInstance();
 
-    scoringControl = ScoringControl.getInstance();
+   // scoringControl = ScoringControl.getInstance();
 
     //elevator = Elevator.getInstance();
 
@@ -64,8 +64,8 @@ public class Robot extends TimedRobot {
 
     //elevator.elevatorZero();
 
-    scoringControl.setElevatorState(States.PASSIVE);
-    scoringControl.setEffectorState(States.NOTHING);
+    //scoringControl.setElevatorState(States.PASSIVE);
+    //scoringControl.setEffectorState(States.NOTHING);
 
     teleop = new Teleop();
   }
@@ -98,14 +98,14 @@ public class Robot extends TimedRobot {
    @Override
   public void autonomousInit() {
 
-    if (autoMissionChooser.getAutoMission().isPresent()){
+   /*  if (autoMissionChooser.getAutoMission().isPresent()){
     {
       autoMissionChooser.getAutoMission().get().setStartPose();
     }
     autoMissionExecutor.start();
   }
 
-    m_autoSelected = m_chooser.getSelected();
+    m_autoSelected = m_chooser.getSelected(); */
   }
 
   /** This function is called periodically during autonomous. */
@@ -117,7 +117,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    scoringControl.setElevatorState(States.PASSIVE);
+    //scoringControl.setElevatorState(States.PASSIVE);
   }
 
   /** This function is called periodically during operator control. */
@@ -134,22 +134,22 @@ public class Robot extends TimedRobot {
     {
       autoMissionExecutor.stop();
     }
-    autoMissionChooser.reset();
-    autoMissionChooser.updateMissionCreator();
+    //autoMissionChooser.reset();
+    //autoMissionChooser.updateMissionCreator();
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-    autoMissionChooser.outputToSmartDashboard();
-    autoMissionChooser.updateMissionCreator();
+   // autoMissionChooser.outputToSmartDashboard();
+   // autoMissionChooser.updateMissionCreator();
 
-    Optional<MissionBase> autoMission = autoMissionChooser.getAutoMission();
+   /*  Optional<MissionBase> autoMission = autoMissionChooser.getAutoMission();
     if (autoMission.isPresent() && autoMission.get() != autoMissionExecutor.getAutoMission())
     {
       System.out.println("Set auto mission to: " + autoMission.get().getClass().toString());
       autoMissionExecutor.setAutoMission(autoMission.get());
-    }
+    } */
   }
 
   /** This function is called once when test mode is enabled. */
