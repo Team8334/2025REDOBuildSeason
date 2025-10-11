@@ -74,6 +74,7 @@ public class Teleop {
         leftBumperPressed = driverController.getLeftBumperButton();
         bButtonPressed = driverController.getBButton();
         xButtonPressed = driverController.getXButton();
+        rightBumperPressed = driverController.getRightBumperButton();
 
         double forward;
         double strafe;
@@ -102,6 +103,17 @@ public class Teleop {
                 if(Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2){
                     driveState = "Idle";
                 }
+                if(rightBumperPressed){
+                    if(factorOfReduction > 0){
+                        forward = forward/factorOfReduction*-1;
+                        strafe = strafe/factorOfReduction*-1;
+                        rotation = rotation/factorOfReduction*-1;
+                    }
+                    forward = forward*-1;
+                    strafe = strafe *-1;
+                    rotation = rotation*-1;
+                }
+
                 if(factorOfReduction > 0){
                     forward = forward/factorOfReduction;
                     strafe = strafe/factorOfReduction;

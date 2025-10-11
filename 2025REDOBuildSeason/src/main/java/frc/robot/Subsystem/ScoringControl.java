@@ -34,7 +34,7 @@ public class ScoringControl implements Subsystem {
     public double rampLeft;
     public double effector;
     public double CORAL_DETECT_THRESHOLD = 10; //in mm
-    public double PASSING_DELAY = 0.23;
+    public double PASSING_DELAY = 0.24;
     public double manualEffectorSpeed;
 
     public States elevatorState;
