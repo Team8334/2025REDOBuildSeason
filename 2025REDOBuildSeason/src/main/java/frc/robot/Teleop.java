@@ -48,9 +48,9 @@ public class Teleop {
         driverController = new Controller(PortMap.DRIVER_CONTROLLER);
         if (!driverController.isOperational()) {
         }
-    
+
         mecanum = Mecanum.getInstance();
-        
+
         scoringControl = ScoringControl.getInstance();
         elevator = Elevator.getInstance();
 
@@ -80,138 +80,135 @@ public class Teleop {
         double strafe;
         double rotation;
 
-        factorOfReduction = (elevator.getExtendedCyclePosition()>1?elevator.getExtendedCyclePosition():1);
+        factorOfReduction = (elevator.getExtendedCyclePosition() > 1 ? elevator.getExtendedCyclePosition() : 1);
 
-                if(Math.abs(controllerLeftY) >= 0.2){
-                    forward = (controllerLeftY);
-                }
-                else{
-                    forward = 0;
-                }
-                if(Math.abs(controllerLeftX) >= 0.2){
-                    strafe = (controllerLeftX);
-                }
-                else{
-                    strafe = 0;
-                }
-                if(Math.abs(controllerRightX) >= 0.2){
-                    rotation = (controllerRightX);
-                }
-                else{
-                    rotation = 0;
-                }
-                if(Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2){
-                    driveState = "Idle";
-                }
-                if(rightBumperPressed){
-                    if(factorOfReduction > 0){
-                        forward = forward/factorOfReduction*-1;
-                        strafe = strafe/factorOfReduction*-1;
-                        rotation = rotation/factorOfReduction*-1;
-                    }
-                    forward = forward*-1;
-                    strafe = strafe *-1;
-                    rotation = rotation*-1;
-                }
+        if (Math.abs(controllerLeftY) >= 0.2) {
+            forward = (controllerLeftY);
+        } else {
+            forward = 0;
+        }
+        if (Math.abs(controllerLeftX) >= 0.2) {
+            strafe = (controllerLeftX);
+        } else {
+            strafe = 0;
+        }
+        if (Math.abs(controllerRightX) >= 0.2) {
+            rotation = (controllerRightX);
+        } else {
+            rotation = 0;
+        }
+        if (Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2) {
+            driveState = "Idle";
+        }
+        if (rightBumperPressed) {
+            if (factorOfReduction > 0) {
+                forward = forward / factorOfReduction * -1;
+                strafe = strafe / factorOfReduction * -1;
+                rotation = rotation / factorOfReduction;
+            } else {
+                forward = forward * -1;
+                strafe = strafe * -1;
+            }
 
-                if(factorOfReduction > 0){
-                    forward = forward/factorOfReduction;
-                    strafe = strafe/factorOfReduction;
-                    rotation = rotation/factorOfReduction;
-                }
-                    
-                mecanum.driveWithSpeed(forward, strafe, rotation);
-                
-            
-        if(Debug.debug){
-        SmartDashboard.putString("Drive State", driveState);
+        } else if (factorOfReduction > 0) {
+            forward = forward / factorOfReduction;
+            strafe = strafe / factorOfReduction;
+            rotation = rotation / factorOfReduction;
+        }
+
+        mecanum.driveWithSpeed(forward, strafe, rotation);
+
+        if (Debug.debug) {
+            SmartDashboard.putString("Drive State", driveState);
         }
     }
 
     public void manipulatorControl() {
 
-        scoringControl.setManualEffectorSpeed(operatorController.getRightY()*0.4);
+        scoringControl.setManualEffectorSpeed(operatorController.getRightY() * 0.4);
 
-        if (operatorController.getLeftTriggerAxis()>0.6){
+        if (operatorController.getLeftTriggerAxis() > 0.6) {
             algaeMode = true;
             scoringControl.setEffectorState(States.HOLDINGALGAE);
-        }
-        else{
+        } else {
 
             algaeMode = false;
 
-            if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState!=States.RAMP && (scoringControl.elevatorState == States.SCOREL2 || scoringControl.elevatorState == States.SCOREL3)){
+            if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState != States.RAMP
+                    && (scoringControl.elevatorState == States.SCOREL2
+                            || scoringControl.elevatorState == States.SCOREL3)) {
                 scoringControl.setEffectorState(States.SCORINGSLOWER);
             }
 
-            else if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState!=States.RAMP){
+            else if (operatorController.getRightBumperButton() && !algaeMode
+                    && scoringControl.elevatorState != States.RAMP) {
                 scoringControl.setEffectorState(States.SCORING);
             }
-    
-            else if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState==States.RAMP){
+
+            else if (operatorController.getRightBumperButton() && !algaeMode
+                    && scoringControl.elevatorState == States.RAMP) {
                 if (true) {
                     scoringControl.setEffectorState(States.PASSING);
                 }
 
-            } else{
+            } else {
                 scoringControl.setEffectorState(States.NOTHING);
             }
-            
-            if(operatorController.getLeftBumperButton() && !algaeMode){
-                if (scoringControl.elevatorState == States.RAMP){
+
+            if (operatorController.getLeftBumperButton() && !algaeMode) {
+                if (scoringControl.elevatorState == States.RAMP) {
                     scoringControl.setEffectorState(States.RAMPREVERSE);
-                } else{
+                } else {
                     scoringControl.setEffectorState(States.REVERSE);
                 }
-                
+
             }
         }
 
-        if (operatorController.getLeftBumperButton() && algaeMode){
+        if (operatorController.getLeftBumperButton() && algaeMode) {
             scoringControl.setEffectorState(States.DEALGAEFYING);
         }
 
-        if (operatorController.getRightBumperButton() && algaeMode){
+        if (operatorController.getRightBumperButton() && algaeMode) {
             scoringControl.setEffectorState(States.YEETINGALGAE);
         }
 
-        if (operatorController.getAButton() && algaeMode){
+        if (operatorController.getAButton() && algaeMode) {
             scoringControl.setElevatorState(States.LOWERALGAE);
         }
 
-        if (operatorController.getBButton() && algaeMode){
+        if (operatorController.getBButton() && algaeMode) {
             scoringControl.setElevatorState(States.UPPERALGAE);
         }
 
-        if (operatorController.getYButton() && algaeMode){
+        if (operatorController.getYButton() && algaeMode) {
             scoringControl.setElevatorState(States.BARGE);
         }
 
-        if (operatorController.getXButton() && !algaeMode){
+        if (operatorController.getXButton() && !algaeMode) {
             scoringControl.setElevatorState(States.RAMP);
         }
 
-        if (operatorController.getAButton() && !algaeMode){
+        if (operatorController.getAButton() && !algaeMode) {
             scoringControl.setElevatorState(States.SCOREL2);
         }
 
-        if (operatorController.getBButton() && !algaeMode){
+        if (operatorController.getBButton() && !algaeMode) {
             scoringControl.setElevatorState(States.SCOREL3);
         }
 
-        if (operatorController.getYButton() && !algaeMode){
+        if (operatorController.getYButton() && !algaeMode) {
             scoringControl.setElevatorState(States.SCOREL4);
         }
 
-        if(Math.abs(operatorController.getRightY()) > 0.2){
+        if (Math.abs(operatorController.getRightY()) > 0.2) {
             scoringControl.setEffectorState(States.MANUAL);
-            scoringControl.setEffectorSpeed(operatorController.getRightY()/6);
+            scoringControl.setEffectorSpeed(operatorController.getRightY() / 6);
         }
 
-        if(Debug.debug){
-        SmartDashboard.putBoolean("algaeMode", algaeMode);
+        if (Debug.debug) {
+            SmartDashboard.putBoolean("algaeMode", algaeMode);
         }
 
     }
 }
-
