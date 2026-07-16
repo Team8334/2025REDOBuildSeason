@@ -36,9 +36,6 @@ public class Robot extends TimedRobot {
 
   States state;
 
-  private AutoMissionExecutor autoMissionExecutor = new AutoMissionExecutor();
-  private AutoMissionChooser autoMissionChooser = new AutoMissionChooser();
-
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
