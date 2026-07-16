@@ -10,19 +10,13 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Data.PortMap;
 import frc.robot.Subsystem.Mecanum;
-import frc.robot.Subsystem.ScoringControl;
-import frc.robot.Subsystem.Elevator;
-import frc.robot.Data.States;
 import frc.robot.Data.Debug;
 
 public class Teleop {
 
     Controller driverController;
-    Controller operatorController;
 
     Mecanum mecanum;
-    ScoringControl scoringControl;
-    Elevator elevator;
 
     private double controllerLeftX;
     private double controllerLeftY;
@@ -32,11 +26,6 @@ public class Teleop {
     public double SafeSpeed = 0.1;
     public boolean IsSlowMode = false;
     public boolean IsDriveFast;
-    public boolean OperatorWants = false;
-    public boolean ElevatorIsUp;
-    public double EffectorSpeed = -0.2;
-    public double factorOfReduction;
-    public boolean algaeMode;
 
     private boolean aButtonPressed;
     private boolean rightBumperPressed;
@@ -50,18 +39,10 @@ public class Teleop {
         }
 
         mecanum = Mecanum.getInstance();
-
-        scoringControl = ScoringControl.getInstance();
-        elevator = Elevator.getInstance();
-
-        operatorController = new Controller(PortMap.OPERATOR_CONTROLLER);
-        if (!operatorController.isOperational()) {
-        }
     }
 
     public void teleopPeriodic() {
         driveBaseControl();
-        manipulatorControl();
     }
 
     public void driveBaseControl() {
@@ -74,141 +55,62 @@ public class Teleop {
         leftBumperPressed = driverController.getLeftBumperButton();
         bButtonPressed = driverController.getBButton();
         xButtonPressed = driverController.getXButton();
-        rightBumperPressed = driverController.getRightBumperButton();
 
-        double forward;
-        double strafe;
-        double rotation;
+        // Initialize the movement variables to 0
+        double forward = 0;
+        double strafe = 0;
+        double rotation = 0;
 
-        factorOfReduction = (elevator.getExtendedCyclePosition() > 1 ? elevator.getExtendedCyclePosition() : 1);
+        // TODO 1: Link Joystick Inputs to Movement Variables
+        // The variables above (forward, strafe, rotation) control how the robot moves.
+        // Currently they are 0, meaning the robot won't move!
+        // We need to set them using the values from the controller joysticks.
+        // 
+        // Hint: 
+        // - controllerLeftY gives the up/down position of the left joystick (used for forward/backward)
+        // - controllerLeftX gives the left/right position of the left joystick (used for strafing left/right)
+        // - controllerRightX gives the left/right position of the right joystick (used for rotating the robot)
+        //
+        // Try setting: forward = controllerLeftY;
+        // (Do the same for strafe and rotation below)
+        
+        
 
-        if (Math.abs(controllerLeftY) >= 0.2) {
-            forward = (controllerLeftY);
-        } else {
-            forward = 0;
-        }
-        if (Math.abs(controllerLeftX) >= 0.2) {
-            strafe = (controllerLeftX);
-        } else {
-            strafe = 0;
-        }
-        if (Math.abs(controllerRightX) >= 0.2) {
-            rotation = (controllerRightX);
-        } else {
-            rotation = 0;
-        }
+        // TODO 2: Add a Deadband (Optional but recommended)
+        // Joysticks sometimes don't perfectly return to 0 when you let go.
+        // To fix this, we can ignore values that are very small (e.g., between -0.2 and 0.2).
+        // 
+        // Example for forward:
+        // if (Math.abs(controllerLeftY) >= 0.2) {
+        //     forward = controllerLeftY;
+        // } else {
+        //     forward = 0;
+        // }
+        // 
+        // Can you write the if/else statements for strafe and rotation?
+
+
+
+        // TODO 3: Turbo Mode / Reverse Mode (Optional)
+        // If you want, you can make a button change how the robot drives.
+        // For example, if you press the right bumper, we can multiply the speeds by -1 to reverse the controls.
+        // 
+        // if (rightBumperPressed) {
+        //     forward = forward * -1;
+        //     // do the same for strafe
+        // }
+
+
         if (Math.abs(controllerLeftY) <= 0.2 && Math.abs(controllerLeftX) <= 0.2 && Math.abs(controllerRightX) <= 0.2) {
             driveState = "Idle";
         }
-        if (rightBumperPressed) {
-            if (factorOfReduction > 0) {
-                forward = forward / factorOfReduction * -1;
-                strafe = strafe / factorOfReduction * -1;
-                rotation = rotation / factorOfReduction;
-            } else {
-                forward = forward * -1;
-                strafe = strafe * -1;
-            }
 
-        } else if (factorOfReduction > 0) {
-            forward = forward / factorOfReduction;
-            strafe = strafe / factorOfReduction;
-            rotation = rotation / factorOfReduction;
-        }
-
-        mecanum.driveWithSpeed(forward, strafe, rotation);
+        // TODO 4: Command the Robot to Drive
+        // Finally, uncomment the line below to send the forward, strafe, and rotation values to the robot's wheels!
+        // mecanum.driveWithSpeed(forward, strafe, rotation);
 
         if (Debug.debug) {
             SmartDashboard.putString("Drive State", driveState);
         }
-    }
-
-    public void manipulatorControl() {
-
-        scoringControl.setManualEffectorSpeed(operatorController.getRightY() * 0.4);
-
-        if (operatorController.getLeftTriggerAxis() > 0.6) {
-            algaeMode = true;
-            scoringControl.setEffectorState(States.HOLDINGALGAE);
-        } else {
-
-            algaeMode = false;
-
-            if (operatorController.getRightBumperButton() && !algaeMode && scoringControl.elevatorState != States.RAMP
-                    && (scoringControl.elevatorState == States.SCOREL2
-                            || scoringControl.elevatorState == States.SCOREL3)) {
-                scoringControl.setEffectorState(States.SCORINGSLOWER);
-            }
-
-            else if (operatorController.getRightBumperButton() && !algaeMode
-                    && scoringControl.elevatorState != States.RAMP) {
-                scoringControl.setEffectorState(States.SCORING);
-            }
-
-            else if (operatorController.getRightBumperButton() && !algaeMode
-                    && scoringControl.elevatorState == States.RAMP) {
-                if (true) {
-                    scoringControl.setEffectorState(States.PASSING);
-                }
-
-            } else {
-                scoringControl.setEffectorState(States.NOTHING);
-            }
-
-            if (operatorController.getLeftBumperButton() && !algaeMode) {
-                if (scoringControl.elevatorState == States.RAMP) {
-                    scoringControl.setEffectorState(States.RAMPREVERSE);
-                } else {
-                    scoringControl.setEffectorState(States.REVERSE);
-                }
-
-            }
-        }
-
-        if (operatorController.getLeftBumperButton() && algaeMode) {
-            scoringControl.setEffectorState(States.DEALGAEFYING);
-        }
-
-        if (operatorController.getRightBumperButton() && algaeMode) {
-            scoringControl.setEffectorState(States.YEETINGALGAE);
-        }
-
-        if (operatorController.getAButton() && algaeMode) {
-            scoringControl.setElevatorState(States.LOWERALGAE);
-        }
-
-        if (operatorController.getBButton() && algaeMode) {
-            scoringControl.setElevatorState(States.UPPERALGAE);
-        }
-
-        if (operatorController.getYButton() && algaeMode) {
-            scoringControl.setElevatorState(States.BARGE);
-        }
-
-        if (operatorController.getXButton() && !algaeMode) {
-            scoringControl.setElevatorState(States.RAMP);
-        }
-
-        if (operatorController.getAButton() && !algaeMode) {
-            scoringControl.setElevatorState(States.SCOREL2);
-        }
-
-        if (operatorController.getBButton() && !algaeMode) {
-            scoringControl.setElevatorState(States.SCOREL3);
-        }
-
-        if (operatorController.getYButton() && !algaeMode) {
-            scoringControl.setElevatorState(States.SCOREL4);
-        }
-
-        if (Math.abs(operatorController.getRightY()) > 0.2) {
-            scoringControl.setEffectorState(States.MANUAL);
-            scoringControl.setEffectorSpeed(operatorController.getRightY() / 6);
-        }
-
-        if (Debug.debug) {
-            SmartDashboard.putBoolean("algaeMode", algaeMode);
-        }
-
     }
 }
